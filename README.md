@@ -45,4 +45,4 @@ https://www.borntodev.com/c/webdeveloper/how-to-%E0%B8%97%E0%B8%B3-text-%E0%B9%8
 
 <p>Instruction media Logic Web : <a href="https://robot-eng.github.io/web_test.github.io/tech_logic/index.html">Logic gate</a></p>
 <p> Oxford 3000+ word (Flashcards): <a href="https://word-eng.web.app/">Oxford 3000+</a></p>
-<p> Oxford 3000+ v.2 word (Flashcards): <a href="[https://word-eng.web.app/](https://robot-eng.github.io/web_test.github.io/oxforee/index.html)">Oxford 3000+</a></p>
+<p> Oxford 3000+ v.2 word (Flashcards): <a href="https://robot-eng.github.io/web_test.github.io/oxforee/index.html">Oxford 3000+</a></p>
