@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Oxford 3000 Master</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div class="app">
+    <!-- Header -->
+    <header class="header">
+      <div class="logo">
+        <div class="logo-icon">🇬🇧</div>
+        <div class="logo-text">
+          <h1>Oxford 3000</h1>
+          <span>Vocabulary Master</span>
+        </div>
+      </div>
+      <div class="user-actions">
+        <div class="streak-pill">
+          ⚡ <span id="streakCount">0</span> Streak
+        </div>
+        <button class="btn btn-ghost" id="resetDataBtn">Reset</button>
+      </div>
+    </header>
+
+
+    <!-- Stats -->
+    <div class="stats-overview">
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-icon bg-icon-blue">📚</div>
+          <span class="stat-title">Total</span>
+        </div>
+        <span class="stat-num" id="totalCount">3000</span>
+      </div>
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-icon bg-icon-green">✅</div>
+          <span class="stat-title">Mastered</span>
+        </div>
+        <span class="stat-num success" id="masteredCount">0</span>
+      </div>
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-icon bg-icon-orange">🎯</div>
+          <span class="stat-title">Review</span>
+        </div>
+        <span class="stat-num warning" id="reviewCount">0</span>
+      </div>
+    </div>
+
+    <div class="alphabet-filter-container">
+      <div class="alphabet-scroll" id="alphabetFilter">
+        <!-- Letters injected here -->
+      </div>
+    </div>
+
+    <!-- Controls (Search & Filters) -->
+    <div class="controls-wrapper">
+      <div class="search-box">
+        <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" id="searchInput" class="search-input" placeholder="Search vocabulary..."
+          oninput="APP.handleFilter()">
+        <button id="clearSearch"
+          style="position:absolute; right:12px; background:none; border:none; color:#999; cursor:pointer; display:none;">✕</button>
+      </div>
+
+      <div class="filters" id="levelFilters">
+        <button class="filter-chip active" data-level="A1">A1</button>
+        <button class="filter-chip active" data-level="A2">A2</button>
+        <button class="filter-chip active" data-level="B1">B1</button>
+        <button class="filter-chip active" data-level="B2">B2</button>
+      </div>
+    </div>
+
+    <!-- Action Header -->
+    <div class="action-bar">
+      <h2 class="section-title">Word List</h2>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="startReviewBtn">
+          <span>🎴</span> Flashcards
+        </button>
+        <button class="btn btn-primary" id="startQuizBtn" style="background:var(--warning); color:white;">
+          <span>🎮</span> Quiz
+        </button>
+      </div>
+    </div>
+
+    <!-- List -->
+    <div id="vocabList" class="vocab-list">
+      <!-- Items injected by JS -->
+    </div>
+
+    <div id="emptyState" style="display:none; text-align:center; padding:40px; color:#aaa;">
+      No words found matching your search.
+    </div>
+
+  </div>
+
+  <!-- Modal for Edit/Detail -->
+  <div id="detailModal" class="modal-overlay">
+    <div class="bottom-sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-content">
+        <h2 id="modalWord" class="modal-title">Word</h2>
+        <div class="modal-meta">
+          <span id="modalPos" class="modal-badge">pos</span>
+          <span id="modalLevel" class="modal-badge level">A1</span>
+        </div>
+
+        <div class="modal-section">
+          <label>คำแปลหลัก</label>
+          <div id="modalTrans" class="modal-text" style="color:var(--primary); font-weight:700; font-size:24px;">-
+          </div>
+        </div>
+
+        <div class="modal-section" id="modalDefSection" style="display:none;">
+          <label>คำอธิบายเพิ่มเติม</label>
+          <div id="modalMeanings" class="modal-text" style="font-size:16px; opacity:0.8;">-</div>
+        </div>
+
+        <div class="modal-section">
+          <label>Example</label>
+          <div id="modalEx" class="modal-text italic">...</div>
+        </div>
+
+        <div class="modal-actions">
+          <button class="btn-full" onclick="closeModal()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Flashcard Modal -->
+  <div id="flashcardModal" class="modal-overlay" style="align-items:center; justify-content:center;">
+    <div class="bottom-sheet flashcard-container">
+      <div class="sheet-handle"></div>
+
+      <!-- 3D Card -->
+      <div class="fc-scene">
+        <div id="fcCard" class="fc-inner">
+          <!-- Front -->
+          <div class="fc-front">
+            <div class="fc-content">
+              <span id="fcPos" class="fc-badge">pos</span>
+              <h2 id="fcWord" class="fc-word-main">Word</h2>
+              <p class="fc-hint">Tap to flip</p>
+            </div>
+          </div>
+          <div class="fc-back">
+            <div class="fc-content">
+              <div class="fc-back-scroll">
+                <label>ความหมายหลัก</label>
+                <div id="fcTransMain"
+                  style="color:var(--primary); font-size:32px; font-weight:800; margin-bottom:20px;">-</div>
+
+                <div id="fcMeaningsCont" style="display:none;">
+                  <label>คำอธิบายเพิ่มเติม</label>
+                  <div class="fc-meanings-list" id="fcMeanings">
+                    <!-- Meanings injected here -->
+                  </div>
+                </div>
+
+                <div class="fc-divider"></div>
+
+                <div id="fcExBox" class="fc-example-box" style="display:none;">
+                  <label>ตัวอย่างประโยค</label>
+                  <p id="fcEx"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fc-controls">
+        <div class="modal-actions" id="fcActions">
+          <button class="btn-fc-action wrong" onclick="APP.handleFlashcard(false)">
+            <span>❌</span> Forget
+          </button>
+          <button class="btn-fc-action correct" onclick="APP.handleFlashcard(true)">
+            <span>✅</span> Got it
+          </button>
+        </div>
+      </div>
+
+      <button class="btn-close-modal" onclick="closeFlashcard()">×</button>
+    </div>
+  </div>
+
+  <!-- Quiz Modal -->
+  <div id="quizModal" class="modal-overlay" style="align-items:center; justify-content:center;">
+    <div class="bottom-sheet" style="min-height:300px;">
+      <div class="sheet-handle"></div>
+      <h2 style="text-align:center; margin-bottom:20px;">Quiz Time!</h2>
+      <p id="quizQuestion" style="font-size:20px; text-align:center; margin-bottom:20px;">What is the meaning of...?
+      </p>
+      <div id="quizOptions" style="display:flex; flex-direction:column; gap:10px;">
+        <!-- Options injected by JS -->
+      </div>
+      <button
+        style="position:absolute; top:20px; right:20px; background:none; border:none; font-size:24px; cursor:pointer;"
+        onclick="closeQuiz()">×</button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="data.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>
