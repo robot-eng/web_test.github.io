@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Logic Gates Example</title>
+  <link rel="stylesheet" href="logic/css/bo.css">
+</head>
+
+<body>
+
+  <h1>Logic Gates Example</h1>
+
+  <!-- AND logic gate -->
+  <div class="bg">
+    <div class="logic">
+      <svg>
+        <circle cx="50" cy="50" r="20" id="input-1" class="input-1"></circle>
+        <circle cx="50" cy="150" r="20" id="input-2"></circle>
+        <circle class="csu" cx="350" cy="100" r="20" id="output"></circle>
+        <line class="my-line" x1="70" y1="50" x2="330" y2="100" stroke="#333" stroke-width="2"></line>
+        <line class="my-line1" x1="70" y1="50" x2="250" y2="100" stroke="#333" stroke-width="2"></line>
+        <line class="my-line" x1="70" y1="150" x2="330" y2="100" stroke="#333" stroke-width="2"></line>
+        <line class="my-line1" x1="70" y1="150" x2="250" y2="100" stroke="#333" stroke-width="2"></line>
+      </svg>
+    </div>
+    <div>
+      <label for="input-1-checkbox">Input 1:</label>
+      <input type="checkbox" id="input-1-checkbox">
+    </div>
+    <div>
+      <label for="input-2-checkbox">Input 2:</label>
+      <input type="checkbox" id="input-2-checkbox">
+    </div>
+    <p id="output-text">The output AND logic gate is currently: False</p>
+    <script src="logic/AND.js"></script>
+  </div>
+  <!------------------>
+
+  <!-- OR logic gate -->
+  <div class="bg">
+    <div class="logic">
+      <svg width="400" height="200">
+        <circle cx="50" cy="50" r="20" id="input-3" class="input-3"></circle>
+        <circle cx="50" cy="150" r="20" id="input-4"></circle>
+        <circle class="csu" cx="350" cy="100" r="20" id="output1"></circle>
+        <line class="my-line" x1="70" y1="50" x2="330" y2="100" stroke="#333" stroke-width="2"></line>
+        <line class="my-line1" x1="70" y1="50" x2="250" y2="100" stroke="#333" stroke-width="2"></line>
+        <line class="my-line" x1="70" y1="150" x2="330" y2="100" stroke="#333" stroke-width="2"></line>
+        <line class="my-line1" x1="70" y1="150" x2="250" y2="100" stroke="#333" stroke-width="2"></line>
+      </svg>
+    </div>
+    <div>
+      <label for="input-3-checkbox">Input 1:</label>
+      <input type="checkbox" id="input-3-checkbox">
+    </div>
+    <div>
+      <label for="input-4-checkbox">Input 2:</label>
+      <input type="checkbox" id="input-4-checkbox">
+    </div>
+    <!-- <button id="simulate-button1">Simulate</button> -->
+    <p id="output-text1">The output OR logic gate is currently: False</p>
+    <script src="logic/OR.js"></script>
+  </div>
+  <!-- XOR logic gate -->
+  <div class="bg">
+    <div class="logic">
+      <svg width="400" height="200">
+        <circle cx="50" cy="50" r="20" id="input-5" class="input-5"></circle>
+        <circle cx="50" cy="150" r="20" id="input-6"></circle>
+        <circle class="csu" cx="350" cy="100" r="20" id="output2"></circle>
+        <line class="my-line" x1="70" y1="50" x2="330" y2="100" stroke="#333" stroke-width="2"></line>
+        <line class="my-line1" x1="70" y1="50" x2="250" y2="100" stroke="#333" stroke-width="2"></line>
+        <line class="my-line" x1="70" y1="150" x2="330" y2="100" stroke="#333" stroke-width="2"></line>
+        <line class="my-line1" x1="70" y1="150" x2="250" y2="100" stroke="#333" stroke-width="2"></line>
+      </svg>
+    </div>
+    <div>
+      <label for="input-5-checkbox">Input 1:</label>
+      <input type="checkbox" id="input-5-checkbox">
+    </div>
+    <div>
+      <label for="input-6-checkbox">Input 2:</label>
+      <input type="checkbox" id="input-6-checkbox">
+    </div>
+    <!-- <button id="simulate-button2">Simulate</button> -->
+    <p id="output-text2">The output XOR logic gate is currently: False</p>
+    <script src="logic/XOR.js"></script>
+  </div>
+
+  <!-- NOT logic gate -->
+  <div class="bg">
+    <div class="logic">
+      <svg width="400" height="200">
+        <circle cx="50" cy="100" r="20" id="input-7" class="input-7"></circle>
+        <circle class="csu" cx="350" cy="100" r="20" id="output3"></circle>
+        <line class="my-line" x1="70" y1="100" x2="330" y2="100" stroke="#333" stroke-width="2"></line>
+        <line class="my-line1" x1="70" y1="100" x2="250" y2="100" stroke="#333" stroke-width="2"></line>
+      </svg>
+    </div>
+    <div>
+      <label for="input-7-checkbox">Input:</label>
+      <input type="checkbox" id="input-7-checkbox">
+    </div>
+    <!-- <button id="simulate-button3">Simulate</button> -->
+    <p id="output-text3">The output NOT logic gate is currently: True</p>
+    <script src="logic/NOT.js"></script>
+  </div>
+  <!---------------------------------------->
+  <br>
+  <br>
+  <p class="Note"><span>📓 NOTE : </span>"!(_)" = NOT, "(_&&_) = AND, "(_||_)" = OR, "(_^_)" = XOR, "!(_&&_) = NAND,
+    "!(_||_)" = NOR, "!(_^_)" = NXOR</p>
+</body>
+
+</html>

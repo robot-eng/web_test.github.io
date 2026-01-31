@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Registration Form</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <input type="checkbox" id="check">
+            <label for="check" class="checkbtn"><i class="fas fa-bars"></i></label>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+            
+        
+        </nav>
+<!--         <form action="#" class="search-bar">
+            <input type="text" placeholder="Search.......">
+            <button type="submit"><i class='bx bx-search-alt-2'></i></button>
+            
+        </form> -->
+        
+    </header>
+    <div class="background"></div>
+    <div class="container">
+        <div class="content">
+            <h2 class="logo"><i class='bx bxl-firebase' ></i>Codehal</h2>
+            
+            <div class="text-sci">
+                <h2>Welcome!<br><span>To Our new Website.</span></h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum, unde .</p>
+                <div class="social-icons">
+                    <a href="#"><i class='bx bxl-linkedin' ></i></a>
+                    <a href="#"><i class='bx bxl-facebook-square' ></i></a>
+                    <a href="#"><i class='bx bxl-instagram' ></i></a>
+                    <a href="#"><i class='bx bxl-github' ></i></a>
+                    <a href="#"><i class='bx bxl-youtube' ></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="logreg-box">
+            <div class="form-box login">
+                <form action="#">
+                    <h2>Sign In</h2>
+
+                    <div class="input-box">
+                        <span class="icon"><i class='bx bxs-envelope' ></i></span>
+                        <input type="text" class="form__input" placeholder=" " required >
+                        <label for="" class="form__label">Email</label>
+                    </div>
+                    <div class="input-box">
+                        <span class="icon"><i class='bx bxs-lock-alt' ></i></span>
+                        <input type="password" required>
+                        <label>Password</label>
+                    </div>
+                    <div class="remember-forgot">
+                        <label><input type="checkbox"></label>
+                        <a href="#">forgot password</a>
+                    </div>
+                    <button type="submit" class="btn">Sign In</button>
+                    <div class="login-register">
+                        <p>Don't have an account?<a href="#" class="register-link"> Sign up</a></p>
+                    </div>
+                </form>
+            </div>
+            <div class="form-box register">
+                <form action="#">
+                    <h2>Sign Up</h2>
+                    <div class="input-box">
+                        <span class="icon"><i class='bx bxs-user-circle'></i></i></span>
+                        <input type="text" required>
+                        <label>Name</label>
+                    </div>
+                    <div class="input-box">
+                        <span class="icon"><i class='bx bxs-envelope' ></i></span>
+                        <input type="email" required>
+                        <label>Email</label>
+                    </div>
+                    <div class="input-box">
+                        <span class="icon"><i class='bx bxs-lock-alt' ></i></span>
+                        <input type="password" required>
+                        <label>Password</label>
+                    </div>
+                    <div class="remember-forgot">
+                        <label><input type="checkbox"></label>
+                        <a href="#">I agree to the terms & conditions</a>
+                    </div>
+                    <button type="submit" class="btn">Sign Up</button>
+                    <div class="login-register">
+                        <p>Already have an account?<a href="#" class="login-link"> Sign In</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <section></section>
+    <script src="assets/script.js"></script>
+    <!-- <script
+  src="https://code.jquery.com/jquery-3.5.1.js"
+  integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+  crossorigin="anonymous"></script>
+  <script>
+    $(document).ready(function(){
+        $(".btn-bar").on("click", function(){
+            $(".navbar ul".toggleClass("nav-active"))
+        })
+    });
+  </script> -->
+</body>
+</html>

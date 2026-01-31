@@ -1,0 +1,104 @@
+* {
+  margin: 2px;
+  padding: 0.5px;
+}
+
+body {
+  background-color: #f5f5f5;
+  /* font-family: Arial, sans-serif; */
+  font-size: large;
+  padding: 5px;
+}
+.bg{
+  padding: 15px;
+  margin: 20px auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+.logic {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+svg {
+ 
+  margin: 20px auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  width: 400px;
+  height: 200px;
+
+}
+
+p {
+  margin: 10px 0;
+  padding: 4px;
+}
+
+.my-line {
+  opacity: 1;
+}
+
+.my-line1 {
+  opacity: 0;
+}
+
+@media screen and (max-width: 580px) {
+  .my-line {
+    opacity: 0;
+  }
+
+  .my-line1 {
+    opacity: 1;
+  }
+
+  .csu {
+    cx: 270;
+  }
+  h1{
+    text-align: center;
+    font-size: 33px;
+  }
+}
+
+.Note {
+  font-size: 12px;
+  color: red;
+}
+
+label {
+  display: inline-block;
+  margin-bottom: 5px;
+}
+
+button {
+  display: flex;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #4CAF50;
+  color: white;
+  font-size: 20px;
+  border: none;
+  cursor: pointer;
+  margin: 10px 5px 5px 0;
+}
+
+button:hover {
+  background-color: #3e8e41;
+}
+
+circle {
+  fill: #fcfafa;
+  stroke: #333;
+  stroke-width: 2;
+  transform-origin: center center;
+  transition: fill 0.3s ease;
+}
+
+circle.active {
+  fill: #4CAF50;
+}
+
+circle.input.active {
+  fill: green;
+}
