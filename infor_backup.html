@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Mastery: Encyclopedia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Inter:wght@400;600;700&family=Sarabun:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', 'Sarabun', sans-serif;
+            background: #F8FAFC;
+            color: #1e293b;
+        }
+
+        /* Tab Navigation (Apple Style) */
+        .infor-tabs {
+            display: flex;
+            background: #E2E8F0;
+            padding: 4px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+        }
+
+        .infor-tab {
+            flex: 1;
+            padding: 10px 16px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 14px;
+            color: #64748b;
+            cursor: pointer;
+            border-radius: 10px;
+            border: none;
+            background: transparent;
+            transition: all 0.2s;
+        }
+
+        .infor-tab.active {
+            color: #2563EB;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Accordion */
+        .acc-item {
+            background: white;
+            border-radius: 16px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            border: 1px solid #E2E8F0;
+            transition: box-shadow 0.3s;
+        }
+
+        .acc-item:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .acc-header {
+            padding: 16px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 15px;
+            transition: background 0.2s;
+        }
+
+        .acc-header:hover {
+            background: #F8FAFC;
+        }
+
+        .acc-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+        }
+
+        .acc-content.open {
+            max-height: 6000px;
+            transition: max-height 0.6s ease-in;
+        }
+
+        .acc-body {
+            padding: 20px;
+            border-top: 1px solid #F1F5F9;
+            background: #FAFBFC;
+        }
+
+        .acc-arrow {
+            transition: transform 0.3s;
+            color: #94A3B8;
+            font-size: 12px;
+        }
+
+        .acc-content.open+.acc-header .acc-arrow,
+        .acc-header.active .acc-arrow {
+            transform: rotate(180deg);
+            color: #2563EB;
+        }
+
+        /* Number badges */
+        .sec-num {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 12px;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        /* Tables */
+        .gram-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            margin: 12px 0;
+        }
+
+        .gram-table th {
+            text-align: left;
+            padding: 10px;
+            background: #F8FAFC;
+            color: #64748b;
+            border-bottom: 2px solid #E2E8F0;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            font-size: 11px;
+        }
+
+        .gram-table td {
+            padding: 10px;
+            border-bottom: 1px solid #F1F5F9;
+            vertical-align: top;
+        }
+
+        .gram-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Badges */
+        .badge {
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            display: inline-block;
+        }
+
+        .badge-n {
+            background: #DBEAFE;
+            color: #1E40AF;
+        }
+
+        .badge-v {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .badge-adj {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+
+        .badge-adv {
+            background: #FFEDD5;
+            color: #9A3412;
+        }
+
+        /* Highlight Boxes */
+        .tip-box {
+            background: #FFFBEB;
+            border-left: 4px solid #F59E0B;
+            padding: 12px 16px;
+            margin: 12px 0;
+            border-radius: 0 12px 12px 0;
+            font-size: 14px;
+        }
+
+        .formula-box {
+            background: #EEF2FF;
+            border: 1px solid #C7D2FE;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-family: 'SF Mono', monospace;
+            font-size: 13px;
+            margin: 12px 0;
+        }
+
+        /* Quiz */
+        .quiz-opt {
+            padding: 14px 18px;
+            border: 2px solid #E2E8F0;
+            border-radius: 14px;
+            background: white;
+            font-weight: 600;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: block;
+            width: 100%;
+            text-align: left;
+            margin-bottom: 10px;
+        }
+
+        .quiz-opt:hover {
+            border-color: #6366F1;
+            background: #EEF2FF;
+        }
+
+        .quiz-opt.correct {
+            border-color: #22C55E;
+            background: #F0FDF4;
+            color: #166534;
+        }
+
+        .quiz-opt.wrong {
+            border-color: #EF4444;
+            background: #FEF2F2;
+            color: #991B1B;
+        }
+    </style>
+</head>
+
+<body class="pb-20">
+
+    <div class="max-w-3xl mx-auto p-4 md:p-6">
+
+        <!-- Header -->
+        <div class="text-center mb-6">
+            <h1 class="text-2xl md:text-3xl font-black text-slate-800 mb-1">📘 English Encyclopedia</h1>
+            <p class="text-slate-500 text-sm">คู่มือแกรมมาร์ ฉบับสมบูรณ์ + แบบฝึกหัด 30 ข้อ</p>
+        </div>
+
+        <!-- Tabs -->
+        <div class="infor-tabs">
+            <button class="infor-tab active" id="tab-tips" onclick="switchInforTab('tips')">📖 คู่มือแกรมม่า</button>
+            <button class="infor-tab" id="tab-quiz" onclick="switchInforTab('quiz')">✍️ แบบฝึกหัด (30 ข้อ)</button>
+        </div>
+
+        <!-- ==================== TIPS SECTION ==================== -->
+        <div id="tips-section">
+
+            <!-- 1. Parts of Speech -->
+            <div class="acc-item">
+                <div class="acc-header" onclick="toggleAcc(this)">
+                    <div class="flex items-center">
+                        <div class="sec-num" style="background:#FCE7F3; color:#DB2777;">1</div>
+                        <span>Parts of Speech (โครงสร้าง & ชนิดคำ)</span>
+                    </div>
+                    <span class="acc-arrow">▼</span>
+                </div>
+                <div class="acc-content">
+                    <div class="acc-body space-y-6">
+                        <div>
+                            <h4 class="font-bold text-pink-700 mb-3 text-sm">8 ชนิดคำ & Suffixes (หางคำ)</h4>
+                            <div class="overflow-x-auto">
+                                <table class="gram-table">
+                                    <thead>
+                                        <tr>
+                                            <th>ชนิด</th>
+                                            <th>หน้าที่</th>
+                                            <th>Suffixes</th>
+                                            <th>ตัวอย่าง</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><span class="badge badge-n">Noun</span></td>
+                                            <td>คน/สิ่งของ</td>
+                                            <td>-tion, -ment, -ness, -ity, -er</td>
+                                            <td>Information, Happiness</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="badge badge-v">Verb</span></td>
+                                            <td>การกระทำ</td>
+                                            <td>-ate, -en, -ify, -ize</td>
+                                            <td>Realize, Shorten</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="badge badge-adj">Adj</span></td>
+                                            <td>ขยาย Noun</td>
+                                            <td>-ful, -ous, -ive, -less, -able</td>
+                                            <td>Famous, Useful</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="badge badge-adv">Adv</span></td>
+                                            <td>ขยาย V/Adj</td>
+                                            <td>-ly</td>
+                                            <td>Quickly, Hopefully</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="tip-box">
+                            <b>🔥 Tip:</b> รู้ Suffix = เดาชนิดคำได้ทันทีโดยไม่ต้องเปิดดิกชันนารี!
+                        </div>
+
+                        <div>
+                            <h4 class="font-bold text-pink-700 mb-3 text-sm">Pronouns (สรรพนาม)</h4>
+                            <div class="overflow-x-auto">
+                                <table class="gram-table text-center">
+                                    <thead>
+                                        <tr>
+                                            <th>Subject</th>
+                                            <th>Object</th>
+                                            <th>Possessive Adj</th>
+                                            <th>Possessive Pron</th>
+                                            <th>Reflexive</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>I</td>
+                                            <td>Me</td>
+                                            <td>My</td>
+                                            <td>Mine</td>
+                                            <td>Myself</td>
+                                        </tr>
+                                        <tr>
+                                            <td>You</td>
+                                            <td>You</td>
+                                            <td>Your</td>
+                                            <td>Yours</td>
+                                            <td>Yourself</td>
+                                        </tr>
+                                        <tr>
+                                            <td>He</td>
+                                            <td>Him</td>
+                                            <td>His</td>
+                                            <td>His</td>
+                                            <td>Himself</td>
+                                        </tr>
+                                        <tr>
+                                            <td>She</td>
+                                            <td>Her</td>
+                                            <td>Her</td>
+                                            <td>Hers</td>
+                                            <td>Herself</td>
+                                        </tr>
+                                        <tr>
+                                            <td>They</td>
+                                            <td>Them</td>
+                                            <td>Their</td>
+                                            <td>Theirs</td>
+                                            <td>Themselves</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="formula-box">
+                            <b>🧠 Master Sentence Formula:</b><br>
+                            [Who] + [Frequency] + [Action] + [What] + [How] + [Where] + [When]<br>
+                            <span class="text-slate-500">Ex: She <b>always</b> drives <b>her car</b> carefully <b>to
+                                    work</b> every morning.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Tenses -->
+            <div class="acc-item">
+                <div class="acc-header" onclick="toggleAcc(this)">
+                    <div class="flex items-center">
+                        <div class="sec-num" style="background:#DBEAFE; color:#2563EB;">2</div>
+                        <span>Tenses (12 กาล)</span>
+                    </div>
+                    <span class="acc-arrow">▼</span>
+                </div>
+                <div class="acc-content">
+                    <div class="acc-body space-y-4">
+                        <div class="overflow-x-auto">
+                            <table class="gram-table">
+                                <thead>
+                                    <tr>
+                                        <th>Tense</th>
+                                        <th>โครงสร้าง</th>
+                                        <th>Signal Words</th>
+                                        <th>ตัวอย่าง</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><b>Present Simple</b></td>
+                                        <td>S + V1 (s/es)</td>
+                                        <td>always, usually, every day</td>
+                                        <td>She works every day.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Present Continuous</b></td>
+                                        <td>S + is/am/are + V-ing</td>
+                                        <td>now, right now, at the moment</td>
+                                        <td>I am studying now.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Present Perfect</b></td>
+                                        <td>S + have/has + V3</td>
+                                        <td>already, just, ever, never, since, for</td>
+                                        <td>I have finished.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Past Simple</b></td>
+                                        <td>S + V2</td>
+                                        <td>yesterday, last week, ago</td>
+                                        <td>She went home.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Past Continuous</b></td>
+                                        <td>S + was/were + V-ing</td>
+                                        <td>while, when (at that time)</td>
+                                        <td>I was sleeping when...</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Past Perfect</b></td>
+                                        <td>S + had + V3</td>
+                                        <td>before, after, by the time</td>
+                                        <td>I had eaten before he came.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Future Simple</b></td>
+                                        <td>S + will + V1</td>
+                                        <td>tomorrow, next week, soon</td>
+                                        <td>I will call you.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Future Continuous</b></td>
+                                        <td>S + will be + V-ing</td>
+                                        <td>this time tomorrow</td>
+                                        <td>I will be working.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Future Perfect</b></td>
+                                        <td>S + will have + V3</td>
+                                        <td>by (future time)</td>
+                                        <td>I will have finished by 5.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tip-box">
+                            <b>💡 สังเกต Signal Words:</b> คำเหล่านี้บอกทันทีว่าควรใช้ Tense ไหน!
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Questions & Negatives -->
+            <div class="acc-item">
+                <div class="acc-header" onclick="toggleAcc(this)">
+                    <div class="flex items-center">
+                        <div class="sec-num" style="background:#DCFCE7; color:#16A34A;">3</div>
+                        <span>Questions & Negatives (คำถาม & ปฏิเสธ)</span>
+                    </div>
+                    <span class="acc-arrow">▼</span>
+                </div>
+                <div class="acc-content">
+                    <div class="acc-body space-y-4">
+                        <div class="formula-box">
+                            <b>❓ Question Formula:</b> [Aux/V.to be] + S + V(main) + ...?<br>
+                            <span class="text-slate-500">Ex: <b>Do</b> you like pizza? / <b>Is</b> she happy?</span>
+                        </div>
+                        <div class="formula-box">
+                            <b>❌ Negative Formula:</b> S + [Aux/V.to be] + <b>not</b> + V(main)<br>
+                            <span class="text-slate-500">Ex: I <b>do not</b> like it. / She <b>is not</b> happy.</span>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="gram-table">
+                                <thead>
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Question</th>
+                                        <th>Negative</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Present Simple</td>
+                                        <td><b>Do/Does</b> + S + V1?</td>
+                                        <td>S + <b>don't/doesn't</b> + V1</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Past Simple</td>
+                                        <td><b>Did</b> + S + V1?</td>
+                                        <td>S + <b>didn't</b> + V1</td>
+                                    </tr>
+                                    <tr>
+                                        <td>V.to be</td>
+                                        <td><b>Is/Are/Was/Were</b> + S + ...?</td>
+                                        <td>S + is/are/was/were + <b>not</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Present Perfect</td>
+                                        <td><b>Have/Has</b> + S + V3?</td>
+                                        <td>S + <b>haven't/hasn't</b> + V3</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Modal Verbs -->
+            <div class="acc-item">
+                <div class="acc-header" onclick="toggleAcc(this)">
+                    <div class="flex items-center">
+                        <div class="sec-num" style="background:#FEF9C3; color:#CA8A04;">4</div>
+                        <span>Modal Verbs (กริยาช่วย)</span>
+                    </div>
+                    <span class="acc-arrow">▼</span>
+                </div>
+                <div class="acc-content">
+                    <div class="acc-body">
+                        <div class="overflow-x-auto">
+                            <table class="gram-table">
+                                <thead>
+                                    <tr>
+                                        <th>Modal</th>
+                                        <th>ความหมาย</th>
+                                        <th>ตัวอย่าง</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><b>can</b></td>
+                                        <td>สามารถ (ปัจจุบัน)</td>
+                                        <td>I <b>can</b> swim.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>could</b></td>
+                                        <td>สามารถ (อดีต) / สุภาพ</td>
+                                        <td>I <b>could</b> swim when I was 5.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>will</b></td>
+                                        <td>จะ (อนาคต)</td>
+                                        <td>I <b>will</b> call you.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>would</b></td>
+                                        <td>จะ (สมมติ) / สุภาพ</td>
+                                        <td><b>Would</b> you like some tea?</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>must</b></td>
+                                        <td>ต้อง (บังคับ)</td>
+                                        <td>You <b>must</b> wear a helmet.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>should</b></td>
+                                        <td>ควร (แนะนำ)</td>
+                                        <td>You <b>should</b> rest.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>may/might</b></td>
+                                        <td>อาจจะ (เป็นไปได้)</td>
+                                        <td>It <b>might</b> rain.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tip-box mt-4">
+                            <b>🧠 สูตร:</b> Modal + V1 เสมอ (ห้ามเติม s, ed, ing)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. Comparisons -->
+            <div class="acc-item">
+                <div class="acc-header" onclick="toggleAcc(this)">
+                    <div class="flex items-center">
+                        <div class="sec-num" style="background:#FFE4E6; color:#E11D48;">5</div>
+                        <span>Comparisons (การเปรียบเทียบ)</span>
+                    </div>
+                    <span class="acc-arrow">▼</span>
+                </div>
+                <div class="acc-content">
+                    <div class="acc-body">
+                        <div class="overflow-x-auto">
+                            <table class="gram-table">
+                                <thead>
+                                    <tr>
+                                        <th>ขั้น</th>
+                                        <th>สั้น (1-2 พยางค์)</th>
+                                        <th>ยาว (3+ พยางค์)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><b>ปกติ</b></td>
+                                        <td>tall, fast, big</td>
+                                        <td>beautiful, expensive</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>ขั้นกว่า</b></td>
+                                        <td>tall<b>er</b>, fast<b>er</b>, bigg<b>er</b></td>
+                                        <td><b>more</b> beautiful, <b>more</b> expensive</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>ขั้นสุด</b></td>
+                                        <td>tall<b>est</b>, fast<b>est</b>, bigg<b>est</b></td>
+                                        <td><b>most</b> beautiful, <b>most</b> expensive</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tip-box mt-4">
+                            <b>🌟 Irregular:</b> good → better → best | bad → worse → worst | far → farther → farthest
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. Prepositions -->
+            <div class="acc-item">
+                <div class="acc-header" onclick="toggleAcc(this)">
+                    <div class="flex items-center">
+                        <div class="sec-num" style="background:#E0E7FF; color:#4F46E5;">6</div>
+                        <span>Prepositions (คำบุพบท)</span>
+                    </div>
+                    <span class="acc-arrow">▼</span>
+                </div>
+                <div class="acc-content">
+                    <div class="acc-body">
+                        <div class="overflow-x-auto">
+                            <table class="gram-table">
+                                <thead>
+                                    <tr>
+                                        <th>Prep</th>
+                                        <th>ใช้กับ</th>
+                                        <th>ตัวอย่าง</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><b>at</b></td>
+                                        <td>เวลาเฉพาะ, สถานที่เล็ก</td>
+                                        <td>at 5 PM, at school</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>on</b></td>
+                                        <td>วัน, พื้นผิว</td>
+                                        <td>on Monday, on the table</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>in</b></td>
+                                        <td>เดือน/ปี/ช่วงเวลา, ในสิ่งของ</td>
+                                        <td>in January, in the box</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>by</b></td>
+                                        <td>ใกล้ๆ, โดย, ภายใน</td>
+                                        <td>by the river, by car, by 5 PM</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>for</b></td>
+                                        <td>ระยะเวลา, เพื่อ</td>
+                                        <td>for 2 hours, for you</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>since</b></td>
+                                        <td>จุดเริ่มต้นเวลา</td>
+                                        <td>since 1990, since Monday</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7. Thai-English Translation Tips -->
+            <div class="acc-item">
+                <div class="acc-header" onclick="toggleAcc(this)">
+                    <div class="flex items-center">
+                        <div class="sec-num" style="background:#FECDD3; color:#BE123C;">7</div>
+                        <span>Thai → English Tips (จับประโยคไทยแปลอังกฤษ)</span>
+                    </div>
+                    <span class="acc-arrow">▼</span>
+                </div>
+                <div class="acc-content">
+                    <div class="acc-body space-y-4">
+                        <div class="overflow-x-auto">
+                            <table class="gram-table">
+                                <thead>
+                                    <tr>
+                                        <th>ภาษาไทย</th>
+                                        <th>English</th>
+                                        <th>หลักคิด</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>ฝนตก</td>
+                                        <td>It rains.</td>
+                                        <td>เติมประธาน It</td>
+                                    </tr>
+                                    <tr>
+                                        <td>มีคนอยู่</td>
+                                        <td>There is someone.</td>
+                                        <td>'มี' ใช้ There is/are</td>
+                                    </tr>
+                                    <tr>
+                                        <td>เปิดไฟ</td>
+                                        <td>Turn on the light.</td>
+                                        <td>เครื่องใช้ไฟฟ้าใช้ Turn on/off</td>
+                                    </tr>
+                                    <tr>
+                                        <td>เล่นมือถือ</td>
+                                        <td>Use my phone.</td>
+                                        <td>โทรศัพท์ใช้ Use</td>
+                                    </tr>
+                                    <tr>
+                                        <td>ฉันเบื่อ</td>
+                                        <td>I am bored.</td>
+                                        <td>ความรู้สึกคน = -ed</td>
+                                    </tr>
+                                    <tr>
+                                        <td>น่าเบื่อ</td>
+                                        <td>It is boring.</td>
+                                        <td>สิ่งที่ทำให้รู้สึก = -ing</td>
+                                    </tr>
+                                    <tr>
+                                        <td>ลืมเอามา</td>
+                                        <td>I forgot to bring...</td>
+                                        <td>Forgot to + V1</td>
+                                    </tr>
+                                    <tr>
+                                        <td>เช็คบิล</td>
+                                        <td>Check, please.</td>
+                                        <td>วิธีพูดฝรั่ง</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ==================== QUIZ SECTION ==================== -->
+        <div id="quiz-section" class="hidden">
+            <div id="quiz-main" class="bg-white rounded-2xl shadow-lg p-6 border border-slate-100">
+                <div class="flex justify-between items-center mb-6">
+                    <span id="q-progress"
+                        class="text-sm font-bold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">ข้อที่ 1 /
+                        30</span>
+                    <span id="q-score" class="text-sm font-bold text-slate-600">คะแนน: 0</span>
+                </div>
+                <h2 id="q-text" class="text-lg font-bold text-slate-800 mb-5 leading-relaxed">Loading...</h2>
+                <div id="q-options"></div>
+                <div id="q-feedback" class="hidden p-4 rounded-xl border-l-4 mt-4">
+                    <p id="fb-title" class="font-bold text-lg mb-1"></p>
+                    <p id="fb-desc" class="text-sm text-slate-700 mb-2"></p>
+                    <div class="text-xs bg-white p-2 rounded border inline-block text-slate-600">💡 <span
+                            id="fb-tip"></span></div>
+                </div>
+                <button id="q-next"
+                    class="hidden mt-5 w-full py-4 rounded-xl font-bold text-white bg-slate-800 hover:bg-slate-700 transition">ข้อถัดไป
+                    →</button>
+            </div>
+            <div id="quiz-result" class="hidden text-center bg-white p-12 rounded-2xl shadow-lg border">
+                <div class="text-6xl mb-4">🏆</div>
+                <h2 class="text-2xl font-black text-slate-800 mb-2">Quiz Completed!</h2>
+                <p class="text-slate-500 mb-6">คุณทำแบบทดสอบครบแล้ว</p>
+                <div class="text-6xl font-black text-indigo-600 mb-2" id="final-score">0 / 30</div>
+                <button onclick="location.reload()"
+                    class="mt-6 bg-indigo-600 text-white px-8 py-3 rounded-full font-bold hover:bg-indigo-700">ทำใหม่อีกครั้ง</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Tab Switching
+        function switchInforTab(tab) {
+            const tips = document.getElementById('tips-section');
+            const quiz = document.getElementById('quiz-section');
+            const tBtn = document.getElementById('tab-tips');
+            const qBtn = document.getElementById('tab-quiz');
+
+            if (tab === 'tips') {
+                tips.classList.remove('hidden'); quiz.classList.add('hidden');
+                tBtn.classList.add('active'); qBtn.classList.remove('active');
+            } else {
+                tips.classList.add('hidden'); quiz.classList.remove('hidden');
+                qBtn.classList.add('active'); tBtn.classList.remove('active');
+            }
+        }
+
+        // Accordion Toggle
+        function toggleAcc(header) {
+            const content = header.nextElementSibling;
+            const isOpen = content.classList.contains('open');
+
+            // Close all others
+            document.querySelectorAll('.acc-content').forEach(c => c.classList.remove('open'));
+            document.querySelectorAll('.acc-header').forEach(h => h.classList.remove('active'));
+
+            if (!isOpen) {
+                content.classList.add('open');
+                header.classList.add('active');
+            }
+        }
+
+        // Quiz Data (30 Questions)
+        const quizData = [
+            { q: "Translate: 'ไม่มีเงินเลย'", o: ["No money", "Not money", "None money", "Money no"], a: 0, t: "No + Noun", d: "I have no money." },
+            { q: "How much money? Answer: _______", o: ["No", "None", "Not", "Any"], a: 1, t: "None ใช้ตอบโดดๆ", d: "None." },
+            { q: "I do _______ like it.", o: ["no", "none", "not", "never"], a: 2, t: "Not = Adverb วางหลัง Aux", d: "I do not like it." },
+            { q: "Which word ends with a Noun suffix?", o: ["Quickly", "Information", "Famous", "Eat"], a: 1, t: "-tion = Noun", d: "Information" },
+            { q: "She _______ to school yesterday.", o: ["go", "goes", "went", "gone"], a: 2, t: "Yesterday = Past Simple (V2)", d: "She went." },
+            { q: "I _______ English right now.", o: ["study", "am studying", "studied", "have studied"], a: 1, t: "Right now = Present Continuous", d: "I am studying." },
+            { q: "I _______ seen him before.", o: ["have", "has", "did", "was"], a: 0, t: "Seen (V3) = Perfect", d: "I have seen." },
+            { q: "Translate: 'ฉันเบื่อ' (Feeling)", o: ["I am boring", "I am bored", "I bored", "Me boring"], a: 1, t: "ความรู้สึกคน = -ed", d: "I am bored." },
+            { q: "I am used to _______ up early.", o: ["get", "getting", "got", "gotten"], a: 1, t: "Be used to + V-ing", d: "Getting up." },
+            { q: "This is the man _______ helped me.", o: ["which", "who", "where", "whose"], a: 1, t: "Man = คน ใช้ Who", d: "The man who..." },
+            { q: "Translate: 'ลองใหม่อีกครั้ง'", o: ["Try new", "Try again", "Try one", "Try more"], a: 1, t: "ลองซ้ำ = Try again", d: "Try again." },
+            { q: "_______ you like pizza?", o: ["Are", "Do", "Have", "Is"], a: 1, t: "Like = Action Verb ใช้ Do", d: "Do you like...?" },
+            { q: "He runs very _______.", o: ["fast", "fastly", "fastness", "faster"], a: 0, t: "Fast = Adj & Adv", d: "He runs fast." },
+            { q: "Translate: 'ฝนตก'", o: ["Rain fall", "It rains", "Raining", "Rain have"], a: 1, t: "เติมประธาน It", d: "It rains." },
+            { q: "I _______ swim when I was 5.", o: ["can", "could", "may", "must"], a: 1, t: "อดีต = Could", d: "I could swim." },
+            { q: "Translate: 'ลืมเอากุญแจมา'", o: ["Forgot key", "I forgot to bring the key", "Forget bring key", "Forgot bring"], a: 1, t: "Forgot to + V", d: "I forgot to bring the key." },
+            { q: "I want _______ to Japan.", o: ["go", "going", "to go", "went"], a: 2, t: "Want + to V1", d: "Want to go." },
+            { q: "This is the _______ movie.", o: ["good", "better", "best", "goodest"], a: 2, t: "The + ขั้นสุด", d: "The best movie." },
+            { q: "_______ she crying?", o: ["Do", "Does", "Is", "Are"], a: 2, t: "มี -ing ต้องใช้ V.to be", d: "Is she crying?" },
+            { q: "I have _______ friends.", o: ["much", "a little", "many", "little"], a: 2, t: "Friends นับได้ = Many", d: "Many friends." },
+            { q: "Translate: 'เปิดไฟให้หน่อย'", o: ["Open the light", "Turn on the light", "Open fire", "Start the light"], a: 1, t: "เครื่องใช้ไฟฟ้า = Turn on", d: "Turn on the light." },
+            { q: "If it rains, I _______ stay home.", o: ["would", "will", "had", "am"], a: 1, t: "If Type 1: If + V1, Will", d: "I will stay." },
+            { q: "Translate: 'ฉันไม่รู้เลย' (เลย = at all)", o: ["I don't know so", "I don't know at all", "I don't know really", "I no know"], a: 1, t: "ปฏิเสธสิ้นเชิง = at all", d: "I don't know at all." },
+            { q: "Where does 'Always' go? 'I ___ eat.'", o: ["always eat", "eat always", "always to eat", "eat to always"], a: 0, t: "หน้า V.แท้", d: "I always eat." },
+            { q: "Translate: 'เช็คบิลด้วย'", o: ["Check bill", "Check please", "Bill check", "Money please"], a: 1, t: "วิธีพูดฝรั่ง", d: "Check, please." },
+            { q: "Translate: 'มีคนอยู่ในห้อง'", o: ["Have people", "There is someone", "Has people", "People have"], a: 1, t: "มีอยู่ = There is", d: "There is someone." },
+            { q: "The book _______ by him.", o: ["wrote", "was written", "writing", "writes"], a: 1, t: "Passive: Be + V3", d: "Was written." },
+            { q: "I was born _______ 1999.", o: ["on", "at", "in", "of"], a: 2, t: "ปี = In", d: "In 1999." },
+            { q: "Translate: 'ฉันเล่นมือถือ'", o: ["I play mobile", "I use my phone", "I play phone", "I do mobile"], a: 1, t: "โทรศัพท์ = Use", d: "I use my phone." },
+            { q: "She is _______ than me.", o: ["tall", "taller", "tallest", "more tall"], a: 1, t: "กว่า = -er", d: "Taller than." }
+        ];
+
+        let qIdx = 0, qScore = 0, canAns = true;
+
+        function loadQuestion() {
+            canAns = true;
+            const d = quizData[qIdx];
+            document.getElementById('q-progress').innerText = `ข้อที่ ${qIdx + 1} / ${quizData.length}`;
+            document.getElementById('q-text').innerText = d.q;
+            document.getElementById('q-feedback').classList.add('hidden');
+            document.getElementById('q-next').classList.add('hidden');
+
+            const opts = document.getElementById('q-options');
+            opts.innerHTML = '';
+            d.o.forEach((opt, i) => {
+                const btn = document.createElement('button');
+                btn.className = 'quiz-opt';
+                btn.innerText = opt;
+                btn.onclick = () => checkAns(i, btn);
+                opts.appendChild(btn);
+            });
+        }
+
+        function checkAns(idx, btn) {
+            if (!canAns) return;
+            canAns = false;
+            const d = quizData[qIdx];
+            const isCorrect = idx === d.a;
+
+            if (isCorrect) {
+                qScore++;
+                btn.classList.add('correct');
+                showFb(true, "Correct! 🎉", d.d, d.t);
+            } else {
+                btn.classList.add('wrong');
+                document.querySelectorAll('.quiz-opt')[d.a].classList.add('correct');
+                showFb(false, "Oops! 😅", d.d, d.t);
+            }
+            document.getElementById('q-score').innerText = `คะแนน: ${qScore}`;
+            document.getElementById('q-next').classList.remove('hidden');
+        }
+
+        function showFb(ok, title, desc, tip) {
+            const fb = document.getElementById('q-feedback');
+            fb.classList.remove('hidden');
+            fb.className = ok ? "p-4 rounded-xl border-l-4 border-green-500 bg-green-50 mt-4" : "p-4 rounded-xl border-l-4 border-red-500 bg-red-50 mt-4";
+            document.getElementById('fb-title').innerText = title;
+            document.getElementById('fb-title').className = ok ? "font-bold text-lg text-green-800" : "font-bold text-lg text-red-800";
+            document.getElementById('fb-desc').innerText = desc;
+            document.getElementById('fb-tip').innerText = tip;
+        }
+
+        document.getElementById('q-next').onclick = () => {
+            qIdx++;
+            if (qIdx < quizData.length) loadQuestion();
+            else {
+                document.getElementById('quiz-main').classList.add('hidden');
+                document.getElementById('quiz-result').classList.remove('hidden');
+                document.getElementById('final-score').innerText = `${qScore} / ${quizData.length}`;
+            }
+        };
+
+        loadQuestion();
+    </script>
+</body>
+
+</html>
