@@ -1328,7 +1328,153 @@ body {
     }
 }
 
-/* === UTILS === */
-.hidden {
-    display: none !important;
+
+
+/* === ENCYCLOPEDIA / GRAMMAR STYLES REFINED === */
+#infor .accordion-item {
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 1rem !important;
+    margin-bottom: 1.25rem !important;
+    background: white !important;
+    overflow: hidden !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
+    transition: transform 0.2s, box-shadow 0.2s !important;
 }
+
+#infor .accordion-item:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08) !important;
+}
+
+#infor .accordion-header {
+    padding: 1.25rem 1.5rem !important;
+    cursor: pointer !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    background: white !important;
+    font-weight: 700 !important;
+    font-size: 1.15rem !important;
+    transition: background 0.2s !important;
+    border: none !important;
+    width: 100% !important;
+}
+
+#infor .accordion-header:hover {
+    background-color: #f8fafc !important;
+}
+
+#infor .section-num {
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 0.85rem !important;
+    font-weight: 800 !important;
+    font-size: 1rem !important;
+    margin-right: 1.25rem !important;
+    flex-shrink: 0 !important;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05) !important;
+}
+
+#infor .accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    background-color: #ffffff;
+}
+
+#infor .accordion-content.open {
+    max-height: 15000px;
+}
+
+#infor .accordion-body {
+    padding: 2rem !important;
+    border-top: 1px solid #f1f5f9 !important;
+}
+
+#infor .arrow {
+    transition: transform 0.3s !important;
+    color: #94a3b8 !important;
+    font-size: 0.8rem !important;
+}
+
+/* Custom Typography for Encyclopedia */
+#infor h4 {
+    font-size: 1.25rem !important;
+    margin-top: 1.5rem !important;
+    margin-bottom: 1rem !important;
+    letter-spacing: -0.01em !important;
+}
+
+#infor p, #infor li, #infor td {
+    font-size: 1rem !important;
+    line-height: 1.7 !important;
+    color: #334155 !important;
+}
+
+#infor b, #infor strong {
+    color: #0f172a !important;
+}
+
+/* Tables refinement */
+#infor .grammar-table {
+    width: 100% !important;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    margin: 1.5rem 0 !important;
+    border-radius: 0.75rem !important;
+    overflow: hidden !important;
+    border: 1px solid #e2e8f0 !important;
+}
+
+#infor .grammar-table th {
+    background: #f8fafc !important;
+    padding: 1rem !important;
+    font-weight: 700 !important;
+    color: #475569 !important;
+    text-transform: uppercase !important;
+    font-size: 0.75rem !important;
+    letter-spacing: 0.05em !important;
+    border-bottom: 2px solid #e2e8f0 !important;
+}
+
+#infor .grammar-table td {
+    padding: 1rem !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+    background: white !important;
+}
+
+#infor .grammar-table tr:last-child td {
+    border-bottom: none !important;
+}
+
+#infor .badge {
+    padding: 0.25rem 0.75rem !important;
+    border-radius: 0.5rem !important;
+    font-weight: 700 !important;
+    font-size: 0.75rem !important;
+    text-transform: uppercase !important;
+}
+
+#infor .badge-n { background: #eff6ff !important; color: #1e40af !important; border: 1px solid #dbeafe !important; }
+#infor .badge-v { background: #fff1f2 !important; color: #9f1239 !important; border: 1px solid #ffe4e6 !important; }
+#infor .badge-adj { background: #f0fdf4 !important; color: #166534 !important; border: 1px solid #dcfc7 !important; }
+#infor .badge-adv { background: #fff7ed !important; color: #9a3412 !important; border: 1px solid #ffedd5 !important; }
+
+@media (max-width: 640px) {
+    #infor .accordion-body { padding: 1.25rem !important; }
+    #infor .section-num {
+        width: 2rem !important;
+        height: 2rem !important;
+        margin-right: 0.75rem !important;
+        font-size: 0.85rem !important;
+    }
+    #infor .accordion-header {
+        font-size: 1rem !important;
+        padding: 1rem !important;
+    }
+}
+
+/* === UTILS === */
+.hidden { display: none !important; }
