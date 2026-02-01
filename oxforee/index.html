@@ -17,14 +17,21 @@
 
     <!-- HEADER -->
     <header class="header" id="mainHeader">
-      <div class="logo">
-        <div class="logo-icon">O</div>
-        <div class="logo-text">
-          <h1>Oxford 3000</h1>
-          <span>Master Vocabulary</span>
+      <a href="index.html" class="logo-link">
+        <div class="logo">
+          <div class="logo-icon">O</div>
+          <div class="logo-text">
+            <h1>Oxford 3000</h1>
+            <span>Master Vocabulary</span>
+          </div>
         </div>
-      </div>
+      </a>
       <div class="user-actions">
+        <div class="theme-selector">
+          <button class="theme-opt" onclick="APP.setTheme('light')" id="theme-light" title="Light Mode">☀️</button>
+          <button class="theme-opt" onclick="APP.setTheme('dark')" id="theme-dark" title="Dark Mode">🌙</button>
+          <button class="theme-opt" onclick="APP.setTheme('pastel')" id="theme-pastel" title="Pastel Mode">�</button>
+        </div>
         <div class="streak-pill">🔥 <span id="streakCount">12</span></div>
         <button class="sound-btn"
           onclick="if(confirm('Reset all progress?')){APP.state.progress={};APP.saveProgress();APP.applyFilters();}">↺</button>
@@ -33,8 +40,8 @@
 
     <!-- NAVIGATION TABS -->
     <div class="nav-tab-container">
-      <button class="nav-tab-btn active" id="tabVocab" onclick="switchPage('vocab')">📚 คำศัพท์</button>
-      <button class="nav-tab-btn" id="tabInfor" onclick="switchPage('infor')">📖 คู่มือ</button>
+      <button class="nav-tab-btn active" id="tabVocab" onclick="location.href='index.html'">📚 คำศัพท์</button>
+      <button class="nav-tab-btn" id="tabInfor" onclick="location.href='infor.html'">📖 คู่มือ</button>
     </div>
 
     <!-- ==================== PAGE: VOCABULARY ==================== -->
@@ -181,37 +188,6 @@
   <!-- ==================== SCRIPTS ==================== -->
   <script src="data.js"></script>
   <script src="script.js"></script>
-  <script>
-    // Page Switching
-    async function switchPage(page) {
-      document.getElementById('vocab').classList.remove('active');
-      document.getElementById('infor').classList.remove('active');
-      document.getElementById(page).classList.add('active');
-
-      document.getElementById('tabVocab').classList.toggle('active', page === 'vocab');
-      document.getElementById('tabInfor').classList.toggle('active', page === 'infor');
-
-      // Lazy load encyclopedia
-      if (page === 'infor' && !window.inforLoaded) {
-        try {
-          const res = await fetch('infor.html');
-          const html = await res.text();
-          const doc = new DOMParser().parseFromString(html, 'text/html');
-          document.getElementById('infor').innerHTML = doc.body.innerHTML;
-
-          // Execute scripts from infor.html
-          doc.body.querySelectorAll('script').forEach(old => {
-            const s = document.createElement('script');
-            s.textContent = old.textContent;
-            document.body.appendChild(s);
-          });
-          window.inforLoaded = true;
-        } catch (err) {
-          console.error('Failed to load encyclopedia:', err);
-        }
-      }
-    }
-  </script>
 </body>
 
 </html>

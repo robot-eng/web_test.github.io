@@ -22,6 +22,7 @@ const APP = {
 
     init() {
         console.log("🚀 App Launching v3...");
+        this.initTheme(); // Load saved theme
         this.loadData();
         this.loadProgress(); // Will trigger updateStats
         this.initAlphabet();
@@ -32,6 +33,22 @@ const APP = {
         // Actually, let's stick to default ALL.
         this.updateStats();
         this.applyFilters();
+    },
+
+    initTheme() {
+        const saved = localStorage.getItem('oxford_theme') || 'light';
+        this.setTheme(saved);
+    },
+
+    setTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('oxford_theme', theme);
+        this.state.theme = theme;
+
+        // Update Selector UI
+        document.querySelectorAll('.theme-opt').forEach(opt => {
+            opt.classList.toggle('active', opt.id === `theme-${theme}`);
+        });
     },
 
     loadData() {
@@ -400,57 +417,18 @@ const APP = {
     }
 };
 
-// Global Page Switcher
+// Global Page Switcher (Simplified for Multi-page)
 window.switchPage = function (pageId) {
-    document.querySelectorAll('.page-content').forEach(el => el.classList.remove('active'));
-    document.getElementById(pageId).classList.add('active');
-
-    // Update Tab Buttons (Simple Text Logic or Index)
-    const buttons = document.querySelectorAll('.nav-tab-btn');
-    buttons.forEach(btn => btn.classList.remove('active'));
-
-    // Auto-detect which button was clicked is hard without event, 
-    // so let's just find the one with matching onclick text
-    // Simpler: Just rely on the button that triggered this function being 'this' if passed,
-    // but cleaner is just to update manually:
-    const activeBtn = Array.from(buttons).find(b => b.textContent.toLowerCase().includes(pageId === 'vocab' ? 'vocab' : 'encyclopedia'));
-    if (activeBtn) activeBtn.classList.add('active');
-
-    // Lazy Load Encyclopedia
-    if (pageId === 'infor') {
-        const container = document.getElementById('infor');
-        if (!container.innerHTML.trim() || container.innerHTML.includes('Loading')) {
-            fetch('infor.html')
-                .then(r => r.text())
-                .then(html => {
-                    // Extract body content only to avoid full HTML dupes
-                    const doc = new DOMParser().parseFromString(html, 'text/html');
-                    const bodyContent = doc.body.innerHTML;
-                    container.innerHTML = bodyContent;
-
-                    // Re-init any accordions if needed, or simple CSS hover works
-                    // If accordions need JS, we can inject that logic here:
-                    setupAccordions();
-                });
-        }
+    if (pageId === 'vocab') {
+        location.href = 'index.html';
+    } else if (pageId === 'infor') {
+        location.href = 'infor.html';
     }
 };
 
-function setupAccordions() {
-    // Basic Toggle Logic if needed for new Encyclopedia content
-    const acc = document.getElementsByClassName("accordion-header");
-    for (let i = 0; i < acc.length; i++) {
-        acc[i].addEventListener("click", function () {
-            this.classList.toggle("active");
-            const content = this.nextElementSibling;
-            if (content.style.maxHeight) {
-                content.style.maxHeight = null;
-            } else {
-                content.style.maxHeight = content.scrollHeight + "px";
-            }
-        });
-    }
-}
-
 // Start
-document.addEventListener('DOMContentLoaded', () => APP.init());
+document.addEventListener('DOMContentLoaded', () => {
+    // Both pages need basic init (progress, stats)
+    APP.init();
+    console.log("🚀 App initialized in " + (location.pathname.includes('infor') ? 'Encyclopedia' : 'Vocab') + " mode.");
+});
