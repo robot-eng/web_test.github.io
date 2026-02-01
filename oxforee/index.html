@@ -30,7 +30,17 @@
         <div class="theme-selector">
           <button class="theme-opt" onclick="APP.setTheme('light')" id="theme-light" title="Light Mode">☀️</button>
           <button class="theme-opt" onclick="APP.setTheme('dark')" id="theme-dark" title="Dark Mode">🌙</button>
-          <button class="theme-opt" onclick="APP.setTheme('pastel')" id="theme-pastel" title="Pastel Mode">�</button>
+          <button class="theme-opt" onclick="APP.setTheme('pastel')" id="theme-pastel" title="Pastel Mode" aria-label="Pastel">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+              <circle cx="12" cy="12" r="9" fill="url(#g)" />
+              <defs>
+                <linearGradient id="g" x1="0" x2="1">
+                  <stop offset="0" stop-color="#FFD6F0" />
+                  <stop offset="1" stop-color="#D6C6FF" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </button>
         </div>
         <div class="streak-pill">🔥 <span id="streakCount">12</span></div>
         <button class="sound-btn"
@@ -68,18 +78,18 @@
         <div class="mini-stat" onclick="APP.startFlashcards()" style="cursor:pointer;">
           <div class="mini-icon ms-orange">⚡</div>
           <div>
-            <div style="font-size:11px; font-weight:700; color:#94A3B8; text-transform:uppercase;">To Review</div>
-            <div style="font-size:20px; font-weight:800; color:#0F172A;" id="reviewCount">0</div>
+            <div style="font-size:11px; font-weight:700; text-transform:uppercase;" class="muted">To Review</div>
+            <div style="font-size:20px; font-weight:800;" id="reviewCount">0</div>
           </div>
-          <div style="margin-left:auto; color:#EA580C; font-size:20px;">›</div>
+          <div style="margin-left:auto; font-size:20px;" class="primary-text">›</div>
         </div>
         <div class="mini-stat" onclick="APP.startQuiz()" style="cursor:pointer;">
           <div class="mini-icon ms-green">🎮</div>
           <div>
-            <div style="font-size:11px; font-weight:700; color:#94A3B8; text-transform:uppercase;">Quiz</div>
-            <div style="font-size:20px; font-weight:800; color:#0F172A;">Play</div>
+            <div style="font-size:11px; font-weight:700; text-transform:uppercase;" class="muted">Quiz</div>
+            <div style="font-size:20px; font-weight:800;">Play</div>
           </div>
-          <div style="margin-left:auto; color:#16A34A; font-size:20px;">›</div>
+          <div style="margin-left:auto; font-size:20px;" class="primary-text">›</div>
         </div>
       </div>
 
@@ -108,14 +118,14 @@
         <div class="empty-icon">🍃</div>
         <p>No words found.</p>
         <button onclick="APP.clearFilters()"
-          style="margin-top:10px; color:#2563EB; font-weight:600; background:none; border:none; cursor:pointer;">Clear
+          style="margin-top:10px; font-weight:600; background:none; border:none; cursor:pointer;" class="primary-text">Clear
           Filters</button>
       </div>
     </div>
 
     <!-- ==================== PAGE: ENCYCLOPEDIA ==================== -->
     <div id="infor" class="page-content">
-      <div style="text-align:center; padding:60px 20px; color:#94A3B8;">
+      <div style="text-align:center; padding:60px 20px;" class="muted">
         <div style="font-size:48px; margin-bottom:12px;">📖</div>
         <p>Loading Encyclopedia...</p>
       </div>
@@ -146,7 +156,7 @@
         </div>
         <div class="def-section">
           <div class="def-label">Example</div>
-          <div class="def-text" id="modalEx" style="font-style:italic; color:#64748b;">...</div>
+          <div class="def-text" id="modalEx" style="font-style:italic;">...</div>
         </div>
       </div>
     </div>
@@ -157,16 +167,13 @@
     <div class="modal-content" style="text-align:center; padding: 32px;">
       <button class="close-btn"
         onclick="document.getElementById('flashcardModal').classList.remove('active')">×</button>
-      <div style="font-size:12px; color:#94a3b8; margin-bottom:16px; text-transform:uppercase;">Review Mode</div>
-      <div id="fcCard"
-        style="background:#F8FAFC; border-radius:16px; padding:32px; min-height:200px; display:flex; align-items:center; justify-content:center; margin-bottom:24px; cursor:pointer;">
+      <div style="font-size:12px; margin-bottom:16px; text-transform:uppercase;" class="muted">Review Mode</div>
+      <div id="fcCard" class="fc-card">
         <h2 style="font-size:28px;">Flashcard</h2>
       </div>
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-        <button onclick="APP.handleFlashcard(false)"
-          style="background:#FEE2E2; color:#991B1B; padding:12px; border-radius:12px; font-weight:700; border:none; cursor:pointer;">Forgot</button>
-        <button onclick="APP.handleFlashcard(true)"
-          style="background:#DCFCE7; color:#166534; padding:12px; border-radius:12px; font-weight:700; border:none; cursor:pointer;">Remember</button>
+        <button onclick="APP.handleFlashcard(false)" class="btn-forgot">Forgot</button>
+        <button onclick="APP.handleFlashcard(true)" class="btn-remember">Remember</button>
       </div>
     </div>
   </div>

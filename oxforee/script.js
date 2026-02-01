@@ -212,7 +212,7 @@ const APP = {
 
         const html = items.map(item => {
             const levelClass = (item.level && item.level.substring(0, 2)) || 'Unknown';
-            const displayTrans = item.translate || '<span style="opacity:0.3">-</span>';
+            const displayTrans = item.translate || '<span class="empty-translation">-</span>';
             const displayEx = item.examples && item.examples.length ? item.examples[0] : null;
 
             return `
@@ -307,22 +307,22 @@ const APP = {
         const card = document.getElementById('fcCard');
 
         // Reset State
-        card.innerHTML = `
-           <div style="text-align:center;">
-              <h2 style="font-size:32px; font-weight:800; margin-bottom:8px;">${item.word}</h2>
-              <span class="pos-tag">${item.pos}</span>
-              <div style="margin-top:20px; color:#94a3b8; font-size:14px;">(Tap to Flip)</div>
-           </div>
-        `;
-        card.onclick = () => {
-            card.innerHTML = `
-                <div style="text-align:center;">
-                   <div style="font-size:18px; color:#64748b; margin-bottom:10px;">${item.word}</div>
-                   <h2 style="font-size:28px; color:#2563EB; font-weight:700;">${item.translate}</h2>
-                </div>
-             `;
-            card.onclick = null; // Prevent double flip
-        };
+          card.innerHTML = `
+              <div style="text-align:center;">
+                  <h2 style="font-size:32px; font-weight:800; margin-bottom:8px;">${item.word}</h2>
+                  <span class="pos-tag">${item.pos}</span>
+                  <div class="muted" style="margin-top:20px; font-size:14px;">(Tap to Flip)</div>
+              </div>
+          `;
+          card.onclick = () => {
+                card.innerHTML = `
+                     <div style="text-align:center;">
+                         <div class="muted" style="font-size:18px; margin-bottom:10px;">${item.word}</div>
+                         <h2 class="primary-text" style="font-size:28px; font-weight:700;">${item.translate}</h2>
+                     </div>
+                 `;
+                card.onclick = null; // Prevent double flip
+          };
     },
 
     handleFlashcard(remembered) {
@@ -382,10 +382,8 @@ const APP = {
 
         options.forEach(opt => {
             const btn = document.createElement('button');
-            btn.style.cssText = 'padding:14px; border:2px solid #e2e8f0; border-radius:12px; font-size:16px; font-weight:600; cursor:pointer; background:white; transition: all 0.2s;';
+            btn.className = 'quiz-opt';
             btn.textContent = opt.word;
-            btn.onmouseover = () => btn.style.borderColor = '#2563EB';
-            btn.onmouseout = () => btn.style.borderColor = '#e2e8f0';
             btn.onclick = () => this.handleQuizAnswer(opt === this.quizItem, btn);
             optContainer.appendChild(btn);
         });
@@ -393,8 +391,7 @@ const APP = {
 
     handleQuizAnswer(isCorrect, btn) {
         if (isCorrect) {
-            btn.style.background = '#DCFCE7';
-            btn.style.borderColor = '#16A34A';
+            btn.classList.add('btn-remember');
             this.speak(this.quizItem.word);
 
             if (!this.state.progress[this.quizItem.id]) this.state.progress[this.quizItem.id] = { mastery: 0 };
@@ -403,8 +400,7 @@ const APP = {
 
             setTimeout(() => this.nextQuizQuestion(), 1200);
         } else {
-            btn.style.background = '#FEE2E2';
-            btn.style.borderColor = '#EF4444';
+            btn.classList.add('btn-forgot');
         }
     },
 

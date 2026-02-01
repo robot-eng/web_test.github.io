@@ -34,6 +34,14 @@
     --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
     --shadow-float: 0 25px 50px -12px rgba(37, 99, 235, 0.15);
 
+    /* Generic UI colors that respect theme */
+    --progress-color: #FCD34D;
+    --success-bg: #DCFCE7;
+    --success-text: #166534;
+    --danger-bg: #FEE2E2;
+    --danger-text: #991B1B;
+    --muted-text: #94A3B8;
+
     /* Level Colors */
     --lvl-core-bg: #4F46E5;
     --lvl-core-text: #ffffff;
@@ -76,6 +84,14 @@
     --shadow-inset: inset 0 2px 4px rgba(0, 0, 0, 0.3);
     --shadow-float: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 
+    /* Theme-aware UI colors for dark */
+    --progress-color: #F59E0B;
+    --success-bg: #064e3b;
+    --success-text: #DCFCE7;
+    --danger-bg: #7f1d1d;
+    --danger-text: #fee2e2;
+    --muted-text: #94A3B8;
+
     /* Dark Mode Badges */
     --lvl-core-bg: #818CF8;
     --lvl-core-text: #ffffff;
@@ -109,6 +125,13 @@
     --border: #F5D0FE;
     --border-soft: rgba(245, 208, 254, 0.5);
     --shadow-float: 0 25px 50px -12px rgba(217, 70, 239, 0.1);
+
+    --progress-color: #F472B6;
+    --success-bg: #F0ABFC;
+    --success-text: #701A75;
+    --danger-bg: #FEE2E2;
+    --danger-text: #991B1B;
+    --muted-text: #A21CAF;
 
     --lvl-core-bg: #F0ABFC;
     --lvl-core-text: #701A75;
@@ -247,10 +270,92 @@ body {
 }
 
 .header.scrolled {
-    background: rgba(255, 255, 255, 0.9);
+    background: var(--bg-glass-strong);
     box-shadow: var(--shadow-md);
     padding: 10px 20px;
 }
+
+/* Utility classes to avoid inline colors and respect current theme */
+.muted { color: var(--muted-text); }
+.muted-strong { color: var(--text-secondary); }
+.empty-translation { opacity: 0.6; color: var(--muted-text); }
+.primary-text { color: var(--primary); font-weight:700; }
+
+/* Flashcard card styling */
+.fc-card {
+    background: var(--bg-card);
+    color: var(--text-main);
+    border-radius: 16px;
+    padding: 32px;
+    min-height: 200px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:24px;
+    cursor:pointer;
+    border: 1px solid var(--border);
+}
+
+/* Flashcard action buttons */
+.btn-forgot {
+    background: var(--danger-bg);
+    color: var(--danger-text);
+    padding:12px; border-radius:12px; font-weight:700; border:none; cursor:pointer;
+}
+.btn-remember {
+    background: var(--success-bg);
+    color: var(--success-text);
+    padding:12px; border-radius:12px; font-weight:700; border:none; cursor:pointer;
+}
+
+/* Quiz option styling */
+.quiz-opt {
+    padding:14px; border:2px solid var(--border); border-radius:12px; font-size:16px; font-weight:600; cursor:pointer; background:var(--bg-card); transition: all 0.12s;
+}
+.quiz-opt:hover { border-color: var(--primary); transform:translateY(-2px); }
+
+/* Tailwind-style class overrides to keep infor/index readable across themes */
+/* Backgrounds */
+.bg-white { background: var(--bg-card) !important; }
+.bg-slate-50, .bg-slate-100, .bg-slate-200 { background: var(--bg-page) !important; }
+.bg-indigo-50, .bg-blue-50, .bg-green-50, .bg-red-50, .bg-yellow-50, .bg-pink-50, .bg-orange-50, .bg-purple-50 { background: var(--bg-card) !important; }
+
+/* Text colors */
+.text-slate-800, .text-slate-900 { color: var(--text-main) !important; }
+.text-slate-700, .text-slate-600 { color: var(--text-secondary) !important; }
+.text-slate-500 { color: var(--text-tertiary) !important; }
+
+/* Borders: map light borders to theme border color */
+[class*="border-"] { border-color: var(--border) !important; }
+
+/* Small helpers used in infor page */
+.section-num { display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:10px; background:var(--bg-pill); color:var(--text-secondary); font-weight:700; }
+.highlight-box { background: var(--bg-card); border-left-color: var(--primary); color: var(--text-main); }
+
+/* Ensure accordions / cards use theme text color */
+.accordion-item, .accordion-content, .accordion-body { background: transparent; color: var(--text-main); }
+
+/* Minimal, rebuilt dark-mode rules for #infor (keeps things readable) */
+[data-theme="dark"] #infor {
+    color: var(--text-main);
+}
+
+[data-theme="dark"] #infor .accordion-item,
+[data-theme="dark"] #infor .accordion-header,
+[data-theme="dark"] #infor .accordion-content,
+[data-theme="dark"] #infor .accordion-body,
+[data-theme="dark"] #infor .grammar-table th,
+[data-theme="dark"] #infor .grammar-table td {
+    background: var(--bg-card) !important;
+    color: var(--text-main) !important;
+    border-color: var(--border) !important;
+}
+
+[data-theme="dark"] #infor .grammar-table td { color: var(--text-secondary) !important; }
+[data-theme="dark"] #infor .grammar-table th { color: var(--text-main) !important; }
+
+[data-theme="dark"] #infor .section-num { background: var(--bg-pill) !important; color: var(--text-secondary) !important; }
+[data-theme="dark"] #infor .arrow { color: var(--text-tertiary) !important; }
 
 .logo {
     display: flex;
@@ -403,7 +508,7 @@ body {
 
 .progress-fill {
     height: 100%;
-    background: #FCD34D;
+    background: var(--progress-color);
     /* Gold */
     border-radius: 100px;
     width: 0%;
@@ -1582,7 +1687,7 @@ body {
 
 #infor .arrow {
     transition: transform 0.3s !important;
-    color: #94a3b8 !important;
+    color: var(--text-tertiary) !important;
     font-size: 0.8rem !important;
 }
 
@@ -1599,7 +1704,7 @@ body {
 #infor td {
     font-size: 1rem !important;
     line-height: 1.7 !important;
-    color: #334155 !important;
+    color: var(--text-main) !important;
 }
 
 #infor b,
@@ -1638,6 +1743,8 @@ body {
 #infor .grammar-table tr:last-child td {
     border-bottom: none !important;
 }
+
+/* (Removed duplicated final dark-mode overrides; infor dark styles are defined earlier) */
 
 #infor .badge {
     padding: 0.25rem 0.75rem !important;
