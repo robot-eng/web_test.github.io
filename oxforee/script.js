@@ -52,11 +52,21 @@ const APP = {
     },
 
     loadData() {
-        if (typeof OXFORD_DATA !== 'undefined') {
-            this.state.words = OXFORD_DATA.map((w, i) => ({ ...w, id: i }));
-            console.log(`Loaded ${this.state.words.length} words`);
-        } else {
-            document.getElementById('vocabList').innerHTML = '<div style="text-align:center;padding:40px;color:red;">Error: Data not loaded. Check data.js</div>';
+        try {
+            if (typeof OXFORD_DATA !== 'undefined') {
+                this.state.words = OXFORD_DATA.map((w, i) => ({ ...w, id: i }));
+                console.log(`Loaded ${this.state.words.length} words`);
+            } else {
+                const vEl = document.getElementById('vocabList');
+                if (vEl) {
+                    vEl.innerHTML = '<div style="text-align:center;padding:40px;color:red;">Error: Data not loaded. Check data.js</div>';
+                } else {
+                    // No vocab list on this page (e.g., infor.html). Silent skip.
+                    console.warn('OXFORD_DATA not found; skipping vocab load.');
+                }
+            }
+        } catch (e) {
+            console.error('Error in loadData:', e);
         }
     },
 
@@ -133,16 +143,16 @@ const APP = {
     toggleLevel(type) {
         if (type === 'CORE') {
             const btn = document.getElementById('filter-core');
-            const isActive = btn.classList.contains('active');
+            const isActive = btn ? btn.classList.contains('active') : false;
 
             if (!isActive) {
                 // Turn ON Core Mode: Only A1/A2 or tagged "core"
                 this.state.settings.levels = ['CORE'];
-                btn.classList.add('active');
+                if (btn) btn.classList.add('active');
             } else {
                 // Turn OFF: Revert to All
                 this.state.settings.levels = ['A1', 'A2', 'B1', 'B2', 'Unknown'];
-                btn.classList.remove('active');
+                if (btn) btn.classList.remove('active');
             }
         }
         this.applyFilters();
@@ -281,7 +291,8 @@ const APP = {
             defSection.style.display = 'none';
         }
 
-        document.getElementById('detailModal').classList.add('active');
+        const detailModalEl = document.getElementById('detailModal');
+        if (detailModalEl) detailModalEl.classList.add('active');
     },
 
     // === FLASHCARDS ===
@@ -293,18 +304,20 @@ const APP = {
         this.fcQueue = pool.sort(() => Math.random() - 0.5);
         this.fcIndex = 0;
 
-        document.getElementById('flashcardModal').classList.add('active');
+        const flashcardModalEl = document.getElementById('flashcardModal');
+        if (flashcardModalEl) flashcardModalEl.classList.add('active');
         this.showFlashcard();
     },
 
     showFlashcard() {
         if (this.fcIndex >= this.fcQueue.length) {
             alert('Review Session Complete!');
-            document.getElementById('flashcardModal').classList.remove('active');
+            if (flashcardModalEl) flashcardModalEl.classList.remove('active');
             return;
         }
         const item = this.fcQueue[this.fcIndex];
         const card = document.getElementById('fcCard');
+        if (!card) return;
 
         // Reset State
           card.innerHTML = `
@@ -353,16 +366,18 @@ const APP = {
     // === QUIZ ===
     startQuiz() {
         this.nextQuizQuestion();
-        document.getElementById('quizModal').classList.add('active');
+        const quizModalEl = document.getElementById('quizModal');
+        if (quizModalEl) quizModalEl.classList.add('active');
     },
 
     nextQuizQuestion() {
+        const quizModalEl = document.getElementById('quizModal');
         const pool = (this.state.filtered.length > 0 ? this.state.filtered : this.state.words)
             .filter(w => w.translate && w.translate.trim().length > 1);
 
         if (pool.length < 4) {
             alert('Need more words with translations for Quiz!');
-            document.getElementById('quizModal').classList.remove('active');
+            if (quizModalEl) quizModalEl.classList.remove('active');
             return;
         }
 
@@ -375,17 +390,18 @@ const APP = {
         }
         options.sort(() => Math.random() - 0.5);
 
-        document.getElementById('quizQuestion').innerHTML = `"${this.quizItem.translate}" คือคำว่า?`;
+        const quizQuestionEl = document.getElementById('quizQuestion');
+        if (quizQuestionEl) quizQuestionEl.innerHTML = `"${this.quizItem.translate}" คือคำว่า?`;
 
         const optContainer = document.getElementById('quizOptions');
-        optContainer.innerHTML = '';
+        if (optContainer) optContainer.innerHTML = '';
 
         options.forEach(opt => {
             const btn = document.createElement('button');
             btn.className = 'quiz-opt';
             btn.textContent = opt.word;
             btn.onclick = () => this.handleQuizAnswer(opt === this.quizItem, btn);
-            optContainer.appendChild(btn);
+            if (optContainer) optContainer.appendChild(btn);
         });
     },
 
@@ -407,8 +423,10 @@ const APP = {
     clearFilters() {
         this.state.selectedLetter = 'ALL';
         this.state.settings.levels = ['A1', 'A2', 'B1', 'B2', 'Unknown'];
-        document.getElementById('filter-core').classList.remove('active');
-        document.getElementById('searchInput').value = '';
+        const fc = document.getElementById('filter-core');
+        if (fc) fc.classList.remove('active');
+        const si = document.getElementById('searchInput');
+        if (si) si.value = '';
         this.applyFilters();
     }
 };
@@ -425,6 +443,10 @@ window.switchPage = function (pageId) {
 // Start
 document.addEventListener('DOMContentLoaded', () => {
     // Both pages need basic init (progress, stats)
-    APP.init();
-    console.log("🚀 App initialized in " + (location.pathname.includes('infor') ? 'Encyclopedia' : 'Vocab') + " mode.");
+    try {
+        APP.init();
+        console.log("🚀 App initialized in " + (location.pathname.includes('infor') ? 'Encyclopedia' : 'Vocab') + " mode.");
+    } catch (e) {
+        console.error('APP.init() error:', e);
+    }
 });

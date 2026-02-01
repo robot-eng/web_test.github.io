@@ -916,6 +916,82 @@ body {
     }
 }
 
+/* Additional mobile refinements for `#infor` to prevent overflow and oversized text */
+@media (max-width: 640px) {
+    body {
+        font-size: 14px;
+    }
+
+    .app {
+        max-width: 100%;
+        padding: 12px;
+    }
+
+    /* Scale down large headings inside infor */
+    #infor h1, #infor .text-3xl { font-size: 1.4rem !important; }
+    #infor h4 { font-size: 1.05rem !important; }
+
+    /* Accordion compacting */
+    #infor .accordion-header { padding: 0.9rem !important; font-size: 1rem !important; }
+    #infor .accordion-body { padding: 1rem !important; }
+
+    /* Reduce section number size */
+    #infor .section-num { width: 1.8rem !important; height: 1.8rem !important; font-size: 0.85rem !important; }
+
+    /* Make grammar tables scroll horizontally instead of breaking layout */
+    #infor .overflow-x-auto, #infor .grammar-table { overflow-x: auto; display: block; }
+    #infor .grammar-table th, #infor .grammar-table td { white-space: normal !important; word-break: break-word !important; min-width: 120px; font-size: 0.9rem !important; }
+
+    /* Ensure pastel boxes wrap text and don't overflow */
+    #infor [class*="bg-"] { word-wrap:break-word; hyphens:auto; }
+
+    /* Reduce padding for small cards and boxes */
+    #infor .bg-white, #infor .bg-pink-100, #infor .bg-blue-100, #infor .bg-green-100, #infor .bg-yellow-100, #infor .bg-orange-100, #infor .bg-indigo-50 {
+        padding: 12px !important; border-radius: 12px !important;
+    }
+
+    /* Prevent huge font sizes inside highlighted boxes */
+    #infor .highlight-box, #infor .mb-6 .bg-white { font-size: 0.95rem !important; }
+
+    /* Make lists and examples more compact */
+    #infor .text-sm { font-size: 0.9rem !important; }
+    #infor .text-xs { font-size: 0.75rem !important; }
+}
+
+/* Header / top bar mobile fixes to prevent visual overflow (pill extents) */
+@media (max-width: 640px) {
+    .header {
+        padding: 8px 12px !important;
+        border-radius: 14px !important;
+        margin: 8px 0 !important;
+        width: calc(100% - 24px) !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+    }
+
+    .header .logo-link {
+        display: flex; align-items: center; gap: 8px;
+    }
+
+    .logo-icon {
+        width: 36px !important; height: 36px !important; font-size: 18px !important;
+    }
+
+    .logo-text h1 { font-size: 14px !important; }
+    .logo-text span { font-size: 11px !important; }
+
+    .user-actions { gap: 8px !important; }
+    .theme-selector { transform: scale(0.95); }
+    .streak-pill { padding: 4px 10px !important; font-size: 12px !important; }
+
+    .back-btn { width:36px; height:36px; font-size:18px; }
+
+    /* Ensure header children don't push outside */
+    .header > * { min-width: 0; }
+    .logo-text { min-width: 0; }
+    .logo-text h1, .logo-text span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+}
+
 /* === ENCYCLOPEDIA / GRAMMAR STYLES === */
 /* Navigation */
 .tab-active {
