@@ -1,47 +1,47 @@
 # Oxforee: Premium English Learning Kit 📚
 
-ชุดเครื่องมือเรียนภาษาอังกฤษระดับพรีเมียมที่รวบรวมคำศัพท์ Oxford 3000 และคัมภีร์แกรมม่าฉบับสมบูรณ์ไว้ในที่เดียว
+A premium English learning suite that combines the Oxford 3000 vocabulary set with a comprehensive Grammar Encyclopedia.
 
 ---
 
-## 🏗️ ส่วนประกอบหลัก (Core Components)
+## 🏗️ Core Components
 
 ### 1. 📘 English Encyclopedia (`infor.html`)
-คัมภีร์แกรมม่าและเทคนิคการพูดที่ออกแบบมาเพื่อคนไทยโดยเฉพาะ
-- **ครบเครื่อง 11 บทเรียน:**
-  1. **Structure & PoS**: โครงสร้างประโยคและชนิดคำละเอียด
-  2. **12 Tenses**: เจาะลึกการใช้งานจริง
-  3. **Questions**: การสร้างคำถามและ Question Tags
-  4. **Modal Verbs**: กริยาช่วยหลักและ Past Modals
-  5. **Comparison**: การเปรียบเทียบขั้นสูง
-  6. **Prepositions**: คำบุพบทและ Transport Logic
-  7. **Nouns & Articles**: การใช้ A, An, The และคำนาม
-  8. **Thai Logic Fixes**: แก้จุดที่คนไทยมักแปลผิดบ่อย
-  9. **If-Clauses**: ประโยคเงื่อนไขและคำเชื่อม
-  10. **Advanced Grammar**: Gerund, Participle, Used to
-  11. **Speaking Secrets**: การออกเสียง Magic E, Phonics และ Slang (Gonna, Wanna)
+A grammar and speaking guide designed to provide deep insights into English usage.
+- **11 Comprehensive Sections:**
+  1. **Structure & PoS**: Detailed sentence structures and parts of speech.
+  2. **12 Tenses**: Deep dive into practical usage.
+  3. **Questions**: Question formation and Question Tags.
+  4. **Modal Verbs**: Primary modal verbs and Past Modals.
+  5. **Comparison**: Advanced comparative structures.
+  6. **Prepositions**: Prepositions and Transport Logic.
+  7. **Nouns & Articles**: Proper usage of A, An, The and Noun types.
+  8. **Contrastive Logic**: Fixing common translation errors and logic gaps.
+  9. **If-Clauses**: Conditional sentences and logical connectors.
+  10. **Advanced Grammar**: Gerunds, Participles, and Used to family.
+  11. **Speaking Secrets**: Pronunciation rules (Magic E, Phonics) and Slang (Gonna, Wanna).
 
 ### 2. 🗂️ Oxford 3000 Flashcards (`index.html`)
-ระบบฝึกฝนคำศัพท์ที่มีประสิทธิภาพสูงสุด
-- **ฟีเจอร์:**
-  - **Flashcards Review**: โหมดทบทวนแบบบัตรคำ
-  - **Text-to-Speech**: ฟังเสียงจากเจ้าของภาษา
-  - **Auto-fetch**: ระบบดึงความหมายและตัวอย่างประโยคอัตโนมัติ
-  - **CEFR Tracker**: ติดตามระดับภาษา (A1-C1)
+A high-efficiency vocabulary training system.
+- **Features:**
+  - **Flashcards Review**: Interactive card-based review mode.
+  - **Text-to-Speech**: Listen to native pronunciations.
+  - **Auto-fetch**: Automated fetching of definitions and sentence examples.
+  - **CEFR Tracker**: Monitor language progress (A1-C1).
 
 ---
 
-## 🚀 วิธีใช้งาน (Getting Started)
-1. **คัมภีร์แกรมม่า:** เปิดไฟล์ [infor.html](infor.html) บน Browser
-2. **ฝึกคำศัพท์:** เปิดไฟล์ [index.html](index.html)
-3. **ใช้งานบนมือถือ:** สามารถใช้งานผ่าน GitHub Pages ได้ทันที พกพาไปเรียนได้ทุกที่
+## 🚀 Getting Started
+1. **Grammar Encyclopedia:** Open [infor.html](infor.html) in your browser.
+2. **Vocabulary Training:** Open [index.html](index.html).
+3. **Mobile Usage:** Deploy via GitHub Pages for an instant mobile learning experience.
 
 ---
 
-## 🛠️ เทคโนโลยี (Technologies)
+## 🛠️ Technologies
 - HTML5 / CSS3 (Tailwind CSS)
 - Vanilla JavaScript
 - LocalStorage Persistence
 - Web Speech API (TTS)
 
-*Developed for the Thai English-Learning Community.*
+*Developed for the English-Learning Community.*
