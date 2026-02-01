@@ -938,7 +938,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: white;
+    background: var(--bg-card);
     font-weight: 600;
     font-size: 1.1rem;
     transition: background 0.2s;
@@ -952,7 +952,7 @@ body {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.5s ease-out;
-    background-color: #ffffff;
+    background-color: var(--bg-card);
 }
 
 .accordion-content.open {
@@ -1006,11 +1006,12 @@ body {
 }
 
 .highlight-box {
-    background-color: #fffbeb;
-    border-left: 4px solid #f59e0b;
+    background: var(--bg-card);
+    border-left: 4px solid var(--primary);
     padding: 1rem;
     margin: 1rem 0;
     border-radius: 0 8px 8px 0;
+    color: var(--text-main);
 }
 
 .eng-text {
@@ -1674,7 +1675,7 @@ body {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    background-color: #ffffff;
+    background-color: var(--bg-card);
 }
 
 #infor .accordion-content.open {
@@ -1779,6 +1780,53 @@ body {
     border: 1px solid var(--border) !important;
 }
 
+/* Make fixed pastel utility classes readable in dark theme */
+[data-theme="dark"] #infor .bg-pink-100,
+[data-theme="dark"] #infor .bg-red-100,
+[data-theme="dark"] #infor .bg-blue-100,
+[data-theme="dark"] #infor .bg-indigo-100,
+[data-theme="dark"] #infor .bg-green-100,
+[data-theme="dark"] #infor .bg-yellow-100,
+[data-theme="dark"] #infor .bg-orange-100,
+[data-theme="dark"] #infor .bg-teal-100,
+[data-theme="dark"] #infor .bg-purple-100,
+[data-theme="dark"] #infor .bg-rose-100 {
+    background: var(--bg-card) !important;
+    color: var(--text-main) !important;
+    border-color: var(--border) !important;
+}
+
+/* Also handle -50 utility pastel backgrounds (small boxes) */
+[data-theme="dark"] #infor .bg-pink-50,
+[data-theme="dark"] #infor .bg-red-50,
+[data-theme="dark"] #infor .bg-blue-50,
+[data-theme="dark"] #infor .bg-indigo-50,
+[data-theme="dark"] #infor .bg-green-50,
+[data-theme="dark"] #infor .bg-yellow-50,
+[data-theme="dark"] #infor .bg-orange-50,
+[data-theme="dark"] #infor .bg-teal-50,
+[data-theme="dark"] #infor .bg-purple-50,
+[data-theme="dark"] #infor .bg-rose-50,
+[data-theme="dark"] #infor .bg-gray-50,
+[data-theme="dark"] #infor .bg-slate-50,
+[data-theme="dark"] #infor .bg-indigo-50 {
+    background: var(--bg-card) !important;
+    color: var(--text-main) !important;
+    border-color: var(--border) !important;
+}
+
+/* Ensure small pastel boxes display readable text: any utility bg-* that contains -50 or -100 */
+[data-theme="dark"] #infor [class*="bg-"][class*="-50"],
+[data-theme="dark"] #infor [class*="bg-"][class*="-100"] {
+    color: var(--text-main) !important;
+}
+
+[data-theme="dark"] #infor .highlight-box {
+    background: var(--bg-glass);
+    color: var(--text-main) !important;
+    border-left-color: var(--primary) !important;
+}
+
 @media (max-width: 640px) {
     #infor .accordion-body {
         padding: 1.25rem !important;
@@ -1800,4 +1848,30 @@ body {
 /* === UTILS === */
 .hidden {
     display: none !important;
+}
+
+/* Last-resort: ensure any pastel utility backgrounds inside #infor are readable in dark theme.
+   This block is intentionally placed at the end and uses !important to win over earlier
+   Tailwind-like utility mappings that set very light colors. */
+[data-theme="dark"] #infor [class*="bg-"][class*="-50"],
+[data-theme="dark"] #infor [class*="bg-"][class*="-100"] {
+    background: var(--bg-card) !important;
+    border-color: var(--border) !important;
+    color: var(--text-main) !important;
+}
+
+/* Also force all text inside those pastel boxes to be visible */
+[data-theme="dark"] #infor [class*="bg-"][class*="-50"] *,
+[data-theme="dark"] #infor [class*="bg-"][class*="-100"] * {
+    color: var(--text-main) !important;
+}
+
+/* Ensure small utility boxes (bg-white etc) inside #infor also respect dark theme */
+[data-theme="dark"] #infor .bg-white,
+[data-theme="dark"] #infor .bg-slate-50,
+[data-theme="dark"] #infor .bg-gray-50,
+[data-theme="dark"] #infor .bg-gray-100 {
+    background: var(--bg-card) !important;
+    color: var(--text-main) !important;
+    border-color: var(--border) !important;
 }
