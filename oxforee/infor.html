@@ -1693,26 +1693,100 @@
                         </div>
                     </div>
 
-                    <!-- Relative Clauses -->
-                    <div>
-                        <h4 class="font-bold text-cyan-700 mt-4 border-b pb-1">Relative Clauses (ผู้ซึ่ง/ที่ซึ่ง)</h4>
-                        <table class="grammar-table text-sm">
-                            <tr>
-                                <td><b>Who</b></td>
-                                <td>คน</td>
-                                <td>The man <b>who</b> called me.</td>
-                            </tr>
-                            <tr>
-                                <td><b>Which</b></td>
-                                <td>ของ/สัตว์</td>
-                                <td>The pen <b>which</b> is red.</td>
-                            </tr>
-                            <tr>
-                                <td><b>Where</b></td>
-                                <td>สถานที่</td>
-                                <td>The house <b>where</b> I live.</td>
-                            </tr>
-                        </table>
+                    <!-- Relative Clauses (Expanded) -->
+                    <div class="bg-cyan-50 p-5 rounded-2xl border border-cyan-200">
+                        <h4 class="font-bold text-cyan-800 mb-4 border-b border-cyan-200 pb-2">Relative Clauses
+                            (ประโยคขยายความนาม)</h4>
+
+                        <div class="overflow-x-auto mb-6">
+                            <table class="grammar-table text-sm">
+                                <thead>
+                                    <tr class="bg-cyan-100">
+                                        <th>Relative Pronoun</th>
+                                        <th>ใช้กับ...</th>
+                                        <th>ทำหน้าที่เป็น...</th>
+                                        <th>ตัวอย่างประโยค</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><b>Who</b></td>
+                                        <td>คน (People)</td>
+                                        <td>ประธาน (Subject)</td>
+                                        <td>The man <b>who</b> called you is my boss.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Whom</b></td>
+                                        <td>คน (People)</td>
+                                        <td>กรรม (Object)</td>
+                                        <td>The man <b>whom</b> I met yesterday.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Whose</b></td>
+                                        <td>คน/สัตว์ (Possession)</td>
+                                        <td>แสดงความเป็นเจ้าของ</td>
+                                        <td>The girl <b>whose</b> phone was stolen.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Which</b></td>
+                                        <td>สัตว์/สิ่งของ</td>
+                                        <td>ประธาน/กรรม</td>
+                                        <td>The car <b>which</b> is red.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>That</b></td>
+                                        <td>ทุกอย่าง</td>
+                                        <td>แทน Who/Which</td>
+                                        <td>The house <b>that</b> Jack built.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Where</b></td>
+                                        <td>สถานที่</td>
+                                        <td>ระบุตำแหน่ง</td>
+                                        <td>The city <b>where</b> I was born.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Commas vs No Commas -->
+                        <div class="grid md:grid-cols-2 gap-4 mb-6">
+                            <div class="bg-white p-4 rounded-xl border-l-4 border-l-red-400 shadow-sm">
+                                <h5 class="font-bold text-slate-800 mb-2">1. Defining (ห้ามมีคอมม่า)</h5>
+                                <p class="text-xs text-slate-500 mb-2">เป็นข้อมูลสำคัญ ขาดไม่ได้
+                                    ไม่งั้นไม่รู้ว่าใคร/อันไหน</p>
+                                <p class="text-sm italic">"The students <b>who</b> study hard pass the exam."</p>
+                                <p class="text-[10px] text-slate-400 mt-1">(หมายถึงเฉพาะนักเรียนที่ขยันเท่านั้น!)</p>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl border-l-4 border-l-blue-400 shadow-sm">
+                                <h5 class="font-bold text-slate-800 mb-2">2. Non-defining (ต้องมีคอมม่า , ,)</h5>
+                                <p class="text-xs text-slate-500 mb-2">เป็นข้อมูลเสริม (Extra)
+                                    เอาออกประโยคก็ยังรู้เรื่อง</p>
+                                <p class="text-sm italic">"My father<b>, who</b> is 60<b>,</b> still works."</p>
+                                <p class="text-[10px] text-slate-400 mt-1">(รู้ว่าพ่อเราคือคนไหน
+                                    ข้อมูลอายุคือแค่เรื่องเสริม)</p>
+                            </div>
+                        </div>
+
+                        <!-- Special Rules -->
+                        <div class="space-y-3">
+                            <div class="p-3 bg-yellow-50 rounded-lg border border-yellow-100">
+                                <h6 class="font-bold text-yellow-800 text-sm mb-1">💡 การละคำเชื่อม (Omitting)</h6>
+                                <p class="text-xs text-slate-600">ถ้า Relative Pronoun ทำหน้าที่เป็น **กรรม (Object)**
+                                    เราตัดทิ้งได้เลย!</p>
+                                <p class="text-sm mt-1">"The movie (<s>that</s>) I watched was great."</p>
+                            </div>
+
+                            <div class="p-3 bg-red-50 rounded-lg border border-red-100">
+                                <h6 class="font-bold text-red-800 text-sm mb-1">🚫 Thai Logic Trap: ห้ามใส่ S ซ้ำ!</h6>
+                                <p class="text-xs text-slate-600">คนไทยมักเผลอใส่สรรพนามตัวเดิมกลับมาใน Relative Clause
+                                </p>
+                                <ul class="text-xs mt-1 space-y-1">
+                                    <li>❌ The man who <b>he</b> called me.</li>
+                                    <li>✅ The man who called me.</li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Reported Speech (NEW) -->
