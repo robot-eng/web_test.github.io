@@ -9,19 +9,34 @@ Welcome to the **Oxforee English Learning Hub**, a collection of web-based tools
 ### 📘 1. English Encyclopedia (คัมภีร์อังกฤษฉบับสมบูรณ์)
 A deep-dive resource for Thai learners covering everything from basic grammar to advanced speaking secrets.
 - **Web App:** [Open Encyclopedia](https://robot-eng.github.io/web_test.github.io/oxforee/infor.html)
-- **Key Features:**
-  - **Sentence Structures:** Simple, Compound, and Complex patterns.
-  - **Thai Logic Fixes:** Addressing common mistakes like "Have vs There is".
-  - **Speaking Secrets:** Phonics rules, Magic E, Digraphs, and Sound Merging.
-  - **Casual Reductions:** Master "Wanna", "Gotta", "Tryna", and more.
+- **11 Essential Sections:**
+  1. **Structure & Parts of Speech**: Basic & Advanced classifications.
+  2. **Tenses Cheat Sheet**: 12 Tenses with Timeline concepts.
+  3. **Question Helper**: Question Tags (Thai "Chai mai?") & structures.
+  4. **Modal Verbs**: Nuances of Modals & Past Modals (Should have V3).
+  5. **Comparison**: Higher-level comparative structures.
+  6. **Prepositions**: Transport logic (In/On) & Confusing pairs.
+  7. **Nouns & Quantifiers**: Articles (A/An/The) & Quantity words.
+  8. **Thai to English Logic**: MAJOR fixes for "Have vs There is", Sulk, etc.
+  9. **If-Clauses & Connectors**: All Conditionals & logical connectors.
+  10. **Advanced Grammar**: Gerunds, Participles, Used to/Be used to.
+  11. **Speaking & Pronunciation**: Magic E, Phonics, & Casual Slang (Wanna/Gotta).
 
-### 🗂️ 2. Oxford 3000+ Flashcards (v.2)
-Master the most essential vocabulary in English with interactive flashcards.
+### 🗂️ 2. Oxford 3000+ Flashcards (v.1)
+Master the 3000 most essential English words.
+- **Web App:** [Oxford 3000+ v.1](https://word-eng.web.app/)
+- **Key Features:**
+  - Simple list of 3000 core words.
+  - Quick translation and audio on click.
+
+### 🗂️ 3. Oxford 3000+ Flashcards (v.2)
+The enhanced learning experience with deep tracking.
 - **Web App:** [Oxford 3000+ v.2](https://robot-eng.github.io/web_test.github.io/oxforee/index.html)
 - **Key Features:**
-  - CEFR levels (A1-C1).
-  - Modern, responsive UI for mobile and desktop.
-  - Native Pronunciation (TTS).
+  - **CEFR Levels**: Track progress from A1 to C1.
+  - **Modern UI**: Fully responsive for mobile and desktop.
+  - **Pronunciation**: Native Text-to-Speech (TTS) integration.
+  - **Integrated Encyclopedia**: Direct access to grammar guides.
 
 ---
 
