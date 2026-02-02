@@ -1,0 +1,48 @@
+/* uiux.css — small modern UI tweaks to enhance layout and readability */
+:root{
+  --content-max: 1100px;
+}
+
+/* container improvements */
+#tips-section, .app { max-width: var(--content-max); margin-left:auto; margin-right:auto; }
+
+/* headings */
+h1,h2,h3{font-family: 'Plus Jakarta Sans', Inter, sans-serif; color:var(--text-main)}
+
+/* improved accordion visuals */
+.accordion-item{border-radius:16px; border:1px solid var(--border); background:linear-gradient(180deg, rgba(255,255,255,0.6), transparent); padding:0; overflow:hidden}
+.accordion-header{padding:18px 20px; display:flex; justify-content:space-between; align-items:center; cursor:pointer}
+.accordion-header:hover{background:var(--bg-card); box-shadow:var(--shadow-md)}
+.accordion-content{max-height:0; transition: max-height 0.35s ease; overflow:hidden}
+.accordion-content.open{max-height:2000px; padding:20px}
+
+/* nicer section numbers */
+.section-num{width:44px; height:44px; border-radius:12px; display:inline-flex; align-items:center; justify-content:center; font-weight:800}
+
+/* readable text */
+.accordion-body{font-size:15px; color:var(--text-secondary)}
+
+/* cards */
+.bg-white{background:var(--bg-card) !important}
+.rounded-2xl{border-radius:18px}
+
+/* responsiveness tweaks */
+@media (max-width:768px){
+  :root{--content-max: 92vw}
+  .accordion-header{padding:14px}
+}
+
+/* subtle utility */
+.badge{display:inline-block;padding:6px 10px;border-radius:999px;background:var(--bg-pill);color:var(--text-secondary);font-weight:700}
+
+/* typography improvements for tables */
+.grammar-table th{background:transparent;color:var(--text-main);font-weight:700;padding:10px;text-align:left}
+.grammar-table td{padding:10px;color:var(--text-secondary)}
+
+/* CTA tweaks */
+button.option-btn{transition: transform 0.18s ease, box-shadow 0.18s ease}
+button.option-btn.correct{background:var(--success-bg);color:var(--success-text)}
+button.option-btn.wrong{background:var(--danger-bg);color:var(--danger-text)}
+
+/* small utility for content spacing */
+.container-gap{gap:20px}

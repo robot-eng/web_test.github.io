@@ -170,6 +170,28 @@ const APP = {
                 this.loadMore();
             }
         });
+        // Mobile menu toggle: ensure button does something even if added before init
+        const mmBtn = document.querySelector('.mobile-menu-toggle');
+        if (mmBtn) mmBtn.addEventListener('click', () => this.toggleMobileMenu());
+    },
+
+    toggleMobileMenu() {
+        const popup = document.getElementById('mobilePopup');
+        const header = document.getElementById('mainHeader');
+        const userActions = document.querySelector('.user-actions');
+        if (!popup || !header || !userActions) return;
+
+        if (popup.classList.contains('active')) {
+            // move back into header
+            header.appendChild(userActions);
+            popup.classList.remove('active');
+            header.classList.remove('collapsed');
+        } else {
+            // move actions into popup for mobile view
+            popup.appendChild(userActions);
+            popup.classList.add('active');
+            header.classList.add('collapsed');
+        }
     },
 
     applyFilters() {

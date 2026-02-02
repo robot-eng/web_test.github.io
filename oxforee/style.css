@@ -228,8 +228,8 @@ body {
 }
 
 .back-btn {
-    width: 40px;
-    height: 40px;
+    width: auto;
+    height: auto;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -966,7 +966,11 @@ body {
         margin: 8px 0 !important;
         width: calc(100% - 24px) !important;
         box-sizing: border-box !important;
-        overflow: hidden !important;
+        overflow: visible !important;
+        /* allow children to wrap instead of overflowing */
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 8px !important;
     }
 
     .header .logo-link {
@@ -984,12 +988,237 @@ body {
     .theme-selector { transform: scale(0.95); }
     .streak-pill { padding: 4px 10px !important; font-size: 12px !important; }
 
-    .back-btn { width:36px; height:36px; font-size:18px; }
+    .back-btn { width:auto; height:auto; font-size:18px; }
 
     /* Ensure header children don't push outside */
     .header > * { min-width: 0; }
     .logo-text { min-width: 0; }
     .logo-text h1, .logo-text span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+}
+
+/* Extra small screens: hide less-critical elements and shrink controls */
+@media (max-width: 420px) {
+    .logo-text h1 { font-size: 13px !important; }
+    .logo-text span { display: none !important; }
+    .theme-selector { padding: 2px !important; gap: 4px !important; }
+    .theme-opt { width: 28px !important; height: 28px !important; font-size: 12px !important; }
+    .user-actions { gap: 6px !important; }
+    /* hide streak to save horizontal space on very small devices */
+    .streak-pill { display: none !important; }
+    /* ensure logo icon and actions align on one line when possible */
+    .logo { gap: 8px !important; }
+}
+
+/* ==========================
+   Mobile-first UI Redesign
+   - Compact header with centered logo + hamburger
+   - Bottom fixed nav (app-style)
+   - Compact daily card + stacked lists
+   - Vocab cards use row layout for quick scanning
+   - Modals become bottom-sheet full-width on mobile
+   - Easier touch targets and reduced padding
+   ========================== */
+@media (max-width: 640px) {
+    /* app container: allow full width and reserve space for bottom nav */
+    .app {
+        max-width: 100%;
+        padding: 12px;
+        padding-bottom: 96px; /* reserve for bottom nav */
+    }
+
+    /* Header: center logo, put menu button absolute right */
+    .header {
+        padding: 10px 48px;
+        border-radius: 12px;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .mobile-menu-toggle {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 1300;
+        background: var(--bg-card);
+        box-shadow: var(--shadow-sm);
+    }
+
+    /* compact logo */
+    .logo-icon { width: 36px; height: 36px; font-size: 16px; }
+    .logo-text h1 { font-size: 16px; font-weight: 800; }
+    .logo-text span { display: none; }
+
+    /* daily card: compact horizontal layout */
+    .daily-goal-card {
+        padding: 12px;
+        border-radius: 12px;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    .daily-val { font-size: 18px; }
+
+    /* stats grid: stacked two small pills */
+    .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 14px; }
+    .mini-stat { padding: 10px; border-radius: 12px; }
+
+    /* search: smaller padding */
+    .search-input { padding: 12px 14px 12px 44px; font-size: 15px; }
+    .search-icon { left: 14px; }
+
+    /* filters: keep horizontal scroll but reduce chip size */
+    .filter-chip { padding: 8px 12px; font-size: 13px; }
+
+    /* vocab list: make cards row-based for quick scan */
+    .vocab-list { display: block; }
+    .vocab-card {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 12px;
+        padding: 12px;
+        border-radius: 12px;
+    }
+    .card-top { display:flex; align-items:center; gap:12px; width:100%; }
+    .word-row { display:flex; align-items:center; gap:10px; }
+    .word-text { font-size:16px; }
+    .meaning { font-size:14px; color:var(--text-secondary); }
+    .pos-tag { order: 3; margin-left:auto; }
+
+    .example { font-size:13px; }
+
+    /* bottom fixed nav */
+    .nav-tab-container {
+        position: fixed;
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+        padding: 6px;
+        border-radius: 14px;
+        display: flex;
+        gap: 8px;
+        justify-content: space-between;
+        box-shadow: var(--shadow-sm);
+        z-index: 1400;
+        background: var(--bg-pill);
+    }
+    .nav-tab-btn { flex:1; padding: 10px 8px; margin:0 6px; border-radius:10px; font-size:14px; }
+
+    /* modal bottom-sheet full-width */
+    .modal-content {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        max-width: 100%;
+        border-radius: 16px 16px 0 0;
+        padding: 18px;
+        box-shadow: var(--shadow-md);
+        transform: translateY(0);
+    }
+
+    /* make modal body scrollable and taller */
+    .modal { align-items: flex-end; }
+    .modal .modal-content { max-height: 85vh; overflow:auto; }
+
+    /* slightly reduce header elevation so bottom nav stands out */
+    .header { z-index: 1300; }
+}
+
+/* Content readability improvements for mobile */
+@media (max-width: 640px) {
+    /* Ensure text wraps and long Thai/English strings break cleanly */
+    .meaning, .def-text, .empty-translation, .example {
+        white-space: normal !important;
+        word-break: break-word !important;
+        overflow-wrap: anywhere !important;
+        line-height: 1.7 !important;
+    }
+
+    /* Slightly reduce large headings inside modals and cards */
+    .modal-word { font-size: 22px !important; }
+    .modal .def-text { font-size: 15px !important; }
+
+    /* Vocab card: allow phrase column to grow and truncate intelligently */
+    .vocab-card { align-items: flex-start; }
+    .vocab-card .word-row { min-width: 0; }
+    .vocab-card .meaning { flex: 1 1 auto; min-width: 0; }
+
+    /* Make sure icons / buttons don't push text out */
+    .vocab-card .sound-btn { flex: 0 0 auto; margin-left: 6px; }
+
+    /* Ensure any images or assets scale down */
+    img { max-width: 100%; height: auto; display: block; }
+
+    /* Grammar / large tables: horizontal scroll preserved */
+    #infor .grammar-table, #infor .overflow-x-auto { width: 100%; overflow-x: auto; display: block; }
+
+    /* Reduce line length and increase readability in long text containers */
+    #infor { padding-left: 8px !important; padding-right: 8px !important; }
+}
+
+/* Mobile menu toggle and popup */
+.mobile-menu-toggle {
+    display: none;
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--text-secondary);
+}
+
+@media (max-width: 640px) {
+    /* show compact menu button and hide original actions until moved into popup */
+    .mobile-menu-toggle { display: inline-flex; align-items:center; justify-content:center; }
+    .header .user-actions { display: flex; gap: 8px; }
+    /* prefer to hide original user-actions visually so popup can take it — keep for reparenting */
+    .header.collapsed .user-actions { display: none !important; }
+
+    .mobile-popup {
+        display: none;
+        position: fixed;
+        left: 0;
+        right: 0;
+        /* respect header height and device safe-area (notch) */
+        top: calc(var(--header-height, 70px) + env(safe-area-inset-top, 0px));
+        z-index: 1200;
+        background: var(--bg-glass);
+        backdrop-filter: var(--glass-blur);
+        -webkit-backdrop-filter: var(--glass-blur);
+        padding: 12px;
+        padding-top: calc(12px + env(safe-area-inset-top, 0px));
+        box-shadow: var(--shadow-md);
+        border-radius: 12px;
+        margin: 8px;
+        transition: transform 0.28s cubic-bezier(.2,.9,.3,1), opacity 0.28s ease;
+        transform-origin: top center;
+        transform: translateY(-6px);
+        opacity: 0;
+    }
+
+    .mobile-popup.active {
+        display: block;
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    /* inside popup, ensure elements stack vertically and are touch-friendly */
+    .mobile-popup .user-actions { display:flex; gap:10px; align-items:center; justify-content:flex-end; }
+    .mobile-popup .theme-selector { order: 1; }
+    .mobile-popup .streak-pill { order: 2; }
+    .mobile-popup .sound-btn { order: 3; }
+}
+
+/* Hide the reset button inside popup on very small devices to avoid accidental taps */
+@media (max-width: 640px) {
+    .mobile-popup .reset-btn { display: none !important; }
 }
 
 /* === ENCYCLOPEDIA / GRAMMAR STYLES === */

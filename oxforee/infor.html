@@ -7,6 +7,7 @@
     <title>English Encyclopedia | Oxford 3000 Master</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="uiux.css">
     <script src="script.js"></script>
     <link
         href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Inter:wght@400;600;700&family=Sarabun:wght@300;400;500;600&display=swap"
@@ -19,7 +20,7 @@
         <!-- HEADER (Duplicate from index.html for consistency) -->
         <header class="header" id="mainHeader">
             <div class="flex items-center">
-                <button class="back-btn" onclick="history.back()" title="Go Back">←</button>
+                <button class="back-btn" onclick="history.back()" title="Go Back">🔙🏠</button>
                 <a href="index.html" class="logo-link">
                     <div class="logo">
                         <div class="logo-icon">O</div>
@@ -46,16 +47,17 @@
                         </svg>
                     </button>
                 </div>
-                <div class="streak-pill">🔥 <span id="streakCount">12</span></div>
+                <!-- <div class="streak-pill">🔥 <span id="streakCount">12</span></div>
                 <button class="sound-btn"
-                    onclick="if(confirm('Reset all progress?')){localStorage.clear(); location.reload();}">↺</button>
+                    onclick="if(confirm('Reset all progress?')){localStorage.clear(); location.reload();}">↺</button> -->
             </div>
         </header>
 
         <!-- NAVIGATION TABS -->
         <div class="nav-tab-container">
-            <button class="nav-tab-btn" id="tabVocab" onclick="location.href='index.html'">📚 คำศัพท์</button>
-            <button class="nav-tab-btn active" id="tabInfor" onclick="location.href='infor.html'">📖 คู่มือ</button>
+            <button class="nav-tab-btn active" id="tabVocab" onclick="location.href='index.html'">📚 คำศัพท์</button>
+            <button class="nav-tab-btn" id="tabInfor" onclick="location.href='infor.html'">📖 คู่มือ</button>
+            <button class="nav-tab-btn" id="tabgame" onclick="location.href='game.html'">👾 เกม</button>
         </div>
 
         <div id="tips-section" class="page-content active max-w-4xl mx-auto p-4 md:p-8">
