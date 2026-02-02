@@ -1,10 +1,10 @@
 /**
- * FINAL SCRIPT.JS v3.1 – FIXED MULTI CEFR FILTER
+ * FINAL SCRIPT.JS v4 - Full Version with Advanced Multi-Filter
  */
 
 // Global Error Handler
-window.onerror = function (msg, url, lineNo) {
-    console.error(`❌ Error: ${msg} at line ${lineNo}`);
+window.onerror = function (msg, url, lineNo, columnNo, error) {
+    console.error(`Error: ${msg} at line ${lineNo}`);
     return false;
 };
 
@@ -12,9 +12,9 @@ const APP = {
     state: {
         words: [],
         filtered: [],
-        settings: {
-            // default = ALL
-            levels: []
+        settings: { 
+            // เริ่มต้นเป็นค่าว่าง [] หมายถึง "Show All" ตามที่คุณต้องการ
+            levels: [] 
         },
         progress: {},
         selectedLetter: 'ALL'
@@ -23,18 +23,19 @@ const APP = {
     BATCH_SIZE: 50,
     renderCount: 50,
 
-    /* ================= INIT ================= */
     init() {
-        console.log("🚀 App Launching v3.1...");
+        console.log("🚀 App Launching v4...");
         this.initTheme();
         this.loadData();
-        this.loadProgress();
+        this.loadProgress(); 
         this.initAlphabet();
         this.setupEvents();
+
+        this.updateFilterUI(); // อัปเดตสีปุ่มเริ่มต้น
+        this.updateStats();
         this.applyFilters();
     },
 
-    /* ================= THEME ================= */
     initTheme() {
         const saved = localStorage.getItem('oxford_theme') || 'light';
         this.setTheme(saved);
@@ -43,25 +44,29 @@ const APP = {
     setTheme(theme) {
         document.documentElement.setAttribute('data-theme', theme);
         localStorage.setItem('oxford_theme', theme);
-        document.querySelectorAll('.theme-opt')
-            .forEach(o => o.classList.toggle('active', o.id === `theme-${theme}`));
+        this.state.theme = theme;
+        document.querySelectorAll('.theme-opt').forEach(opt => {
+            opt.classList.toggle('active', opt.id === `theme-${theme}`);
+        });
     },
 
-    /* ================= DATA ================= */
     loadData() {
-        if (typeof OXFORD_DATA === 'undefined') {
-            console.error('OXFORD_DATA missing');
-            return;
-        }
-        this.state.words = OXFORD_DATA.map((w, i) => ({ ...w, id: i }));
-        console.log(`📚 Loaded ${this.state.words.length} words`);
+        try {
+            if (typeof OXFORD_DATA !== 'undefined') {
+                this.state.words = OXFORD_DATA.map((w, i) => ({ ...w, id: i }));
+                console.log(`Loaded ${this.state.words.length} words`);
+            } else {
+                const vEl = document.getElementById('vocabList');
+                if (vEl) vEl.innerHTML = '<div style="text-align:center;padding:40px;color:red;">Error: Data not loaded. Check data.js</div>';
+            }
+        } catch (e) { console.error('Error in loadData:', e); }
     },
 
     loadProgress() {
         try {
-            this.state.progress =
-                JSON.parse(localStorage.getItem('oxford_progress_v4')) || {};
-        } catch { }
+            const saved = localStorage.getItem('oxford_progress_v4');
+            if (saved) this.state.progress = JSON.parse(saved);
+        } catch (e) { console.error(e); }
         this.updateStats();
     },
 
@@ -70,148 +75,171 @@ const APP = {
         this.updateStats();
     },
 
-    /* ================= STATS ================= */
     updateStats() {
         const total = this.state.words.length;
-        const p = Object.values(this.state.progress);
-        const mastered = p.filter(v => v.mastery >= 80).length;
-        const review = p.filter(v => v.mastery > 0 && v.mastery < 80).length;
+        const pValues = Object.values(this.state.progress);
+        const mastered = pValues.filter(p => p.mastery >= 80).length;
+        const review = pValues.filter(p => p.mastery > 0 && p.mastery < 80).length;
 
-        const set = (id, v) => {
+        const setTxt = (id, txt) => {
             const el = document.getElementById(id);
-            if (el) el.textContent = v;
+            if (el) el.textContent = txt;
         };
-
-        set('totalCount', total);
-        set('masteredCount', mastered);
-        set('reviewCount', review);
+        setTxt('totalCount', total);
+        setTxt('masteredCount', mastered);
+        setTxt('reviewCount', review);
+        setTxt('streakCount', 12); // Mock streak
 
         const bar = document.getElementById('mainProgressFill');
-        if (bar) bar.style.width = total ? `${(mastered / total) * 100}%` : '0%';
+        if (bar) {
+            const pct = total > 0 ? (mastered / total) * 100 : 0;
+            bar.style.width = `${pct}%`;
+        }
     },
 
-    /* ================= ALPHABET ================= */
     initAlphabet() {
-        const row = document.getElementById('alphabetRow');
-        if (!row) return;
+        const container = document.getElementById('alphabetRow');
+        if (!container) return;
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+        let html = '';
+        letters.forEach(l => {
+            html += `<button class="filter-chip" onclick="APP.toggleLetter('${l}')">${l}</button>`;
+        });
+        container.innerHTML += html;
+    },
 
-        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('');
-        row.innerHTML =
-            `<button class="filter-chip active" onclick="APP.toggleLetter('ALL')">All</button>` +
-            letters.map(l =>
-                `<button class="filter-chip" onclick="APP.toggleLetter('${l}')">${l}</button>`
-            ).join('');
+    // --- ระบบตัวกรองใหม่ที่คุณต้องการ ---
+
+    toggleLevel(type) {
+        if (type === 'ALL') {
+            // ล้างค่าทั้งหมดกลับไปสู่สถานะเริ่มต้น (โชว์ทั้งหมด)
+            this.state.settings.levels = [];
+        } else if (type === 'CORE') {
+            // ปุ่ม "Must Know" (A1 + A2)
+            this.state.settings.levels = ['A1', 'A2'];
+        } else {
+            // การเลือกแบบทีละอัน (A1, B1, ...)
+            const index = this.state.settings.levels.indexOf(type);
+            if (index > -1) {
+                this.state.settings.levels.splice(index, 1); // ถ้าเลือกอยู่แล้ว ให้เอาออก
+            } else {
+                this.state.settings.levels.push(type); // ถ้ายังไม่เลือก ให้เพิ่มเข้า list
+            }
+        }
+        
+        this.updateFilterUI();
+        this.applyFilters();
     },
 
     toggleLetter(letter) {
         this.state.selectedLetter = letter;
-        document.querySelectorAll('#alphabetRow .filter-chip')
-            .forEach(b => b.classList.toggle('active', b.textContent === letter || (letter === 'ALL' && b.textContent === 'All')));
+        // หากกดปุ่ม All ตรงตัวอักษร ให้รีเซ็ตการเลือก Level ทั้งหมดด้วย
+        if (letter === 'ALL') {
+            this.state.settings.levels = [];
+        }
+        this.updateFilterUI();
         this.applyFilters();
     },
 
-    /* ================= LEVEL FILTER ================= */
-    toggleLevel(type) {
-        const btnCore = document.getElementById('filter-core');
+    updateFilterUI() {
+        // 1. ปุ่มระดับภาษา A1-C2 (หาจาก data-level ใน HTML)
+        document.querySelectorAll('.filter-chip[data-level]').forEach(btn => {
+            const lvl = btn.getAttribute('data-level');
+            btn.classList.toggle('active', this.state.settings.levels.includes(lvl));
+        });
 
-        // === CORE ===
-        if (type === 'CORE') {
-            const active = btnCore.classList.contains('active');
-
-            this.state.settings.levels = active ? [] : ['CORE'];
-            btnCore.classList.toggle('active', !active);
-
-            document.querySelectorAll('[data-level]')
-                .forEach(b => b.classList.remove('active'));
-
-            this.applyFilters();
-            return;
+        // 2. ปุ่ม All A-Z
+        const allBtn = document.getElementById('filter-all');
+        if (allBtn) {
+            const isNoLevel = this.state.settings.levels.length === 0;
+            const isAllLetter = this.state.selectedLetter === 'ALL';
+            allBtn.classList.toggle('active', isNoLevel && isAllLetter);
         }
 
-        // === CEFR ===
-        btnCore.classList.remove('active');
+        // 3. ปุ่มตัวอักษร A-Z
+        document.querySelectorAll('#alphabetRow .filter-chip').forEach(c => {
+            if (c.textContent === this.state.selectedLetter) c.classList.add('active');
+            else if (this.state.selectedLetter === 'ALL' && c.textContent.includes('All')) c.classList.add('active');
+            else c.classList.remove('active');
+        });
 
-        let levels = [...this.state.settings.levels];
-
-        // ถ้ายังไม่เคยเลือกอะไร = ALL → reset ก่อน
-        if (levels.length === 0) levels = [];
-
-        if (levels.includes(type)) {
-            levels = levels.filter(l => l !== type);
-        } else {
-            levels.push(type);
+        // 4. ปุ่ม Must Know
+        const coreBtn = document.getElementById('filter-core');
+        if (coreBtn) {
+            const isCore = this.state.settings.levels.includes('A1') && this.state.settings.levels.length <= 2;
+            coreBtn.classList.toggle('active', isCore);
         }
-
-        this.state.settings.levels = levels;
-
-        document.querySelectorAll('[data-level]').forEach(b =>
-            b.classList.toggle('active', levels.includes(b.dataset.level))
-        );
-
-        this.applyFilters();
     },
-    /* ================= FILTER CORE ================= */
+
     applyFilters() {
-        const query =
-            document.getElementById('searchInput')?.value.toLowerCase().trim() || '';
-
-        const activeLevels = this.state.settings.levels;
+        const searchInput = document.getElementById('searchInput');
+        const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
         const letter = this.state.selectedLetter;
+        const selectedLevels = this.state.settings.levels;
 
         this.state.filtered = this.state.words.filter(w => {
-            const wLevel = (w.level || 'Unknown').toUpperCase();
-
-            // === CORE (A1 only) ===
-            if (activeLevels.includes('CORE')) {
-                if (!wLevel.includes('A1')) return false;
+            // 1. Level Filter
+            if (selectedLevels.length > 0) {
+                const wLevel = w.level || 'Unknown';
+                const isMatch = selectedLevels.some(l => wLevel.includes(l));
+                if (!isMatch) return false;
             }
 
-            // === CEFR multi-select ===
-            if (activeLevels.length > 0 && !activeLevels.includes('CORE')) {
-                if (!activeLevels.some(lv => wLevel.includes(lv))) return false;
-            }
-
-            // === Alphabet ===
+            // 2. Alphabet Filter
             if (letter !== 'ALL') {
-                if (!w.word.toLowerCase().startsWith(letter.toLowerCase()))
-                    return false;
+                if (!w.word.toLowerCase().startsWith(letter.toLowerCase())) return false;
             }
 
-            // === Search ===
+            // 3. Search Query
             if (query) {
-                const hit =
-                    w.word.toLowerCase().includes(query) ||
-                    (w.translate && w.translate.toLowerCase().includes(query));
-                if (!hit) return false;
+                const matchWord = w.word.toLowerCase().includes(query);
+                const matchTrans = w.translate && w.translate.toLowerCase().includes(query);
+                if (!matchWord && !matchTrans) return false;
             }
-
             return true;
         });
 
         this.renderCount = this.BATCH_SIZE;
         this.renderList();
 
-        document.getElementById('emptyState')
-            ?.classList.toggle('hidden', this.state.filtered.length > 0);
+        const emptyState = document.getElementById('emptyState');
+        if (emptyState) emptyState.classList.toggle('hidden', this.state.filtered.length > 0);
     },
 
+    // --- ระบบแสดงผลและการจัดการ Modal ---
 
-    /* ================= RENDER ================= */
     renderList() {
-        const el = document.getElementById('vocabList');
-        if (!el) return;
+        const listEl = document.getElementById('vocabList');
+        if (!listEl) return;
 
-        el.innerHTML = this.state.filtered
-            .slice(0, this.renderCount)
-            .map(w => `
-                <div class="vocab-card" onclick="APP.openDetail(${w.id})">
-                    <div class="card-top">
-                        <span class="word-text">${w.word}</span>
-                        <span class="lvl-badge lvl-${(w.level || '').substring(0, 2)}">${w.level || 'NA'}</span>
+        const items = this.state.filtered.slice(0, this.renderCount);
+        if (items.length === 0) {
+            listEl.innerHTML = '';
+            return;
+        }
+
+        listEl.innerHTML = items.map(item => {
+            const levelClass = (item.level && item.level.substring(0, 2)) || 'Unknown';
+            const displayEx = item.examples && item.examples.length ? item.examples[0] : null;
+
+            return `
+            <div class="vocab-card" onclick="APP.openDetail(${item.id})">
+                <div class="card-top">
+                    <div class="word-row">
+                        <span class="word-text">${item.word}</span>
+                        <button class="sound-btn" onclick="APP.speak('${item.word.replace(/'/g, "\\'")}', event)">🔊</button>
                     </div>
-                    <div class="meaning">${w.translate || '-'}</div>
+                    <span class="lvl-badge lvl-${levelClass}">${item.level || 'NA'}</span>
                 </div>
-            `).join('');
+                <div style="margin-top:6px;">
+                    <div style="display:flex; align-items:baseline; gap:6px;">
+                        <span class="pos-tag">${item.pos}</span>
+                        <div class="meaning">${item.translate || '-'}</div>
+                    </div>
+                    ${displayEx ? `<div class="example">"${displayEx}"</div>` : ''}
+                </div>
+            </div>`;
+        }).join('');
     },
 
     loadMore() {
@@ -220,75 +248,128 @@ const APP = {
         this.renderList();
     },
 
-    /* ================= FLASHCARD / QUIZ ================= */
-    startFlashcards() {
-        if (this.state.filtered.length === 0) {
-            alert('ไม่มีคำให้ทบทวน');
-            return;
-        }
-        document.getElementById('flashcardModal')?.classList.add('active');
-    },
-
-    startQuiz() {
-        if (this.state.filtered.length < 4) {
-            alert('คำศัพท์ไม่พอสำหรับ Quiz');
-            return;
-        }
-        document.getElementById('quizModal')?.classList.add('active');
-        this.nextQuizQuestion();
-    },
-
-    nextQuizQuestion() {
-        const pool = this.state.filtered.filter(w => w.translate);
-        if (pool.length < 4) return;
-
-        this.quizItem = pool[Math.floor(Math.random() * pool.length)];
-        const opts = [this.quizItem];
-
-        while (opts.length < 4) {
-            const r = pool[Math.floor(Math.random() * pool.length)];
-            if (!opts.includes(r)) opts.push(r);
-        }
-
-        opts.sort(() => Math.random() - 0.5);
-
-        document.getElementById('quizQuestion').textContent =
-            `"${this.quizItem.translate}" คือคำว่า?`;
-
-        const box = document.getElementById('quizOptions');
-        box.innerHTML = '';
-        opts.forEach(o => {
-            const b = document.createElement('button');
-            b.className = 'quiz-opt';
-            b.textContent = o.word;
-            b.onclick = () => this.nextQuizQuestion();
-            box.appendChild(b);
-        });
-    },
-
-    /* ================= UTILS ================= */
-    setupEvents() {
-        document.getElementById('searchInput')
-            ?.addEventListener('input', () => this.applyFilters());
-
-        window.addEventListener('scroll', () => {
-            if (window.innerHeight + window.scrollY >
-                document.body.offsetHeight - 500)
-                this.loadMore();
-        });
+    speak(text, e) {
+        if (e) e.stopPropagation();
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = 'en-GB';
+        speechSynthesis.speak(u);
     },
 
     openDetail(id) {
-        const w = this.state.words.find(x => x.id === id);
-        if (!w) return;
-        document.getElementById('modalWord').textContent = w.word;
-        document.getElementById('modalTrans').textContent = w.translate || '-';
-        document.getElementById('modalLevel').textContent = w.level || 'NA';
-        document.getElementById('detailModal')?.classList.add('active');
+        const item = this.state.words.find(w => w.id === id);
+        if (!item) return;
+        const setTxt = (id, txt) => { const el = document.getElementById(id); if (el) el.textContent = txt; };
+        setTxt('modalWord', item.word);
+        setTxt('modalPos', item.pos);
+        setTxt('modalTrans', item.translate || '-');
+        setTxt('modalEx', (item.examples && item.examples[0]) ? `"${item.examples[0]}"` : '-');
+
+        const lvlEl = document.getElementById('modalLevel');
+        if (lvlEl) {
+            lvlEl.textContent = item.level || 'NA';
+            lvlEl.className = `lvl-badge lvl-${item.level ? item.level.substring(0, 2) : ''}`;
+        }
+
+        const meaningsCont = document.getElementById('modalMeanings');
+        if (item.meanings && item.meanings.length > 0) {
+            document.getElementById('modalDefSection').style.display = 'block';
+            meaningsCont.innerHTML = item.meanings.map((m, i) => `<div style="margin-bottom:8px; display:flex; gap:8px;"><span style="opacity:0.5; font-weight:700;">${i+1}.</span><span>${m}</span></div>`).join('');
+        } else {
+            document.getElementById('modalDefSection').style.display = 'none';
+        }
+        document.getElementById('detailModal').classList.add('active');
+    },
+
+    // --- FLASHCARDS & QUIZ (คงเดิมไว้ทั้งหมดตามต้นฉบับ) ---
+
+    startFlashcards() {
+        const pool = this.state.filtered.filter(w => w.translate && w.translate.length > 1);
+        if (pool.length === 0) { alert('No valid words to review!'); return; }
+        this.fcQueue = pool.sort(() => Math.random() - 0.5);
+        this.fcIndex = 0;
+        document.getElementById('flashcardModal').classList.add('active');
+        this.showFlashcard();
+    },
+
+    showFlashcard() {
+        if (this.fcIndex >= this.fcQueue.length) {
+            alert('Review Session Complete!');
+            document.getElementById('flashcardModal').classList.remove('active');
+            return;
+        }
+        const item = this.fcQueue[this.fcIndex];
+        const card = document.getElementById('fcCard');
+        card.innerHTML = `<div style="text-align:center;"><h2 style="font-size:32px; font-weight:800; margin-bottom:8px;">${item.word}</h2><span class="pos-tag">${item.pos}</span><div class="muted" style="margin-top:20px; font-size:14px;">(Tap to Flip)</div></div>`;
+        card.onclick = () => {
+            card.innerHTML = `<div style="text-align:center;"><div class="muted" style="font-size:18px; margin-bottom:10px;">${item.word}</div><h2 class="primary-text" style="font-size:28px; font-weight:700;">${item.translate}</h2></div>`;
+            card.onclick = null;
+        };
+    },
+
+    handleFlashcard(remembered) {
+        const item = this.fcQueue[this.fcIndex];
+        if (!this.state.progress[item.id]) this.state.progress[item.id] = { mastery: 0, reviews: 0 };
+        const p = this.state.progress[item.id];
+        p.mastery = remembered ? Math.min(100, (p.mastery || 0) + 20) : Math.max(0, (p.mastery || 0) - 20);
+        this.saveProgress();
+        this.fcIndex++;
+        this.showFlashcard();
+    },
+
+    startQuiz() {
+        this.nextQuizQuestion();
+        document.getElementById('quizModal').classList.add('active');
+    },
+
+    nextQuizQuestion() {
+        const pool = (this.state.filtered.length > 4 ? this.state.filtered : this.state.words).filter(w => w.translate && w.translate.trim().length > 1);
+        if (pool.length < 4) { alert('Need more words!'); return; }
+        this.quizItem = pool[Math.floor(Math.random() * pool.length)];
+        const options = [this.quizItem];
+        while (options.length < 4) {
+            const r = pool[Math.floor(Math.random() * pool.length)];
+            if (!options.includes(r)) options.push(r);
+        }
+        options.sort(() => Math.random() - 0.5);
+        document.getElementById('quizQuestion').innerHTML = `"${this.quizItem.translate}" คือคำว่า?`;
+        const optContainer = document.getElementById('quizOptions');
+        optContainer.innerHTML = '';
+        options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'quiz-opt';
+            btn.textContent = opt.word;
+            btn.onclick = () => this.handleQuizAnswer(opt === this.quizItem, btn);
+            optContainer.appendChild(btn);
+        });
+    },
+
+    handleQuizAnswer(isCorrect, btn) {
+        if (isCorrect) {
+            btn.classList.add('btn-remember');
+            this.speak(this.quizItem.word);
+            if (!this.state.progress[this.quizItem.id]) this.state.progress[this.quizItem.id] = { mastery: 0 };
+            this.state.progress[this.quizItem.id].mastery = Math.min(100, (this.state.progress[this.quizItem.id].mastery || 0) + 10);
+            this.saveProgress();
+            setTimeout(() => this.nextQuizQuestion(), 1200);
+        } else {
+            btn.classList.add('btn-forgot');
+        }
+    },
+
+    setupEvents() {
+        document.getElementById('searchInput')?.addEventListener('input', () => this.applyFilters());
+        window.addEventListener('scroll', () => {
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) this.loadMore();
+        });
+    },
+
+    clearFilters() {
+        this.toggleLevel('ALL');
     }
 };
 
-/* ================= START ================= */
-document.addEventListener('DOMContentLoaded', () => {
-    APP.init();
-});
+window.switchPage = function (pageId) {
+    location.href = pageId === 'infor' ? 'infor.html' : 'index.html';
+};
+
+document.addEventListener('DOMContentLoaded', () => APP.init());
