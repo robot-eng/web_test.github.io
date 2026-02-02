@@ -32,7 +32,8 @@
         <div class="theme-selector">
           <button class="theme-opt" onclick="APP.setTheme('light')" id="theme-light" title="Light Mode">☀️</button>
           <button class="theme-opt" onclick="APP.setTheme('dark')" id="theme-dark" title="Dark Mode">🌙</button>
-          <button class="theme-opt" onclick="APP.setTheme('pastel')" id="theme-pastel" title="Pastel Mode" aria-label="Pastel">
+          <button class="theme-opt" onclick="APP.setTheme('pastel')" id="theme-pastel" title="Pastel Mode"
+            aria-label="Pastel">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
               <circle cx="12" cy="12" r="9" fill="url(#g)" />
               <defs>
@@ -107,11 +108,27 @@
       </div>
 
       <!-- FILTERS -->
+      <!-- FILTERS -->
       <div class="filters-row">
-        <button class="filter-chip chip-must-know" id="filter-core" onclick="APP.toggleLevel('CORE')">⭐ Must
-          Know</button>
-        <button class="filter-chip active" id="filter-all" onclick="APP.toggleLetter('ALL')">All</button>
+        <button class="filter-chip chip-must-know" id="filter-core" onclick="APP.toggleLevel('CORE')">
+          ⭐ Must Know
+        </button>
+        <button class="filter-chip active" id="filter-all" onclick="APP.toggleLetter('ALL')">
+          All
+        </button>
       </div>
+
+      <!-- CEFR LEVEL FILTER -->
+      <div class="filters-row">
+        <button class="filter-chip lvl-A1" data-level="A1" onclick="APP.toggleLevel('A1')">A1</button>
+        <button class="filter-chip lvl-A2" data-level="A2" onclick="APP.toggleLevel('A2')">A2</button>
+        <button class="filter-chip lvl-B1" data-level="B1" onclick="APP.toggleLevel('B1')">B1</button>
+        <button class="filter-chip lvl-B2" data-level="B2" onclick="APP.toggleLevel('B2')">B2</button>
+        <button class="filter-chip lvl-C1" data-level="C1" onclick="APP.toggleLevel('C1')">C1</button>
+        <button class="filter-chip lvl-C2" data-level="C2" onclick="APP.toggleLevel('C2')">C2</button>
+
+      </div>
+
       <div class="filters-row" id="alphabetRow">
         <!-- A-Z -->
       </div>
@@ -124,7 +141,8 @@
         <div class="empty-icon">🍃</div>
         <p>No words found.</p>
         <button onclick="APP.clearFilters()"
-          style="margin-top:10px; font-weight:600; background:none; border:none; cursor:pointer;" class="primary-text">Clear
+          style="margin-top:10px; font-weight:600; background:none; border:none; cursor:pointer;"
+          class="primary-text">Clear
           Filters</button>
       </div>
     </div>
