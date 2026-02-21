@@ -20,6 +20,63 @@ function formatAmount(amount) {
     return amount.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
+// custom alert/confirm dialog (non-blocking)
+function showDialog({ message, showCancel = false, okText = 'ตกลง', cancelText = 'ยกเลิก' }) {
+    return new Promise((resolve) => {
+        const overlay = document.getElementById('dialog-overlay');
+        const msgEl = document.getElementById('dialog-message');
+        const okBtn = document.getElementById('dialog-ok');
+        const cancelBtn = document.getElementById('dialog-cancel');
+
+        msgEl.textContent = message;
+        okBtn.textContent = okText;
+        cancelBtn.textContent = cancelText;
+        cancelBtn.style.display = showCancel ? '' : 'none';
+
+        function cleanup() {
+            overlay.classList.remove('active');
+            okBtn.removeEventListener('click', okHandler);
+            cancelBtn.removeEventListener('click', cancelHandler);
+        }
+        function okHandler() {
+            cleanup();
+            resolve(true);
+        }
+        function cancelHandler() {
+            cleanup();
+            resolve(false);
+        }
+
+        okBtn.addEventListener('click', okHandler);
+        cancelBtn.addEventListener('click', cancelHandler);
+        overlay.classList.add('active');
+    });
+}
+
+function showAlert(msg) {
+    return showDialog({ message: msg, showCancel: false });
+}
+
+function showConfirm(msg) {
+    return showDialog({ message: msg, showCancel: true });
+}
+
+// close dialog when tapping overlay itself
+const dialogOverlay = document.getElementById('dialog-overlay');
+if (dialogOverlay) {
+    dialogOverlay.addEventListener('click', (e) => {
+        if (e.target === dialogOverlay) {
+            const cancelBtn = document.getElementById('dialog-cancel');
+            const okBtn = document.getElementById('dialog-ok');
+            if (cancelBtn && cancelBtn.style.display !== 'none') {
+                cancelBtn.click();
+            } else if (okBtn) {
+                okBtn.click();
+            }
+        }
+    });
+}
+
 function getThaiDate(dateString) {
     const date = new Date(dateString);
     return date.toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: 'numeric' });
@@ -342,8 +399,8 @@ function renderFullTransactions() {
     }).join('');
 }
 
-function deleteTransaction(index) {
-    if (confirm('ต้องการลบรายการนี้ใช่หรือไม่?')) {
+async function deleteTransaction(index) {
+    if (await showConfirm('ต้องการลบรายการนี้ใช่หรือไม่?')) {
         transactions.splice(index, 1);
         localStorage.setItem('transactions', JSON.stringify(transactions));
         updateUI();
@@ -351,7 +408,7 @@ function deleteTransaction(index) {
 }
 
 if (transactionForm) {
-    transactionForm.addEventListener('submit', (e) => {
+    transactionForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         const amount = parseFloat(document.getElementById('amount').value);
@@ -360,15 +417,15 @@ if (transactionForm) {
         const date = document.getElementById('date').value;
 
         if (!amount || amount <= 0) {
-            alert('กรุณาใส่จำนวนเงินที่ถูกต้อง');
+            await showAlert('กรุณาใส่จำนวนเงินที่ถูกต้อง');
             return;
         }
         if (!description) {
-            alert('กรุณาใส่คำอธิบาย');
+            await showAlert('กรุณาใส่คำอธิบาย');
             return;
         }
         if (!date) {
-            alert('กรุณาเลือกวันที่');
+            await showAlert('กรุณาเลือกวันที่');
             return;
         }
 
@@ -519,49 +576,49 @@ chartTypeButtons.forEach(btn => {
 });
 
 // ==================== SETTINGS ====================
-document.getElementById('clear-data-btn')?.addEventListener('click', () => {
-    if (confirm('คุณแน่ใจหรือไม่? ข้อมูลจะถูกลบและไม่สามารถกู้คืนได้')) {
-        transactions = [];
-        localStorage.removeItem('transactions');
-        updateUI();
-        alert('ข้อมูลทั้งหมดถูกลบแล้ว');
+document.getElementById('clear-data-btn')?.addEventListener('click', async () => {
+        if (await showConfirm('คุณแน่ใจหรือไม่? ข้อมูลจะถูกลบและไม่สามารถกู้คืนได้')) {
+            transactions = [];
+            localStorage.removeItem('transactions');
+            updateUI();
+            await showAlert('ข้อมูลทั้งหมดถูกลบแล้ว');
     }
 });
 
-document.getElementById('export-data-btn')?.addEventListener('click', () => {
-    const dataStr = JSON.stringify(transactions, null, 2);
-    const dataBlob = new Blob([dataStr], { type: 'application/json' });
-    const url = URL.createObjectURL(dataBlob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `pastel-finance-${new Date().toISOString().split('T')[0]}.json`;
-    link.click();
-    URL.revokeObjectURL(url);
-    alert('ดาวน์โหลดสำเร็จ');
+document.getElementById('export-data-btn')?.addEventListener('click', async () => {
+        const dataStr = JSON.stringify(transactions, null, 2);
+        const dataBlob = new Blob([dataStr], { type: 'application/json' });
+        const url = URL.createObjectURL(dataBlob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `pastel-finance-${new Date().toISOString().split('T')[0]}.json`;
+        link.click();
+        URL.revokeObjectURL(url);
+        await showAlert('ดาวน์โหลดสำเร็จ');
 });
 
 document.getElementById('import-data-btn')?.addEventListener('click', () => {
     document.getElementById('import-file').click();
 });
 
-document.getElementById('import-file')?.addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+document.getElementById('import-file')?.addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
 
-    const reader = new FileReader();
-    reader.onload = (event) => {
-        try {
-            const imported = JSON.parse(event.target.result);
-            if (!Array.isArray(imported)) throw new Error('Invalid format');
-            
-            if (confirm('นำเข้าข้อมูลนี้? (ข้อมูลเดิมจะถูกแทนที่)')) {
-                transactions = imported;
-                localStorage.setItem('transactions', JSON.stringify(transactions));
-                updateUI();
-                alert('นำเข้าสำเร็จ');
-            }
-        } catch (err) {
-            alert('ไฟล์ไม่ถูกต้อง: ' + err.message);
+        const reader = new FileReader();
+        reader.onload = async (event) => {
+            try {
+                const imported = JSON.parse(event.target.result);
+                if (!Array.isArray(imported)) throw new Error('Invalid format');
+                
+                if (await showConfirm('นำเข้าข้อมูลนี้? (ข้อมูลเดิมจะถูกแทนที่)')) {
+                    transactions = imported;
+                    localStorage.setItem('transactions', JSON.stringify(transactions));
+                    updateUI();
+                    await showAlert('นำเข้าสำเร็จ');
+                }
+            } catch (err) {
+                await showAlert('ไฟล์ไม่ถูกต้อง: ' + err.message);
         }
     };
     reader.readAsText(file);
@@ -634,10 +691,10 @@ document.addEventListener('DOMContentLoaded', () => {
         
         installButton.addEventListener('click', () => {
             installPrompt.prompt();
-            installPrompt.userChoice.then(result => {
+            installPrompt.userChoice.then(async result => {
                 console.log('User response:', result.outcome);
                 if (result.outcome === 'accepted') {
-                    alert('🎉 กำลังติดตั้ง Pastel Finance...');
+                    await showAlert('🎉 กำลังติดตั้ง Pastel Finance...');
                 }
                 installButton.remove();
             });

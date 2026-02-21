@@ -293,6 +293,17 @@
         </div>
     </div>
 
+    <!-- custom alert/confirm dialog to avoid browser popup blocking -->
+    <div class="dialog-overlay" id="dialog-overlay" style="display:none;">
+        <div class="dialog-box">
+            <p id="dialog-message"></p>
+            <div class="dialog-buttons">
+                <button id="dialog-ok" class="btn-primary">ตกลง</button>
+                <button id="dialog-cancel" class="btn-primary" style="display:none; background: var(--expense-color);">ยกเลิก</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
