@@ -1,4 +1,5 @@
-const CACHE_NAME = 'pastel-finance-v1';
+// increment CACHE_NAME whenever the core app changes so clients get fresh code
+const CACHE_NAME = 'pastel-finance-v2';
 const RUNTIME_CACHE = 'pastel-finance-runtime';
 
 const ASSETS = [
@@ -61,8 +62,25 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
-    // Handle same-origin requests
+    // Handle same-origin requests - prefer network for critical files so new installs update correctly
     if (url.origin === location.origin) {
+        // force network-first for HTML/JS/CSS to avoid stale app shell
+        if (['.html', '.js', '.css', '/'].some(ext => url.pathname.endsWith(ext))) {
+            event.respondWith(
+                fetch(request)
+                    .then((response) => {
+                        // cache updated response
+                        if (response && response.status === 200) {
+                            const copy = response.clone();
+                            caches.open(RUNTIME_CACHE).then(c => c.put(request, copy));
+                        }
+                        return response;
+                    })
+                    .catch(() => caches.match(request))
+            );
+            return;
+        }
+
         event.respondWith(
             caches.match(request).then((response) => {
                 if (response) {

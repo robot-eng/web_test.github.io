@@ -325,7 +325,8 @@ body {
 /* FAB */
 .fab {
     position: fixed;
-    bottom: 90px;
+    /* move up above bottom nav / home indicator; add safe‑area inset */
+    bottom: calc(90px + var(--safe-area-bottom));
     right: 20px;
     width: 60px;
     height: 60px;
@@ -423,9 +424,13 @@ body {
     max-width: 480px;
     background: var(--white);
     border-radius: 30px 30px 0 0;
-    padding: 30px 24px;
+    /* add extra bottom padding so inputs aren’t hidden by gesture bar */
+    padding: 30px 24px calc(30px + var(--safe-area-bottom));
     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.1);
+    /* ensure inner content can scroll when keyboard is open */
+    max-height: calc(100vh - var(--safe-area-bottom) - 40px);
+    overflow-y: auto;
 }
 
 .modal-overlay.active {

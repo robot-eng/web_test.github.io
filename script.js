@@ -181,10 +181,15 @@ function switchPage(pageId) {
 }
 
 navItems.forEach(item => {
-    item.addEventListener('click', (e) => {
+    const handler = (e) => {
         e.preventDefault();
         const pageId = item.getAttribute('data-page');
         switchPage(pageId);
+    };
+    item.addEventListener('click', handler);
+    item.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
+        handler(e);
     });
 });
 
@@ -220,8 +225,26 @@ window.hideModal = function () {
     transactionForm.reset();
 };
 
-if (openModalBtn) openModalBtn.addEventListener('click', window.showModal);
-if (closeModalBtn) closeModalBtn.addEventListener('click', window.hideModal);
+if (openModalBtn) {
+    // support both click and touch/pointer for reliability on mobile/installed PWAs
+    openModalBtn.addEventListener('click', window.showModal);
+    openModalBtn.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
+        window.showModal();
+    });
+} else {
+    console.warn('Open modal button not found');
+}
+
+if (closeModalBtn) {
+    closeModalBtn.addEventListener('click', window.hideModal);
+    closeModalBtn.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
+        window.hideModal();
+    });
+} else {
+    console.warn('Close modal button not found');
+}
 
 modalOverlay.addEventListener('click', (e) => {
     if (e.target === modalOverlay) window.hideModal();
@@ -327,44 +350,48 @@ function deleteTransaction(index) {
     }
 }
 
-transactionForm.addEventListener('submit', (e) => {
-    e.preventDefault();
+if (transactionForm) {
+    transactionForm.addEventListener('submit', (e) => {
+        e.preventDefault();
 
-    const amount = parseFloat(document.getElementById('amount').value);
-    const description = document.getElementById('description').value.trim();
-    const category = document.getElementById('category').value;
-    const date = document.getElementById('date').value;
+        const amount = parseFloat(document.getElementById('amount').value);
+        const description = document.getElementById('description').value.trim();
+        const category = document.getElementById('category').value;
+        const date = document.getElementById('date').value;
 
-    if (!amount || amount <= 0) {
-        alert('กรุณาใส่จำนวนเงินที่ถูกต้อง');
-        return;
-    }
-    if (!description) {
-        alert('กรุณาใส่คำอธิบาย');
-        return;
-    }
-    if (!date) {
-        alert('กรุณาเลือกวันที่');
-        return;
-    }
+        if (!amount || amount <= 0) {
+            alert('กรุณาใส่จำนวนเงินที่ถูกต้อง');
+            return;
+        }
+        if (!description) {
+            alert('กรุณาใส่คำอธิบาย');
+            return;
+        }
+        if (!date) {
+            alert('กรุณาเลือกวันที่');
+            return;
+        }
 
-    const newTransaction = {
-        amount: amount,
-        description: description,
-        category: category,
-        date: date,
-        type: currentType,
-        id: Date.now()
-    };
+        const newTransaction = {
+            amount: amount,
+            description: description,
+            category: category,
+            date: date,
+            type: currentType,
+            id: Date.now()
+        };
 
-    transactions.unshift(newTransaction);
-    transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
-    localStorage.setItem('transactions', JSON.stringify(transactions));
+        transactions.unshift(newTransaction);
+        transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+        localStorage.setItem('transactions', JSON.stringify(transactions));
 
-    updateUI();
-    window.hideModal();
-    console.log('✅ บันทึกรายการสำเร็จ');
-});
+        updateUI();
+        window.hideModal();
+        console.log('✅ บันทึกรายการสำเร็จ');
+    });
+} else {
+    console.error('Transaction form element not found');
+}
 
 // ==================== CHART DATA ====================
 function updateChartData() {
