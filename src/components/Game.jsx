@@ -71,7 +71,7 @@ const WerewolfChat = ({ messages, onSendMessage, myName }) => {
   return (
     <div className="bg-slate-900/80 border border-red-900/30 rounded-xl flex flex-col h-48 overflow-hidden mb-6">
       <div className="bg-red-950/20 px-3 py-2 border-b border-red-900/20 text-red-400 text-[10px] font-bold uppercase tracking-widest flex items-center justify-between">
-        <span className="flex items-center gap-1"><Skull size={10}/> โทรจิตหมาป่า (เฉพาะเผ่านะ)</span>
+        <span className="flex items-center gap-1"><Skull size={10}/> โทรจิตหมาป่า (เอาไว้คุยกันแบบเงียบ..)</span>
       </div>
       <div className="flex-1 overflow-y-auto p-3 space-y-2 text-left scrollbar-thin scrollbar-thumb-red-900/20">
         {(!messages || messages.length === 0) ? (
@@ -103,16 +103,67 @@ const WerewolfChat = ({ messages, onSendMessage, myName }) => {
   );
 };
 
+const GhostChat = ({ messages, onSendMessage, myName }) => {
+  const [text, setText] = React.useState('');
+  const chatEndRef = React.useRef(null);
+
+  React.useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages?.length]);
+
+  const handleSend = () => {
+    if (text.trim()) {
+      onSendMessage(text, myName);
+      setText('');
+    }
+  };
+
+  return (
+    <div className="bg-slate-900/80 border border-slate-600/30 rounded-xl flex flex-col h-48 overflow-hidden">
+      <div className="bg-slate-700/20 px-3 py-2 border-b border-slate-600/20 text-slate-400 text-[10px] font-bold uppercase tracking-widest flex items-center gap-1">
+        <Ghost size={10}/> แชทวิญญาณ (เฉพาะคนตาย)
+      </div>
+      <div className="flex-1 overflow-y-auto p-3 space-y-2 text-left scrollbar-thin">
+        {(!messages || messages.length === 0) ? (
+          <p className="text-slate-600 text-[10px] text-center italic mt-4">เงียบสงัด... ยังไม่มีวิญญาณไหนพูด</p>
+        ) : (
+          messages.map(m => (
+            <div key={m.id} className="flex flex-col mb-1 last:mb-0">
+              <span className="text-[10px] text-slate-500 font-bold mb-0.5">{m.senderName}</span>
+              <p className="text-xs text-slate-300 bg-slate-700/30 px-2 py-1.5 rounded-lg border-l-2 border-slate-500 self-start max-w-[90%] break-words">{m.text}</p>
+            </div>
+          ))
+        )}
+        <div ref={chatEndRef} />
+      </div>
+      <div className="p-2 bg-slate-800/50 border-t border-slate-600/10 flex gap-2">
+        <input 
+          type="text" 
+          value={text} 
+          onChange={e => setText(e.target.value)}
+          onKeyDown={e => e.key === 'Enter' && handleSend()}
+          placeholder="พิมพ์ข้อความวิญญาณ..."
+          className="flex-1 bg-slate-900 border border-slate-600/20 rounded-lg px-3 py-1 text-xs text-white focus:outline-none focus:border-slate-400 transition-colors"
+        />
+        <button onClick={handleSend} className="p-1.5 bg-slate-700/40 text-slate-400 rounded-lg hover:bg-slate-600/50 transition-colors">
+          <Send size={14} />
+        </button>
+      </div>
+    </div>
+  );
+};
+
 export default function Game({ gameHook }) {
   const {
     roomId, myPlayerId, isHost, roomData,
     updateRoleCount, startGame, setPhase, acknowledgeRole, toggleReady, submitNightAction, 
     hostProcessNight, submitVote, hostProcessVote, hunterShoot, resetGame,
     updateMyPeerId, addBot, removeBot, updatePlayerName, leaveRoom,
-    sendWolfMessage
+    sendWolfMessage, sendGhostMessage
   } = gameHook;
  
   const wolfMessages = roomData?.wolfMessages || [];
+  const ghostMessages = roomData?.ghostMessages || [];
 
   const [dialog, setDialog] = useState({ isOpen: false, text: '', onConfirm: null, isAlert: false, isPrompt: false, initialInput: '' });
   const [showHowToPlay, setShowHowToPlay] = useState(false);
@@ -181,60 +232,54 @@ export default function Game({ gameHook }) {
   };
 
   const TopBar = () => (
-    <div className="flex justify-between items-center mb-6 bg-slate-800 p-4 rounded-xl border border-slate-700">
-      <div>
-        <p className="text-sm text-slate-400 flex items-center gap-2">
-          รหัสห้อง: 
-          <span className="font-mono text-xl text-white tracking-widest bg-slate-900 px-2 py-1 rounded select-all">{roomId}</span>
+    <div className="mb-4 bg-slate-800 p-3 rounded-xl border border-slate-700 space-y-2">
+      {/* Row 1: Room code + Name */}
+      <div className="flex justify-between items-center">
+        <p className="text-xs text-slate-400 flex items-center gap-1.5 min-w-0">
+          <span className="shrink-0">ห้อง:</span>
+          <span className="font-mono text-base text-white tracking-widest bg-slate-900 px-2 py-0.5 rounded select-all">{roomId}</span>
           <button 
             onClick={() => {
               navigator.clipboard.writeText(roomId);
               showAlert('คัดลอกรหัสห้องแล้ว: ' + roomId);
             }}
-            className="p-1.5 bg-slate-700 hover:bg-slate-600 rounded text-slate-300 transition-colors"
-            title="คัดลอกรหัสห้อง"
+            className="p-1 bg-slate-700 hover:bg-slate-600 rounded text-slate-300 transition-colors shrink-0"
           >
-            <Copy size={16} />
+            <Copy size={14} />
           </button>
         </p>
+        <p className="text-xs text-slate-400 text-right truncate ml-2">
+          {me.name} {isHost && '👑'}
+          {me.role && <span className={`block text-[10px] font-bold ${isAlive ? 'text-emerald-400' : 'text-red-400'}`}>{isAlive ? 'มีชีวิต' : 'ตายแล้ว'}</span>}
+        </p>
       </div>
-      <div className="flex items-center gap-4">
-        <div className="flex flex-col items-end">
-          <p className="text-sm text-slate-400">{me.name} {isHost && '(Host)'}</p>
-          {me.role && <p className="font-bold text-red-400 text-sm">{isAlive ? 'มีชีวิต' : 'DIE'}</p>}
-        </div>
-        
-        {/* Leave Room Button */}
+      {/* Row 2: Action buttons */}
+      <div className="flex justify-end items-center gap-2">
         <button 
-          onClick={() => {
-            showConfirm('คุณแน่ใจหรือไม่ว่าต้องการออกจากห้อง?', () => leaveRoom());
-          }}
-          className="p-2 bg-slate-700 hover:bg-red-900/80 rounded-full text-red-400 transition-colors"
+          onClick={() => showConfirm('คุณแน่ใจหรือไม่ว่าต้องการออกจากห้อง?', () => leaveRoom())}
+          className="p-1.5 bg-slate-700 hover:bg-red-900/80 rounded-full text-red-400 transition-colors"
           title="ออกจากห้อง"
         >
-          <LogOut size={20} />
+          <LogOut size={16} />
         </button>
-
-        {/* Info/Rules Button */}
         <button 
           onClick={() => setShowHowToPlay(true)}
-          className="p-2 bg-slate-700 hover:bg-slate-600 rounded-full text-blue-400 transition-colors"
-          title="ดูวิธีเล่นและบทบาท"
+          className="p-1.5 bg-slate-700 hover:bg-slate-600 rounded-full text-blue-400 transition-colors"
+          title="วิธีเล่น"
         >
-          <BookOpen size={20} />
+          <BookOpen size={16} />
         </button>
-
-        {/* Mic Status */}
         <button 
           onClick={isMicOn ? toggleMute : undefined}
-          className={`p-2 rounded-full transition-colors ${!isMicOn ? 'bg-slate-700 text-slate-500 cursor-not-allowed' : (isMuted ? 'bg-red-500/20 text-red-500 hover:bg-red-500/30' : 'bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30')}`}
-          title={!isMicOn ? "ไมค์ถูกปิดโดยระบบ" : (isMuted ? "เปิดไมค์" : "ปิดไมค์")}
+          className={`p-1.5 rounded-full transition-colors ${!isMicOn ? 'bg-slate-700 text-slate-500 cursor-not-allowed' : (isMuted ? 'bg-red-500/20 text-red-500 hover:bg-red-500/30' : 'bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30')}`}
+          title={!isMicOn ? "ไมค์ถูกปิด" : (isMuted ? "เปิดไมค์" : "ปิดไมค์")}
         >
-          {(!isMicOn || isMuted) ? <MicOff size={20} /> : <Mic size={20} />}
+          {(!isMicOn || isMuted) ? <MicOff size={16} /> : <Mic size={16} />}
         </button>
       </div>
     </div>
   );
+
 
   // ==========================================
   // SCREENS
@@ -242,13 +287,13 @@ export default function Game({ gameHook }) {
 
   if (phase === PHASES.SETUP) {
     return (
-      <div className="min-h-screen bg-slate-900 text-slate-100 p-4 md:p-8">
+      <div className="min-h-screen bg-slate-900 text-slate-100 p-3 md:p-8 safe-bottom">
         <Dialog {...dialog} onCancel={closeDialog} />
         <HowToPlayModal isOpen={showHowToPlay} onClose={() => setShowHowToPlay(false)} />
-        <div className="max-w-md mx-auto space-y-6">
+        <div className="max-w-md mx-auto space-y-4">
           <TopBar />
           
-          <div className="bg-slate-800 p-6 rounded-xl shadow-lg border border-slate-700">
+          <div className="bg-slate-800 p-4 rounded-xl shadow-lg border border-slate-700">
             <h2 className="text-xl font-semibold flex items-center gap-2 mb-4"><Users size={20}/> ผู้เล่นที่รอในห้อง ({playersList.length})</h2>
             <ul className="space-y-2 max-h-48 overflow-y-auto pr-2">
               {playersList.map((p, i) => (
@@ -301,7 +346,7 @@ export default function Game({ gameHook }) {
             )}
           </div>
 
-          <div className="bg-slate-800 p-6 rounded-xl shadow-lg border border-slate-700">
+          <div className="bg-slate-800 p-4 rounded-xl shadow-lg border border-slate-700">
             <h2 className="text-xl font-semibold mb-4 text-center">
               {isHost ? 'หัวหน้ากำหนดบทบาท' : 'การตั้งค่าบทบาทในเกม'}
             </h2>
@@ -377,12 +422,12 @@ export default function Game({ gameHook }) {
 
   // Common wrapper for game phases
   const GameScreenLayout = ({ children }) => (
-    <div className="min-h-screen bg-slate-900 text-slate-100 p-4 md:p-8">
+    <div className="min-h-screen bg-slate-900 text-slate-100 p-3 md:p-8 safe-bottom">
       <Dialog {...dialog} onCancel={closeDialog} />
       <HowToPlayModal isOpen={showHowToPlay} onClose={() => setShowHowToPlay(false)} />
-      <div className="max-w-md mx-auto space-y-6">
+      <div className="max-w-md mx-auto space-y-4">
         <TopBar />
-        <div className="bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-2xl">
+        <div className="bg-slate-800 p-4 rounded-2xl border border-slate-700 shadow-2xl">
           {children}
         </div>
       </div>
@@ -512,9 +557,14 @@ export default function Game({ gameHook }) {
         </div>
 
         {!isAlive ? (
-          <div className="text-center space-y-4 mb-8">
-            <Ghost size={64} className="mx-auto text-slate-500" />
-            <p className="text-slate-400">คุณตายแล้ว วิญญาณทำอะไรไม่ได้นอกจากเฝ้าดูความมืด...</p>
+          <div className="text-center space-y-4 mb-4">
+            <Ghost size={48} className="mx-auto text-slate-500" />
+            <p className="text-slate-400 text-sm">คุณตายแล้ว... แต่วิญญาณยังเฝ้ามองอยู่ 👻</p>
+            <GhostChat 
+              messages={ghostMessages}
+              onSendMessage={sendGhostMessage}
+              myName={me.name}
+            />
           </div>
         ) : (
           <div className="text-center mb-6">
@@ -761,9 +811,40 @@ export default function Game({ gameHook }) {
             </button>
           </div>
         ) : (
-          <div className="text-center py-8">
-             <Skull size={48} className="mx-auto text-slate-600 mb-4" />
-             <p className="text-slate-400">คุณตายแล้ว ไมค์ถูกปิด และไม่สามารถโหวตได้</p>
+          <div className="space-y-4 mb-4">
+            <div className="text-center py-4">
+              <Ghost size={36} className="mx-auto text-slate-500 mb-2" />
+              <p className="text-slate-400 text-sm mb-4">คุณตายแล้ว... แต่ยังดูการโหวตได้ 👻</p>
+            </div>
+            {/* Spectator vote view */}
+            <div className="space-y-2">
+              {alivePlayers.map(p => {
+                const votersForP = Object.keys(votes).filter(v => votes[v] === p.id);
+                return (
+                  <div key={p.id} className="flex justify-between items-center py-2 px-3 rounded-lg bg-slate-700/30 border border-slate-600/30">
+                    <span className="text-sm text-slate-300">{p.name}</span>
+                    <span className="flex items-center gap-1">
+                      {votersForP.length > 0 && <span className="text-xs text-red-400 font-bold">{votersForP.length} โหวต</span>}
+                      {votersForP.map((_, i) => <span key={i} className="w-2 h-2 rounded-full bg-red-400"></span>)}
+                    </span>
+                  </div>
+                );
+              })}
+              {(() => {
+                const abstainCount = Object.values(votes).filter(v => v === 'ABSTAIN').length;
+                return abstainCount > 0 ? (
+                  <div className="flex justify-between items-center py-2 px-3 rounded-lg bg-slate-800/50 border border-slate-600/20">
+                    <span className="text-sm text-slate-500">ข้ามโหวต</span>
+                    <span className="text-xs text-slate-500 font-bold">{abstainCount} คน</span>
+                  </div>
+                ) : null;
+              })()}
+            </div>
+            <GhostChat 
+              messages={ghostMessages}
+              onSendMessage={sendGhostMessage}
+              myName={me.name}
+            />
           </div>
         )}
 

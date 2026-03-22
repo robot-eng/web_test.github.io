@@ -1,1 +1,41 @@
 @import "tailwindcss";
+
+/* === Mobile-first global resets === */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100dvh;
+  background: #0f172a; /* slate-900 */
+}
+
+/* Prevent iOS zoom on input focus */
+input, textarea, select {
+  font-size: 16px !important;
+}
+
+/* Smooth scrollbar for chat */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 4px;
+}
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgba(127, 29, 29, 0.3);
+  border-radius: 9999px;
+}
+
+/* Safe area padding for notched phones */
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}

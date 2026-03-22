@@ -59,7 +59,9 @@ export function useFirebaseGame() {
       winner: null,
       activeHunterId: null,
       hunterOriginPhase: null,
-      votes: {}
+      votes: {},
+      wolfMessages: [],
+      ghostMessages: []
     });
 
     setMyPlayerId(newPlayerId);
@@ -175,7 +177,9 @@ export function useFirebaseGame() {
       winner: null,
       activeHunterId: null,
       hunterOriginPhase: null,
-      votes: {}
+      votes: {},
+      wolfMessages: [],
+      ghostMessages: []
     });
   };
 
@@ -323,6 +327,19 @@ export function useFirebaseGame() {
     });
   };
 
+  const sendGhostMessage = async (text, senderName) => {
+    if (!roomId) return;
+    const newMessage = {
+      id: Date.now().toString(),
+      text,
+      senderName,
+      timestamp: Date.now()
+    };
+    await updateDoc(doc(db, 'rooms', roomId), { 
+      ghostMessages: arrayUnion(newMessage)
+    });
+  };
+
   const hostProcessVote = async () => {
      console.log("hostProcessVote triggered", { isHost, roomId, hasRoomData: !!roomData });
      if (!isHost || !roomId || !roomData) return;
@@ -354,7 +371,8 @@ export function useFirebaseGame() {
           phase: PHASES.NIGHT_TRANSITION,
           nightActions: { wolfTarget: null, docTarget: null, bodyguardTarget: null, seerTarget: null },
           seerResult: null,
-          votes: {}
+          votes: {},
+          wolfMessages: []
         });
         return;
      }
@@ -398,7 +416,8 @@ export function useFirebaseGame() {
         phase: finalPhase,
         nightActions: { wolfTarget: null, docTarget: null, bodyguardTarget: null, seerTarget: null },
         seerResult: null,
-        votes: {}
+        votes: {},
+        wolfMessages: []
      });
     } catch (err) {
       console.error("hostProcessVote error:", err);
@@ -443,7 +462,9 @@ export function useFirebaseGame() {
     await updateDoc(doc(db, 'rooms', roomId), {
       players: updatedPlayers,
       phase: PHASES.SETUP,
-      winner: null
+      winner: null,
+      wolfMessages: [],
+      ghostMessages: []
     });
   };
 
@@ -635,6 +656,7 @@ export function useFirebaseGame() {
     removeBot,
     updatePlayerName,
     leaveRoom,
-    sendWolfMessage
+    sendWolfMessage,
+    sendGhostMessage
   };
 }

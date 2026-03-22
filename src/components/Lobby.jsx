@@ -65,28 +65,28 @@ export default function Lobby({ onCreateRoom, onJoinRoom }) {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-100 flex flex-col items-center justify-center p-6 text-center relative">
+    <div className="min-h-screen bg-slate-900 text-slate-100 flex flex-col items-center justify-center p-4 text-center relative safe-bottom">
       <Dialog {...dialog} onCancel={closeDialog} />
       <HowToPlayModal isOpen={showHowToPlay} onClose={() => setShowHowToPlay(false)} />
       
       {/* Rules Button */}
       <button 
         onClick={() => setShowHowToPlay(true)}
-        className="absolute top-4 right-4 bg-slate-800 hover:bg-slate-700 text-blue-400 p-3 rounded-full shadow-lg border border-slate-700 transition-colors flex items-center gap-2"
+        className="absolute top-4 right-4 bg-slate-800 hover:bg-slate-700 text-blue-400 p-2.5 rounded-full shadow-lg border border-slate-700 transition-colors flex items-center gap-2"
       >
-        <BookOpen size={20} />
-        <span className="font-bold hidden md:inline">วิธีเล่น</span>
+        <BookOpen size={18} />
+        <span className="font-bold hidden md:inline text-sm">วิธีเล่น</span>
       </button>
 
-      <div className="max-w-sm w-full space-y-8">
+      <div className="max-w-sm w-full space-y-6">
         <div>
-          <h1 className="text-5xl font-extrabold text-red-500 tracking-wider mb-2 drop-shadow-[0_0_15px_rgba(239,68,68,0.5)]">
+          <h1 className="text-4xl sm:text-5xl font-extrabold text-red-500 tracking-wider mb-2 drop-shadow-[0_0_15px_rgba(239,68,68,0.5)]">
             WEREWOLF
           </h1>
-          <p className="text-slate-400 font-medium tracking-wide">ONLINE MULTIPLAYER</p>
+          <p className="text-slate-400 font-medium tracking-wide text-sm">ONLINE MULTIPLAYER</p>
         </div>
 
-        <div className="bg-slate-800 p-8 rounded-2xl border border-slate-700 shadow-2xl space-y-6 relative overflow-hidden">
+        <div className="bg-slate-800 p-5 sm:p-8 rounded-2xl border border-slate-700 shadow-2xl space-y-5 relative overflow-hidden">
           {/* Decorative element */}
           <div className="absolute top-0 right-0 p-4 opacity-5">
              <Users size={120} />
@@ -135,7 +135,7 @@ export default function Lobby({ onCreateRoom, onJoinRoom }) {
                 disabled={isCreating || isJoining}
                 className="flex-[0.6] flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-2 rounded-xl shadow-lg transition-transform active:scale-95 disabled:opacity-50"
               >
-                <LogIn size={20} />
+                <LogIn size={16} />
                 {isJoining ? "..." : "เข้าร่วม"}
               </button>
             </div>
