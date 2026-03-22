@@ -7,7 +7,7 @@ export default function HowToPlayModal({ isOpen, onClose }) {
   return (
     <div className="fixed inset-0 z-[200] flex items-center justify-center bg-slate-900/90 p-4 overflow-y-auto">
       <div className="bg-slate-800 rounded-2xl border border-slate-700 w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl relative mt-10 md:mt-0">
-        
+
         {/* Header (Sticky) */}
         <div className="p-4 border-b border-slate-700 flex justify-between items-center sticky top-0 bg-slate-800 rounded-t-2xl z-10">
           <h2 className="text-2xl font-bold flex items-center gap-2 text-white">
@@ -20,7 +20,7 @@ export default function HowToPlayModal({ isOpen, onClose }) {
 
         {/* Content (Scrollable) */}
         <div className="p-6 overflow-y-auto space-y-8 text-left text-slate-300">
-          
+
           <section className="space-y-4">
             <h3 className="text-xl font-bold text-white border-b border-slate-700 pb-2">กติกาเบื้องต้น</h3>
             <p>เกมนี้จะแบ่งผู้เล่นเป็น 2 ฝั่งหลักคือ <span className="text-emerald-400 font-bold">"ชาวบ้าน"</span> และ <span className="text-red-500 font-bold">"หมาป่า"</span></p>
@@ -40,7 +40,7 @@ export default function HowToPlayModal({ isOpen, onClose }) {
 
           <section className="space-y-4">
             <h3 className="text-xl font-bold text-white border-b border-slate-700 pb-2">คำอธิบายบทบาททั้งหมด</h3>
-            
+
             <div className="space-y-4">
               <div className="bg-slate-700/30 p-4 rounded-xl border border-slate-700/50 flex gap-4">
                 <Skull className="text-red-500 shrink-0" size={32} />

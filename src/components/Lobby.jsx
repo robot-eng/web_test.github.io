@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { Users, Plus, LogIn, BookOpen, User, Hash, MessageCircle } from 'lucide-react';
 
 const Wolf = ({ size = 24, className = "" }) => (
-  <svg 
-    width={size} 
-    height={size} 
-    viewBox="0 0 32 32" 
-    fill="none" 
-    stroke="none" 
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 32 32"
+    fill="none"
+    stroke="none"
     className={className}
   >
     <path fill="currentColor" d="M15.948 1.378c-7.913 0-14.327 6.414-14.327 14.327 0 1.585 0.258 3.11 0.733 4.535 2.505-1.51 4.743-2.569 6.711-3.246-2.231 0.35-4.144 1.475-6.854 0.248 1.969-1.732 5.471-4.108 8.644-4.471 1.659-1.349 4.251-2.743 5.595-2.326 1.903-1.677 4.242-3.812 6.746-5.35l0 0c0.666 1.008 1.068 2.243 0.783 3.612-5.015 1.261-3.848 9.293 0.842 4.208 0.396 0.815 0.587 1.663 0.567 2.584-2.039 2.111-4.179 3.934-6.361 5.487 0.029 1.497-0.351 3.302-1.187 5.292-0.352 0.837-0.457 2.271 1.427 3.367 6.311-1.498 11.007-7.17 11.007-13.94-0-7.913-6.415-14.327-14.327-14.327z" />
@@ -22,7 +22,7 @@ const Dialog = ({ isOpen, text, onConfirm, onCancel, isAlert }) => {
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/60 backdrop-blur-sm p-4 animate-in fade-in duration-300">
       <div className="glass-panel p-8 rounded-3xl shadow-2xl max-w-sm w-full text-center border-t border-white/20">
         <div className="mb-4 flex justify-center text-blue-400">
-           {isAlert ? <MessageCircle size={48} /> : <Users size={48} />}
+          {isAlert ? <MessageCircle size={48} /> : <Users size={48} />}
         </div>
         <p className="text-lg text-white mb-8 font-medium leading-relaxed">{text}</p>
         <div className="flex gap-4 justify-center">
@@ -31,8 +31,8 @@ const Dialog = ({ isOpen, text, onConfirm, onCancel, isAlert }) => {
               ยกเลิก
             </button>
           )}
-          <button 
-            onClick={onConfirm} 
+          <button
+            onClick={onConfirm}
             className={`flex-1 font-bold py-4 rounded-2xl transition-all active:scale-95 text-white shadow-lg ${isAlert ? 'bg-gradient-to-r from-blue-600 to-indigo-600 shadow-blue-500/20' : 'bg-gradient-to-r from-red-600 to-rose-700 shadow-rose-500/20'}`}
           >
             ตกลง
@@ -90,9 +90,9 @@ export default function Lobby({ onCreateRoom, onJoinRoom }) {
 
       <Dialog {...dialog} onCancel={closeDialog} />
       <HowToPlayModal isOpen={showHowToPlay} onClose={() => setShowHowToPlay(false)} />
-      
+
       {/* Help Button */}
-      <button 
+      <button
         onClick={() => setShowHowToPlay(true)}
         className="absolute top-6 right-6 md:top-8 md:right-8 glass-panel text-slate-300 p-3 rounded-2xl border-white/5 hover:bg-white/10 transition-all flex items-center gap-3 z-50 group active:scale-95"
       >
@@ -104,10 +104,10 @@ export default function Lobby({ onCreateRoom, onJoinRoom }) {
         {/* Title Section */}
         <div className="space-y-3 sm:space-y-4">
           <div className="relative inline-block">
-             <div className="absolute -inset-4 bg-red-600/20 blur-2xl rounded-full animate-pulse opacity-50" />
-             <h1 className="text-5xl sm:text-7xl font-black text-white tracking-tighter relative bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60 drop-shadow-2xl">
-                WEREWOLF
-             </h1>
+            <div className="absolute -inset-4 bg-red-600/20 blur-2xl rounded-full animate-pulse opacity-50" />
+            <h1 className="text-5xl sm:text-7xl font-black text-white tracking-tighter relative bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60 drop-shadow-2xl">
+              WEREWOLF
+            </h1>
           </div>
           <div className="flex items-center justify-center gap-2">
             <span className="h-px w-8 bg-gradient-to-r from-transparent to-red-500/50" />
@@ -198,10 +198,10 @@ export default function Lobby({ onCreateRoom, onJoinRoom }) {
 
         {/* Footer info or decorative element */}
         <div className="pt-4 flex justify-center gap-8 opacity-40">
-           <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-              <span className="text-[10px] font-bold tracking-widest uppercase">Servers Online</span>
-           </div>
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+            <span className="text-[10px] font-bold tracking-widest uppercase">Servers Online</span>
+          </div>
         </div>
       </div>
     </div>
