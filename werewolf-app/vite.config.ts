@@ -5,7 +5,9 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: './', // ทำให้ใช้ path แบบ relative สามารถนำโฟลเดอร์ dist ไปวางไว้ตรงไหนของ repo ก็ได้
+  // แก้ไขจาก './' เป็นชื่อ Repo และตามด้วยโฟลเดอร์ย่อย
+  // เพื่อให้ GitHub Pages หาไฟล์ js/css ในโฟลเดอร์ werewolf-app เจอ
+  base: '/web_test.github.io/werewolf-app/', 
   plugins: [
     tailwindcss(),
     react(),
