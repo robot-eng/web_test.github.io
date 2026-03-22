@@ -100,12 +100,12 @@ export default function Lobby({ onCreateRoom, onJoinRoom }) {
         <span className="font-bold hidden sm:inline text-sm">วิธีเล่น</span>
       </button>
 
-      <div className="max-w-md w-full space-y-8 animate-fade-in-up">
+      <div className="max-w-md w-full space-y-6 sm:space-y-8 animate-fade-in-up">
         {/* Title Section */}
-        <div className="space-y-4">
+        <div className="space-y-3 sm:space-y-4">
           <div className="relative inline-block">
              <div className="absolute -inset-4 bg-red-600/20 blur-2xl rounded-full animate-pulse opacity-50" />
-             <h1 className="text-6xl sm:text-7xl font-black text-white tracking-tighter relative bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60 drop-shadow-2xl">
+             <h1 className="text-5xl sm:text-7xl font-black text-white tracking-tighter relative bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60 drop-shadow-2xl">
                 WEREWOLF
              </h1>
           </div>
@@ -118,7 +118,7 @@ export default function Lobby({ onCreateRoom, onJoinRoom }) {
 
         {/* Main Card */}
         <div className="glass-panel p-1 rounded-[2.5rem] shadow-2xl relative">
-          <div className="bg-slate-900/40 p-6 sm:p-10 rounded-[2.25rem] space-y-8 relative overflow-hidden backdrop-blur-2xl">
+          <div className="bg-slate-900/40 p-6 sm:p-8 rounded-[2.25rem] space-y-6 sm:space-y-8 relative overflow-hidden backdrop-blur-2xl">
             {/* Background Icon Decoration */}
             <Users size={150} className="absolute -bottom-10 -right-10 text-white/5 -rotate-12 pointer-events-none" />
             <Wolf size={280} className="absolute -top-10 -right-5 text-white/5 rotate-[-10deg] pointer-events-none" />

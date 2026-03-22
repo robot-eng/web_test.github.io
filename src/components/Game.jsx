@@ -73,12 +73,12 @@ const WerewolfChat = ({ messages, onSendMessage, myName }) => {
   };
  
   return (
-    <div className="bg-slate-950/40 border border-rose-900/20 rounded-3xl flex flex-col h-56 overflow-hidden mb-6 backdrop-blur-3xl shadow-inner">
-      <div className="bg-rose-950/10 px-4 py-3 border-b border-rose-950/30 text-rose-500 text-[10px] font-black uppercase tracking-[0.2em] flex items-center justify-between">
-        <span className="flex items-center gap-2"><Skull size={12}/> โทรจิตหมาป่า</span>
-        <span className="opacity-40">Only you can see this</span>
+    <div className="bg-slate-950/40 border border-rose-900/20 rounded-3xl flex flex-col h-40 sm:h-48 overflow-hidden mb-4 sm:mb-6 backdrop-blur-3xl shadow-inner">
+      <div className="bg-rose-950/10 px-3 py-2 border-b border-rose-950/30 text-rose-500 text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em] flex items-center justify-between">
+        <span className="flex items-center gap-2"><Skull size={10}/> โทรจิตหมาป่า</span>
+        <span className="opacity-40">Werewolf only</span>
       </div>
-      <div className="flex-1 overflow-y-auto p-4 space-y-3 text-left scrollbar-thin scrollbar-thumb-rose-900/20">
+      <div className="flex-1 overflow-y-auto p-3 space-y-2 text-left scrollbar-thin scrollbar-thumb-rose-900/20">
         {(!messages || messages.length === 0) ? (
           <p className="text-slate-600 text-[10px] text-center italic mt-8 uppercase tracking-widest font-bold">เฝ้าดูเหยื่อในความเงียบ...</p>
         ) : (
@@ -124,11 +124,11 @@ const GhostChat = ({ messages, onSendMessage, myName }) => {
   };
 
   return (
-    <div className="bg-slate-950/40 border border-blue-900/20 rounded-3xl flex flex-col h-56 overflow-hidden backdrop-blur-3xl shadow-inner">
-      <div className="bg-blue-950/10 px-4 py-3 border-b border-blue-950/30 text-blue-400 text-[10px] font-black uppercase tracking-[0.2em] flex items-center gap-2">
-        <Ghost size={12}/> แชทวิญญาณ
+    <div className="bg-slate-950/40 border border-blue-900/20 rounded-3xl flex flex-col h-40 sm:h-48 overflow-hidden backdrop-blur-3xl shadow-inner">
+      <div className="bg-blue-950/10 px-3 py-2 border-b border-blue-950/30 text-blue-400 text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em] flex items-center gap-2">
+        <Ghost size={10} sm:size={12}/> แชทวิญญาณ
       </div>
-      <div className="flex-1 overflow-y-auto p-4 space-y-3 text-left scrollbar-thin scrollbar-thumb-blue-900/20">
+      <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-2 sm:space-y-3 text-left scrollbar-thin scrollbar-thumb-blue-900/20">
         {(!messages || messages.length === 0) ? (
           <p className="text-slate-600 text-[10px] text-center italic mt-8 uppercase tracking-widest font-bold">เงียบสงัด... ยังไม่มีริญญาณไหนพูด</p>
         ) : (
@@ -159,28 +159,28 @@ const GhostChat = ({ messages, onSendMessage, myName }) => {
 };
 
 
-const TopBar = ({ roomId, me, isHost, isAlive, isMicOn, isMuted, toggleMute, setShowHowToPlay, leaveRoom, showAlert, showConfirm }) => (
-  <div className="mb-6 glass-panel p-4 rounded-3xl border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4 animate-fade-in-up">
-    <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
-      <div className="flex items-center gap-2 bg-slate-950/50 px-4 py-2 rounded-2xl border border-white/5 w-full sm:w-auto justify-center sm:justify-start group">
+const TopBar = ({ roomId, me, isHost, isAlive, isMicOn, isMuted, toggleMute, requestMic, permissionError, setShowHowToPlay, leaveRoom, showAlert, showConfirm }) => (
+  <div className="mb-4 sm:mb-6 glass-panel p-3 sm:p-4 rounded-3xl border-white/5 flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4 animate-fade-in-up">
+    <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 w-full sm:w-auto">
+      <div className="flex items-center gap-2 bg-slate-950/50 px-3 py-1.5 sm:px-4 sm:py-2 rounded-2xl border border-white/5 w-full sm:w-auto justify-center sm:justify-start group">
         <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Room</span>
-        <span className="font-mono text-lg text-blue-400 tracking-[0.2em]">{roomId}</span>
+        <span className="font-mono text-base sm:text-lg text-blue-400 tracking-[0.2em]">{roomId}</span>
         <button 
           onClick={() => {
             navigator.clipboard.writeText(roomId);
             showAlert('คัดลอกรหัสห้องแล้ว: ' + roomId);
           }}
-          className="p-1.5 hover:bg-blue-500/20 rounded-lg text-slate-400 hover:text-blue-400 transition-all active:scale-90"
+          className="p-1 hover:bg-blue-500/20 rounded-lg text-slate-400 hover:text-blue-400 transition-all active:scale-90"
         >
-          <Copy size={14} />
+          <Copy size={13} />
         </button>
       </div>
       <div className="text-center sm:text-left">
-         <p className="text-xs font-bold text-white flex items-center gap-2 justify-center sm:justify-start">
-           {me?.name} {isHost && <span className="text-yellow-500 select-none">👑</span>}
+         <p className="text-[11px] sm:text-xs font-bold text-white flex items-center gap-2 justify-center sm:justify-start">
+           {me?.name} {isHost && <span className="text-yellow-500 select-none text-[10px]">👑</span>}
          </p>
          {me?.role && (
-           <span className={`text-[10px] font-black uppercase tracking-widest ${isAlive ? 'text-emerald-500' : 'text-rose-500'}`}>
+           <span className={`text-[9px] sm:text-[10px] font-black uppercase tracking-widest ${isAlive ? 'text-emerald-500' : 'text-rose-500'}`}>
              {isAlive ? '• ในเกม' : '• ออกจากเกม'}
            </span>
          )}
@@ -188,13 +188,24 @@ const TopBar = ({ roomId, me, isHost, isAlive, isMicOn, isMuted, toggleMute, set
     </div>
 
     <div className="flex items-center gap-2 bg-slate-950/30 p-1.5 rounded-2xl border border-white/5">
-      <button 
-        onClick={isMicOn ? toggleMute : undefined}
-        className={`p-2.5 rounded-xl transition-all active:scale-90 ${!isMicOn ? 'bg-slate-800 text-slate-600 cursor-not-allowed opacity-50' : (isMuted ? 'bg-rose-500/20 text-rose-500' : 'bg-emerald-500/20 text-emerald-400 shadow-lg shadow-emerald-500/10')}`}
-        title={!isMicOn ? "ไมค์ถูกปิด" : (isMuted ? "เปิดไมค์" : "ปิดไมค์")}
-      >
-        {(!isMicOn || isMuted) ? <MicOff size={18} strokeWidth={2.5} /> : <Mic size={18} strokeWidth={2.5} />}
-      </button>
+      {permissionError ? (
+        <button 
+          onClick={requestMic}
+          className="p-2.5 bg-rose-500/20 text-rose-500 rounded-xl hover:bg-rose-500/30 animate-pulse transition-all active:scale-90 flex items-center gap-2"
+          title="แตะเพื่อขอใช้ไมค์อีกครั้ง"
+        >
+          <AlertCircle size={18} strokeWidth={2.5} />
+          <span className="text-[10px] font-black uppercase">Enable Mic</span>
+        </button>
+      ) : (
+        <button 
+          onClick={isMicOn ? toggleMute : undefined}
+          className={`p-2.5 rounded-xl transition-all active:scale-90 ${!isMicOn ? 'bg-slate-800 text-slate-600 cursor-not-allowed opacity-50' : (isMuted ? 'bg-rose-500/20 text-rose-500' : 'bg-emerald-500/20 text-emerald-400 shadow-lg shadow-emerald-500/10')}`}
+          title={!isMicOn ? "ไมค์ถูกปิด" : (isMuted ? "เปิดไมค์" : "ปิดไมค์")}
+        >
+          {(!isMicOn || isMuted) ? <MicOff size={18} strokeWidth={2.5} /> : <Mic size={18} strokeWidth={2.5} />}
+        </button>
+      )}
       <button 
         onClick={() => setShowHowToPlay(true)}
         className="p-2.5 bg-slate-800/50 hover:bg-white/10 rounded-xl text-blue-400 transition-all active:scale-90"
@@ -222,10 +233,10 @@ const GameScreenLayout = ({ children, dialog, closeDialog, showHowToPlay, setSho
     <Dialog {...dialog} onCancel={closeDialog} />
     <HowToPlayModal isOpen={showHowToPlay} onClose={() => setShowHowToPlay(false)} />
     
-    <div className="w-full max-w-2xl mx-auto space-y-6 flex-1 flex flex-col">
+    <div className="w-full max-w-2xl mx-auto space-y-4 sm:space-y-6 flex-1 flex flex-col min-h-0">
       <TopBar {...topBarProps} />
-      <div className="glass-panel p-1 rounded-[2.5rem] shadow-2xl animate-fade-in-up flex-1 flex flex-col overflow-hidden">
-        <div className="bg-slate-900/40 p-6 sm:p-10 rounded-[2.25rem] flex-1 flex flex-col overflow-y-auto backdrop-blur-3xl scrollbar-thin scrollbar-thumb-white/10">
+      <div className="glass-panel p-1 rounded-[2rem] sm:rounded-[2.5rem] shadow-2xl animate-fade-in-up flex-1 flex flex-col overflow-hidden min-h-0">
+        <div className="bg-slate-900/40 p-5 sm:p-10 rounded-[1.75rem] sm:rounded-[2.25rem] flex-1 flex flex-col overflow-y-auto backdrop-blur-3xl scrollbar-thin scrollbar-thumb-white/10">
           {children}
         </div>
       </div>
@@ -261,7 +272,7 @@ function Game({ gameHook }) {
     updateMyPeerId(myPeerId);
   }, []);
 
-  const { remoteStreams, isMicOn, isMuted, toggleMute } = useVoiceChat(myPeerId, roomData, myPlayerId);
+  const { remoteStreams, isMicOn, isMuted, toggleMute, requestMic, permissionError } = useVoiceChat(myPeerId, roomData, myPlayerId);
 
   // Play incoming audio streams
   useEffect(() => {
@@ -331,7 +342,7 @@ function Game({ gameHook }) {
   };
 
   const topBarProps = {
-    roomId, me, isHost, isAlive, isMicOn, isMuted, toggleMute,
+    roomId, me, isHost, isAlive, isMicOn, isMuted, toggleMute, requestMic, permissionError,
     setShowHowToPlay, leaveRoom, showAlert, showConfirm
   };
 
@@ -352,10 +363,10 @@ function Game({ gameHook }) {
         <div className="w-full max-w-2xl mx-auto space-y-6 animate-fade-in-up">
           <TopBar {...topBarProps} />
           
-          <div className="glass-panel p-6 sm:p-10 rounded-[2.5rem] space-y-8 relative overflow-hidden backdrop-blur-3xl border-white/5">
-             <div className="flex justify-between items-center border-b border-white/5 pb-4">
-                <h2 className="text-2xl font-black flex items-center gap-3 text-white uppercase tracking-tight">
-                   <Users size={28} className="text-blue-400" /> 
+          <div className="glass-panel p-5 sm:p-8 rounded-[2rem] sm:rounded-[2.5rem] space-y-4 sm:space-y-6 relative overflow-hidden backdrop-blur-3xl border-white/5">
+             <div className="flex justify-between items-center border-b border-white/5 pb-3 sm:pb-4">
+                <h2 className="text-xl sm:text-2xl font-black flex items-center gap-2 sm:gap-3 text-white uppercase tracking-tight">
+                   <Users size={24} sm:size={28} className="text-blue-400" /> 
                    ผู้เล่น ({playersList.length})
                 </h2>
                 {isHost && (
@@ -402,29 +413,29 @@ function Game({ gameHook }) {
 
             <button
               onClick={toggleReady}
-              className={`w-full py-5 rounded-3xl font-black text-lg transition-all shadow-xl active:scale-[0.98] flex items-center justify-center gap-3 border-2 ${me.isReady ? 'bg-emerald-600 border-white/20 text-white hover:bg-emerald-500 shadow-emerald-900/20' : 'bg-slate-950/50 border-white/10 text-slate-400 hover:bg-slate-900'}`}
+              className={`w-full py-4 rounded-2xl sm:rounded-3xl font-black text-base sm:text-lg transition-all shadow-xl active:scale-[0.98] flex items-center justify-center gap-3 border-2 ${me.isReady ? 'bg-emerald-600 border-white/20 text-white hover:bg-emerald-500 shadow-emerald-900/20' : 'bg-slate-950/50 border-white/10 text-slate-400 hover:bg-slate-900'}`}
             >
               {me.isReady ? <CheckCircle2 size={24} strokeWidth={3} /> : <div className="w-6 h-6 rounded-full border-2 border-slate-600" />}
               {me.isReady ? 'ฉันพร้อมแล้ว!' : 'เตรียมความพร้อม'}
             </button>
           </div>
 
-          <div className="glass-panel p-6 sm:p-10 rounded-[2.5rem] space-y-8 backdrop-blur-3xl border-white/5">
-            <h2 className="text-2xl font-black flex items-center gap-3 text-white uppercase tracking-tight border-b border-white/5 pb-4">
-               <Settings size={28} className="text-rose-400" />
+          <div className="glass-panel p-5 sm:p-8 rounded-[2rem] sm:rounded-[2.5rem] space-y-4 sm:space-y-6 backdrop-blur-3xl border-white/5">
+            <h2 className="text-xl sm:text-2xl font-black flex items-center gap-2 sm:gap-3 text-white uppercase tracking-tight border-b border-white/5 pb-3 sm:pb-4">
+               <Settings size={24} sm:size={28} className="text-rose-400" />
                บทบาทในเกม
             </h2>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-6">
+            <div className="grid grid-cols-2 sm:grid-cols-2 gap-x-4 sm:gap-x-10 gap-y-3 sm:gap-y-6">
               {[
-                { key: 'werewolf', label: 'หมาป่า', icon: <Skull size={20}/>, color: 'text-rose-500', bg: 'bg-rose-500/10' },
-                { key: 'seer', label: 'ผู้หยั่งรู้', icon: <Eye size={20}/>, color: 'text-purple-400', bg: 'bg-purple-500/10' },
-                { key: 'doctor', label: 'คุณหมอ', icon: <ShieldPlus size={20}/>, color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
-                { key: 'bodyguard', label: 'บอดี้การ์ด', icon: <Shield size={20}/>, color: 'text-sky-400', bg: 'bg-sky-500/10' },
-                { key: 'fool', label: 'คนบ้า', icon: <Ghost size={20}/>, color: 'text-orange-400', bg: 'bg-orange-500/10' },
-                { key: 'hunter', label: 'นักล่า', icon: <Crosshair size={20}/>, color: 'text-amber-500', bg: 'bg-amber-500/10' },
-                { key: 'halfblood', label: 'ลูกครึ่ง', icon: <VenetianMask size={20}/>, color: 'text-indigo-400', bg: 'bg-indigo-500/10' },
-                { key: 'elder', label: 'ผู้อวุโส', icon: <Award size={20}/>, color: 'text-yellow-200', bg: 'bg-yellow-500/10' },
+                { key: 'werewolf', label: 'หมาป่า', icon: <Skull size={18}/>, color: 'text-rose-500', bg: 'bg-rose-500/10' },
+                { key: 'seer', label: 'ผู้หยั่งรู้', icon: <Eye size={18}/>, color: 'text-purple-400', bg: 'bg-purple-500/10' },
+                { key: 'doctor', label: 'คุณหมอ', icon: <ShieldPlus size={18}/>, color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
+                { key: 'bodyguard', label: 'บอดี้การ์ด', icon: <Shield size={18}/>, color: 'text-sky-400', bg: 'bg-sky-500/10' },
+                { key: 'fool', label: 'คนบ้า', icon: <Ghost size={18}/>, color: 'text-orange-400', bg: 'bg-orange-500/10' },
+                { key: 'hunter', label: 'นักล่า', icon: <Crosshair size={18}/>, color: 'text-amber-500', bg: 'bg-amber-500/10' },
+                { key: 'halfblood', label: 'ลูกครึ่ง', icon: <VenetianMask size={18}/>, color: 'text-indigo-400', bg: 'bg-indigo-500/10' },
+                { key: 'elder', label: 'ผู้อวุโส', icon: <Award size={18}/>, color: 'text-yellow-200', bg: 'bg-yellow-500/10' },
               ].map(r => (
                 <div key={r.key} className="flex justify-between items-center group">
                   <span className={`flex items-center gap-3 font-bold ${r.color} transition-transform group-hover:scale-105`}>
@@ -510,33 +521,33 @@ function Game({ gameHook }) {
     const allReady = readyHumans >= totalHumans;
 
     return renderLayout(
-        <div className="text-center space-y-8 py-4">
-          <div className="space-y-2">
-            <h2 className="text-sm font-black text-slate-500 uppercase tracking-[0.3em]">บทบาทของคุณค้อ</h2>
-            <div className="h-0.5 w-12 bg-slate-800 mx-auto rounded-full" />
+        <div className="text-center space-y-4 sm:space-y-6 py-2 sm:py-4">
+          <div className="space-y-1 sm:space-y-2">
+            <h2 className="text-[10px] sm:text-xs font-black text-slate-500 uppercase tracking-[0.3em]">บทบาทของคุณคือ</h2>
+            <div className="h-0.5 w-8 bg-slate-800 mx-auto rounded-full" />
           </div>
 
           <div className="relative group perspective-1000">
-            <div className={`absolute -inset-10 ${glowColor} blur-[80px] rounded-full animate-pulse-glow opacity-60`} />
+            <div className={`absolute -inset-8 ${glowColor} blur-[60px] rounded-full animate-pulse-glow opacity-60`} />
             <div className="relative animate-fade-in-up">
-              <RoleIcon size={120} className={`mx-auto mb-6 ${roleColor} drop-shadow-[0_0_25px_rgba(255,255,255,0.1)]`} strokeWidth={1} />
-              <h1 className={`text-6xl font-black mb-4 tracking-tighter ${roleColor}`}>{me.role}</h1>
+              <RoleIcon size={90} className={`mx-auto mb-3 sm:mb-4 ${roleColor} drop-shadow-[0_0_25px_rgba(255,255,255,0.1)]`} strokeWidth={1.5} />
+              <h1 className={`text-4xl sm:text-5xl font-black mb-2 tracking-tighter ${roleColor}`}>{me.role}</h1>
             </div>
           </div>
 
-          <div className="bg-slate-950/40 p-6 rounded-[2rem] border border-white/5 backdrop-blur-3xl shadow-inner mb-8">
-            <p className="text-slate-300 text-sm leading-relaxed font-medium">{getRoleDescription(me.role)}</p>
+          <div className="bg-slate-950/40 p-4 sm:p-6 rounded-3xl border border-white/5 backdrop-blur-3xl shadow-inner mb-4 sm:mb-6">
+            <p className="text-slate-300 text-xs sm:text-sm leading-relaxed font-medium">{getRoleDescription(me.role)}</p>
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             {!me.isReady ? (
-               <button onClick={acknowledgeRole} className="w-full bg-gradient-to-br from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 py-5 rounded-3xl font-black text-white shadow-xl shadow-emerald-900/20 transition-all active:scale-95 text-lg">
+               <button onClick={acknowledgeRole} className="w-full bg-gradient-to-br from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 py-3.5 sm:py-4 rounded-2xl sm:rounded-3xl font-black text-white shadow-xl shadow-emerald-900/20 transition-all active:scale-95 text-base sm:text-lg">
                  รับทราบ (พร้อมเล่น)
                </button>
             ) : (
-               <div className="py-5 rounded-3xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center gap-3">
-                  <CheckCircle2 size={24} className="text-emerald-500" />
-                  <span className="text-emerald-400 font-black">คุณพร้อมแล้ว</span>
+               <div className="py-3.5 sm:py-4 rounded-2xl sm:rounded-3xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center gap-3">
+                  <CheckCircle2 size={20} className="text-emerald-500" />
+                  <span className="text-emerald-400 font-black text-sm sm:text-base">คุณพร้อมแล้ว</span>
                </div>
             )}
             
@@ -550,10 +561,10 @@ function Game({ gameHook }) {
           </div>
 
           {isHost && (
-            <div className="pt-8 space-y-4">
-              <div className="p-4 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center gap-3">
-                 <Award size={20} className="text-blue-500 shrink-0" />
-                 <p className="text-[10px] text-blue-400 font-bold uppercase tracking-wider text-left">
+            <div className="pt-4 sm:pt-6 space-y-3 sm:space-y-4">
+              <div className="p-3 sm:p-4 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center gap-3">
+                 <Award size={18} className="text-blue-500 shrink-0" />
+                 <p className="text-[9px] sm:text-[10px] text-blue-400 font-bold uppercase tracking-wider text-left">
                    Host Action Required: คลิกปุ่มสีฟ้าด้านล่างเพื่อเริ่มเข้าสู่ยามวิกาล
                  </p>
               </div>
@@ -565,7 +576,7 @@ function Game({ gameHook }) {
                     setPhase(PHASES.NIGHT_TRANSITION);
                   }
                 }} 
-                className={`w-full py-5 rounded-3xl font-black shadow-2xl transition-all active:scale-[0.98] border-2 text-lg ${allReady ? 'bg-gradient-to-br from-blue-600 to-indigo-700 text-white border-white/10 shadow-blue-900/30' : 'bg-slate-900/50 text-slate-600 border-white/5'}`}
+                className={`w-full py-4 rounded-2xl sm:rounded-3xl font-black shadow-2xl transition-all active:scale-[0.98] border-2 text-base sm:text-lg ${allReady ? 'bg-gradient-to-br from-blue-600 to-indigo-700 text-white border-white/10 shadow-blue-900/30' : 'bg-slate-900/50 text-slate-600 border-white/5'}`}
               >
                 เริ่มเลาค่ำคืน →
               </button>
@@ -738,19 +749,19 @@ function Game({ gameHook }) {
             )}
 
             {(me.role === ROLES.DOCTOR || me.role === ROLES.BODYGUARD) && (
-              <div className="space-y-6">
-                 <div className="bg-slate-900/40 p-6 rounded-3xl border border-white/5">
-                    {me.role === ROLES.DOCTOR ? <ShieldPlus size={40} className="mx-auto text-emerald-400 mb-2" /> : <Shield size={40} className="mx-auto text-sky-400 mb-2" />}
-                    <h3 className={`text-lg font-black ${me.role === ROLES.DOCTOR ? 'text-emerald-400' : 'text-sky-400'}`}>
+              <div className="space-y-4 sm:space-y-6">
+                 <div className="bg-slate-900/40 p-4 sm:p-6 rounded-3xl border border-white/5">
+                    {me.role === ROLES.DOCTOR ? <ShieldPlus size={32} className="mx-auto text-emerald-400 mb-1" /> : <Shield size={32} className="mx-auto text-sky-400 mb-1" />}
+                    <h3 className={`text-base sm:text-lg font-black ${me.role === ROLES.DOCTOR ? 'text-emerald-400' : 'text-sky-400'}`}>
                        {me.role === ROLES.DOCTOR ? 'ภารกิจรักษาพยาบาล' : 'ภารกิจอารักขา'}
                     </h3>
-                    <p className="text-xs text-slate-500 font-medium">เลือกคนที่คุณต้องการช่วยชีวิตในคืนนี้</p>
+                    <p className="text-[10px] sm:text-xs text-slate-500 font-medium">เลือกคนที่คุณต้องการช่วยชีวิตในคืนนี้</p>
                  </div>
-                <div className="grid grid-cols-2 gap-3 pb-4">
+                <div className="grid grid-cols-2 gap-2 sm:gap-3 pb-2 sm:pb-4">
                   {playersList.filter(p => p.isAlive).map(p => (
                     <button 
                       key={p.id} onClick={() => submitNightAction(me.role === ROLES.DOCTOR ? 'docTarget' : 'bodyguardTarget', p.id)}
-                      className={`py-4 px-2 rounded-2xl font-black text-sm border-2 transition-all active:scale-95 ${ (me.role === ROLES.DOCTOR ? nightActions.docTarget : nightActions.bodyguardTarget) === p.id ? 'bg-emerald-600 border-white/20 text-white shadow-xl shadow-emerald-900/30' : 'bg-slate-900/40 border-white/10 text-slate-400 hover:bg-white/5'}`}
+                      className={`py-3 sm:py-4 px-2 rounded-2xl font-black text-xs sm:text-sm border-2 transition-all active:scale-95 ${ (me.role === ROLES.DOCTOR ? nightActions.docTarget : nightActions.bodyguardTarget) === p.id ? 'bg-emerald-600 border-white/20 text-white shadow-xl shadow-emerald-900/30' : 'bg-slate-900/40 border-white/10 text-slate-400 hover:bg-white/5'}`}
                     >
                       {p.name} {p.id === myPlayerId && '(คุณ)'}
                     </button>
@@ -762,15 +773,15 @@ function Game({ gameHook }) {
         )}
 
         {isAlive && (
-          <div className="mt-6 mb-4 border-t border-white/5 pt-8">
+          <div className="mt-4 sm:mt-6 mb-2 sm:mb-4 border-t border-white/5 pt-4 sm:pt-6">
             {!me.isReady ? (
-               <button onClick={acknowledgeRole} className="w-full bg-gradient-to-br from-emerald-600 to-teal-700 py-5 rounded-3xl font-black text-lg text-white shadow-xl shadow-emerald-900/20 active:scale-95 transition-all">
+               <button onClick={acknowledgeRole} className="w-full bg-gradient-to-br from-emerald-600 to-teal-700 py-4 sm:py-5 rounded-2xl sm:rounded-3xl font-black text-base sm:text-lg text-white shadow-xl shadow-emerald-900/20 active:scale-95 transition-all">
                  เสร็จสิ้นกิจกรรม (หลับตา)
                </button>
             ) : (
-               <div className="py-5 rounded-3xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center gap-3">
-                  <CheckCircle2 size={24} className="text-emerald-500" />
-                  <span className="text-emerald-400 font-black">คุณหลับตาแล้ว</span>
+               <div className="py-4 sm:py-5 rounded-2xl sm:rounded-3xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center gap-3">
+                  <CheckCircle2 size={20} sm:size={24} className="text-emerald-500" />
+                  <span className="text-emerald-400 font-black text-sm sm:text-base">คุณหลับตาแล้ว</span>
                </div>
             )}
           </div>
@@ -806,37 +817,37 @@ function Game({ gameHook }) {
   if (phase === PHASES.DAY_RESULT) {
     const isNoOneDead = deadThisNight.length === 0;
     return renderLayout(
-        <div className="text-center space-y-8 py-4 animate-fade-in-up">
-          <div className="flex flex-col items-center gap-4">
+        <div className="text-center space-y-4 sm:space-y-6 py-2 sm:py-4 animate-fade-in-up">
+          <div className="flex flex-col items-center gap-3 sm:gap-4">
             <div className="relative">
                <div className="absolute inset-0 bg-yellow-500/20 blur-xl rounded-full animate-pulse" />
-               <Sun className="text-yellow-400 relative" size={64} strokeWidth={2} />
+               <Sun className="text-yellow-400 relative" size={48} sm:size={64} strokeWidth={2} />
             </div>
             <div className="space-y-1">
-               <h2 className="text-3xl font-black text-white tracking-tight uppercase">รุ่งสาง...</h2>
+               <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight uppercase">รุ่งสาง...</h2>
                <p className="text-slate-500 font-black uppercase tracking-[0.2em] text-[10px]">The sun has risen</p>
             </div>
           </div>
 
-          <div className="glass-panel p-8 rounded-[2.5rem] bg-slate-950/40 border-white/5 space-y-6">
-            <p className="text-slate-400 font-black uppercase tracking-widest text-xs">สรุปเหตุการณ์เมื่อคืน:</p>
+          <div className="glass-panel p-6 sm:p-8 rounded-[2rem] sm:rounded-[2.5rem] bg-slate-950/40 border-white/5 space-y-4 sm:space-y-6">
+            <p className="text-slate-400 font-black uppercase tracking-widest text-[10px] sm:text-xs">สรุปเหตุการณ์เมื่อคืน:</p>
             {isNoOneDead ? (
-              <div className="space-y-4">
-                 <div className="w-16 h-16 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto border border-emerald-500/30">
-                    <ShieldCheck size={32} className="text-emerald-500" />
+              <div className="space-y-3 sm:space-y-4">
+                 <div className="w-12 h-12 sm:w-16 sm:h-16 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto border border-emerald-500/30">
+                    <ShieldCheck size={24} sm:size={32} className="text-emerald-500" />
                  </div>
-                 <p className="text-2xl font-black text-emerald-400">คืนนี้ไม่มีใครตาย!</p>
-                 <p className="text-xs text-slate-500 font-medium">ความสงบสุขยังคงอยู่ (หรือคุณหมอทำงานได้เยี่ยม)</p>
+                 <p className="text-xl sm:text-2xl font-black text-emerald-400">คืนนี้ไม่มีใครตาย!</p>
+                 <p className="text-[10px] sm:text-xs text-slate-500 font-medium">ความสงบสุขยังคงอยู่ (หรือคุณหมอทำงานได้เยี่ยม)</p>
               </div>
             ) : (
-              <div className="space-y-6">
-                <div className="w-16 h-16 bg-rose-500/20 rounded-full flex items-center justify-center mx-auto border border-rose-500/30">
-                   <Skull size={32} className="text-rose-500" />
+              <div className="space-y-4 sm:space-y-6">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-rose-500/20 rounded-full flex items-center justify-center mx-auto border border-rose-500/30">
+                   <Skull size={24} sm:size={32} className="text-rose-500" />
                 </div>
-                <div className="space-y-2">
-                  <p className="text-slate-300 font-medium">มีผู้ถูกพบเป็นศพ:</p>
+                <div className="space-y-1 sm:space-y-2">
+                  <p className="text-slate-400 text-xs font-medium">มีผู้ถูกพบเป็นศพ:</p>
                   {deadThisNight.map(id => (
-                    <p key={id} className="text-4xl font-black text-white tracking-tighter drop-shadow-lg">{players[id]?.name}</p>
+                    <p key={id} className="text-3xl sm:text-4xl font-black text-white tracking-tighter drop-shadow-lg">{players[id]?.name}</p>
                   ))}
                 </div>
               </div>
@@ -872,21 +883,21 @@ function Game({ gameHook }) {
     const allVoted = votedCount >= totalVoters;
 
     return renderLayout(
-        <div className="text-center space-y-6 py-4 animate-fade-in-up">
-          <div className="flex flex-col items-center gap-3">
-            <div className="bg-rose-500/10 p-3 rounded-2xl border border-rose-500/20">
-               <AlertCircle size={32} className="text-rose-500" />
+        <div className="text-center space-y-4 sm:space-y-6 py-2 sm:py-4 animate-fade-in-up">
+          <div className="flex flex-col items-center gap-2 sm:gap-3">
+            <div className="bg-rose-500/10 p-2 sm:p-3 rounded-2xl border border-rose-500/20">
+               <AlertCircle size={24} sm:size={32} className="text-rose-500" />
             </div>
-            <div className="space-y-1">
-               <h2 className="text-2xl font-black text-white tracking-tight uppercase">การพิพากษา</h2>
+            <div className="space-y-0.5 sm:space-y-1">
+               <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight uppercase">การพิพากษา</h2>
                <p className="text-slate-500 font-bold uppercase tracking-[0.2em] text-[10px]">Consult and Vote to Execute</p>
             </div>
           </div>
 
-          <div className="glass-panel p-5 rounded-3xl bg-slate-950/40 border-white/5 text-center flex justify-between items-center px-8">
+          <div className="glass-panel p-4 rounded-3xl bg-slate-950/40 border-white/5 text-center flex justify-between items-center px-6 sm:px-8">
             <div className="text-left">
-               <p className="text-[10px] text-slate-500 font-black uppercase tracking-widest mb-0.5">สถานะสมาชิก</p>
-               <p className="text-xl font-black text-white">{votedCount} / {totalVoters} <span className="text-xs text-slate-500">โหวตแล้ว</span></p>
+               <p className="text-[9px] sm:text-[10px] text-slate-500 font-black uppercase tracking-widest mb-0.5">สถานะสมาชิก</p>
+               <p className="text-lg sm:text-xl font-black text-white">{votedCount} / {totalVoters} <span className="text-[10px] sm:text-xs text-slate-500">โหวตแล้ว</span></p>
             </div>
             {allVoted ? (
                <div className="bg-emerald-500/20 p-2.5 rounded-2xl border border-emerald-500/30 animate-in zoom-in duration-500">
@@ -908,15 +919,15 @@ function Game({ gameHook }) {
                   <button 
                     key={p.id}
                     onClick={() => submitVote(p.id)}
-                    className={`group py-4 px-6 rounded-2xl font-black text-sm border-2 transition-all active:scale-[0.98] flex justify-between items-center ${myVoteTarget === p.id ? 'bg-rose-600 border-white/20 text-white shadow-xl shadow-rose-900/30' : 'bg-slate-950/30 border-white/5 text-slate-400 hover:border-white/10 hover:text-white'}`}
+                    className={`group py-3 sm:py-4 px-4 sm:px-6 rounded-2xl font-black text-xs sm:text-sm border-2 transition-all active:scale-[0.98] flex justify-between items-center ${myVoteTarget === p.id ? 'bg-rose-600 border-white/20 text-white shadow-xl shadow-rose-900/30' : 'bg-slate-950/30 border-white/5 text-slate-400 hover:border-white/10 hover:text-white'}`}
                   >
-                    <span className="flex items-center gap-3">
-                       <div className={`w-8 h-8 rounded-full flex items-center justify-center text-[10px] ${myVoteTarget === p.id ? 'bg-white/20 text-white' : 'bg-slate-800 text-slate-500 group-hover:bg-slate-700'}`}>PV</div>
+                    <span className="flex items-center gap-2 sm:gap-3">
+                       <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-[9px] sm:text-[10px] ${myVoteTarget === p.id ? 'bg-white/20 text-white' : 'bg-slate-800 text-slate-500 group-hover:bg-slate-700'}`}>PV</div>
                        {p.name} {p.id === myPlayerId && <span className="text-[10px] text-blue-400/60 ml-1">(คุณ)</span>}
                     </span>
-                    <span className="flex flex-wrap gap-1 max-w-[100px] justify-end">
+                    <span className="flex flex-wrap gap-1 max-w-[80px] sm:max-w-[100px] justify-end">
                       {Object.keys(votes).filter(v => votes[v] === p.id).map((_, i) => (
-                        <div key={i} className={`w-2 h-2 rounded-full ${myVoteTarget === p.id ? 'bg-white' : 'bg-rose-500/60'} shadow-sm animate-in zoom-in duration-300`} />
+                        <div key={i} className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${myVoteTarget === p.id ? 'bg-white' : 'bg-rose-500/60'} shadow-sm animate-in zoom-in duration-300`} />
                       ))}
                     </span>
                   </button>
@@ -930,22 +941,22 @@ function Game({ gameHook }) {
               </button>
             </div>
           ) : (
-            <div className="space-y-6 mb-4">
-              <div className="bg-slate-950/20 py-4 px-6 rounded-2xl border border-white/5">
-                 <Ghost size={40} className="mx-auto text-slate-600 mb-2" />
-                 <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">คุณตายแล้ว แต่ระบบยังเปิดให้ดูการโหวต</p>
+            <div className="space-y-3 sm:space-y-4 mb-2 sm:mb-4">
+              <div className="bg-slate-950/20 py-2 px-4 rounded-xl border border-white/5">
+                 <Ghost size={24} className="mx-auto text-slate-600 mb-1" />
+                 <p className="text-[9px] sm:text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-tight">คุณตายแล้ว แต่ระบบยังเปิดให้ดูการโหวต</p>
               </div>
               
-              <div className="grid grid-cols-1 gap-2">
+              <div className="grid grid-cols-1 gap-1">
                 {alivePlayers.map(p => {
                   const votersForP = Object.keys(votes).filter(v => votes[v] === p.id);
                   return (
-                    <div key={p.id} className="flex justify-between items-center py-4 px-6 rounded-2xl bg-slate-950/30 border border-white/5 group hover:bg-slate-900/50 transition-all">
-                      <span className="text-sm font-black text-slate-300">{p.name}</span>
-                      <div className="flex items-center gap-3">
-                        {votersForP.length > 0 && <span className="text-[10px] font-black text-rose-500 uppercase tracking-widest">{votersForP.length} โหวต</span>}
+                    <div key={p.id} className="flex justify-between items-center py-3 px-5 rounded-xl bg-slate-950/30 border border-white/5 group hover:bg-slate-900/50 transition-all">
+                      <span className="text-xs sm:text-sm font-black text-slate-300">{p.name}</span>
+                      <div className="flex items-center gap-2 sm:gap-3">
+                        {votersForP.length > 0 && <span className="text-[9px] sm:text-[10px] font-black text-rose-500 uppercase tracking-widest">{votersForP.length} โหวต</span>}
                         <div className="flex gap-1">
-                          {votersForP.map((_, i) => <div key={i} className="w-2 h-2 rounded-full bg-rose-500/40" />)}
+                          {votersForP.map((_, i) => <div key={i} className="w-1.5 h-1.5 rounded-full bg-rose-500/40" />)}
                         </div>
                       </div>
                     </div>
@@ -983,14 +994,14 @@ function Game({ gameHook }) {
     if (!activeHunter) return renderLayout(<div className="text-center text-white">เกิดข้อผิดพลาดในการโหลดวิญญาณฮันเตอร์</div>);
 
     return renderLayout(
-        <div className="text-center space-y-8 py-4 animate-fade-in-up">
-          <div className="flex flex-col items-center gap-3">
-            <div className="bg-amber-500/10 p-4 rounded-full border border-amber-500/20">
-               <Crosshair size={48} className="text-amber-500" />
+        <div className="text-center space-y-4 sm:space-y-6 py-2 sm:py-4 animate-fade-in-up">
+          <div className="flex flex-col items-center gap-2 sm:gap-3">
+            <div className="bg-amber-500/10 p-3 sm:p-4 rounded-full border border-amber-500/20">
+               <Crosshair size={32} sm:size={48} className="text-amber-500" />
             </div>
-            <div className="space-y-1">
-               <h2 className="text-3xl font-black text-white tracking-tight uppercase">นักล่าล้างแค้น!</h2>
-               <p className="text-[10px] text-amber-500/60 font-black uppercase tracking-widest">A Hunter is taking someone with them</p>
+            <div className="space-y-0.5 sm:space-y-1">
+               <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight uppercase">การล้างแค้นของฮันเตอร์</h2>
+               <p className="text-slate-500 font-bold uppercase tracking-[0.2em] text-[10px]">A soul for a soul</p>
             </div>
           </div>
 
@@ -1039,16 +1050,16 @@ function Game({ gameHook }) {
     if (isFoolWin) { winnerTitle = 'คนบ้าชนะ!'; winnerColor = 'text-orange-500'; bgColor = 'bg-orange-500/10'; }
 
     return renderLayout(
-        <div className="text-center space-y-8 py-4 animate-fade-in-up">
+        <div className="text-center space-y-4 sm:space-y-6 py-2 sm:py-4 animate-fade-in-up">
           <div className="relative">
-             <div className={`absolute -inset-10 ${bgColor} blur-[100px] rounded-full animate-pulse-glow`} />
-             <TrophyIcon size={120} className={`mx-auto mb-6 ${winnerColor} relative drop-shadow-2xl`} strokeWidth={1} />
-             <h2 className={`text-6xl font-black tracking-tighter mb-2 ${winnerColor} relative`}>{winnerTitle}</h2>
-             <p className="text-slate-500 font-black uppercase tracking-[0.2em] text-[10px] relative">Game Over • Results Finalized</p>
+             <div className={`absolute -inset-8 ${bgColor} blur-[80px] rounded-full animate-pulse-glow`} />
+             <TrophyIcon size={90} className={`mx-auto mb-3 sm:mb-4 ${winnerColor} relative drop-shadow-2xl`} strokeWidth={1.5} />
+             <h2 className={`text-4xl sm:text-5xl font-black tracking-tighter mb-1 ${winnerColor} relative`}>{winnerTitle}</h2>
+             <p className="text-slate-500 font-black uppercase tracking-[0.2em] text-[9px] sm:text-[10px] relative">Game Over • Results Finalized</p>
           </div>
 
-          <div className="glass-panel p-6 sm:p-10 rounded-[2.5rem] bg-slate-950/40 border-white/5 space-y-6">
-            <h3 className="font-black text-white text-lg uppercase tracking-tight border-b border-white/5 pb-4">สรุปรายนามผู้ร่วมสงคราม</h3>
+          <div className="glass-panel p-4 sm:p-6 rounded-3xl bg-slate-950/40 border-white/5 space-y-4 sm:space-y-6">
+            <h3 className="font-black text-white text-base sm:text-lg uppercase tracking-tight border-b border-white/5 pb-2 sm:pb-4">สรุปรายนามผู้ร่วมสงคราม</h3>
             <div className="grid grid-cols-1 gap-2 max-h-[40vh] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-white/10">
               {playersList.map(p => (
                 <div key={p.id} className="flex justify-between items-center bg-slate-950/30 p-4 rounded-2xl border border-white/5 group">

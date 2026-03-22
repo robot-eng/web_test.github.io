@@ -8,6 +8,26 @@ export function useVoiceChat(myPeerId, roomData, myPlayerId) {
   const [remoteStreams, setRemoteStreams] = useState({}); // { [peerId]: MediaStream }
   const [isMuted, setIsMuted] = useState(false);
   
+  const [permissionError, setPermissionError] = useState(false);
+  
+  const requestMic = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+      // Apply current mute state
+      const audioTrack = stream.getAudioTracks()[0];
+      if (audioTrack && isMuted) {
+        audioTrack.enabled = false;
+      }
+      setMyStream(stream);
+      setPermissionError(false);
+      return stream;
+    } catch (err) {
+      console.error('Failed to get local stream', err);
+      setPermissionError(true);
+      return null;
+    }
+  };
+
   const toggleMute = () => {
     if (myStream) {
       const audioTrack = myStream.getAudioTracks()[0];
@@ -18,14 +38,14 @@ export function useVoiceChat(myPeerId, roomData, myPlayerId) {
     }
   };
   
-  const callsRef = useRef({}); // Keep track of established calls to easily close them
+  const callsRef = useRef({}); 
 
   // Initialize Peer
   useEffect(() => {
     if (!myPeerId) return;
     
     const newPeer = new Peer(myPeerId, {
-      debug: 1, // Log basic events
+      debug: 1, 
     });
     
     newPeer.on('open', (id) => {
@@ -46,7 +66,6 @@ export function useVoiceChat(myPeerId, roomData, myPlayerId) {
     const me = playersArray.find(p => p.id === myPlayerId);
     if (!me) return;
 
-    // Check if voice should be enabled
     const isVoicePhase = [
       PHASES.SETUP, 
       PHASES.DAY_RESULT, 
@@ -58,23 +77,12 @@ export function useVoiceChat(myPeerId, roomData, myPlayerId) {
     const shouldHaveVoice = isVoicePhase && isAlive;
 
     if (shouldHaveVoice) {
-      // 1. Get Microphone
-      if (!myStream) {
-        navigator.mediaDevices.getUserMedia({ audio: true, video: false })
-          .then((stream) => {
-             // Apply current mute state to the newly acquired stream
-             const audioTrack = stream.getAudioTracks()[0];
-             if (audioTrack && isMuted) {
-               audioTrack.enabled = false;
-             }
-             setMyStream(stream);
-          })
-          .catch(err => {
-            console.error('Failed to get local stream', err);
-          });
+      // Auto-request only if not already errored and not already active
+      if (!myStream && !permissionError) {
+        requestMic();
       }
     } else {
-      // Setup phase/Night phase/Dead -> Stop microphone and close all connections
+      // Stop microphone and close all connections
       if (myStream) {
         myStream.getTracks().forEach(track => track.stop());
         setMyStream(null);
@@ -83,7 +91,7 @@ export function useVoiceChat(myPeerId, roomData, myPlayerId) {
       callsRef.current = {};
       setRemoteStreams({});
     }
-  }, [roomData?.phase, roomData?.players, peer, myPlayerId]);
+  }, [roomData?.phase, roomData?.players, peer, myPlayerId, permissionError]);
 
   // Handle calling out and answering calls when streaming is active
   useEffect(() => {
@@ -147,5 +155,5 @@ export function useVoiceChat(myPeerId, roomData, myPlayerId) {
     };
   }, [peer, myStream, roomData?.players]);
 
-  return { remoteStreams, isMicOn: !!myStream, isMuted, toggleMute };
+  return { remoteStreams, isMicOn: !!myStream, isMuted, toggleMute, requestMic, permissionError };
 }
