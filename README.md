@@ -39,7 +39,7 @@ The enhanced learning experience with deep tracking and modern UI.
   - **Integrated Encyclopedia**: Direct access to grammar guides.
 
 ---
-### GAME 
+### GAME
 [werewolf-app](https://robot-eng.github.io/web_test.github.io/werewolf-app/)
 ## 🛠️ Other Mini-Tools
 Explore other experimental and utility web apps included in this repository:
