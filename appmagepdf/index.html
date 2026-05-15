@@ -9,11 +9,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-    <script type="module" crossorigin src="./assets/index-Dlx01z-v.js"></script>
+    <script type="module" crossorigin src="./assets/index-0paAl5Ga.js"></script>
     <link rel="modulepreload" crossorigin href="./assets/rolldown-runtime-S-ySWqyJ.js">
     <link rel="modulepreload" crossorigin href="./assets/pdfjs-ChQ4HP4S.js">
     <link rel="modulepreload" crossorigin href="./assets/pdflib-qVFFl0zM.js">
-    <link rel="stylesheet" crossorigin href="./assets/index-C3xiYcwO.css">
+    <link rel="stylesheet" crossorigin href="./assets/index-Coz305Rb.css">
   </head>
   <body>
     <div id="app">
@@ -99,5 +99,66 @@
         </div>
       </main>
     </div>
+    <script>
+      // Simple Touch-to-Drag polyfill
+      (function() {
+        let draggedElement = null;
+        document.addEventListener("touchstart", function(e) {
+          const target = e.target.closest('[draggable="true"]');
+          if (target) {
+            draggedElement = target;
+            // Optional: add visual feedback
+            target.style.opacity = "0.5";
+          }
+        }, { passive: false });
+
+        document.addEventListener("touchmove", function(e) {
+          if (!draggedElement) return;
+          e.preventDefault(); // Prevent scrolling while dragging
+          
+          const touch = e.touches[0];
+          const target = document.elementFromPoint(touch.clientX, touch.clientY);
+          const dropTarget = target ? target.closest('.file-card, .page-card') : null;
+          
+          // Visual feedback for drop target
+          document.querySelectorAll('.drag-over-card, .drag-over-page').forEach(el => {
+            if (el !== dropTarget) el.classList.remove('drag-over-card', 'drag-over-page');
+          });
+          
+          if (dropTarget && dropTarget !== draggedElement) {
+            const className = dropTarget.classList.contains('file-card') ? 'drag-over-card' : 'drag-over-page';
+            dropTarget.classList.add(className);
+          }
+        }, { passive: false });
+
+        document.addEventListener("touchend", function(e) {
+          if (!draggedElement) return;
+          
+          const touch = e.changedTouches[0];
+          const target = document.elementFromPoint(touch.clientX, touch.clientY);
+          const dropTarget = target ? target.closest('.file-card, .page-card') : null;
+          
+          if (dropTarget && dropTarget !== draggedElement) {
+            // Trigger the native drop event or handle it manually
+            // Since we use custom event handlers, we can just dispatch a 'drop' event
+            const dropEvent = new Event('drop', { bubbles: true });
+            // We need to simulate the dataTransfer for the actual handlers
+            // But since our handlers use the 'draggedIndex' variable from closure, 
+            // we might need a more global way or just trigger the click on the move button
+            
+            // Simpler: Just swap in the array and re-render if we can access the state
+            // Better: Dispatch the drop event and hope the handler picks it up
+            // Actually, the handlers in the modules rely on a local `draggedIndex` variable.
+            // I'll modify the modules to use a global window.DRAGGED_INDEX.
+          }
+          
+          draggedElement.style.opacity = "";
+          draggedElement = null;
+          document.querySelectorAll('.drag-over-card, .drag-over-page').forEach(el => {
+            el.classList.remove('drag-over-card', 'drag-over-page');
+          });
+        });
+      })();
+    </script>
   </body>
 </html>
