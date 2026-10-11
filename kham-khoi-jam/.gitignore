@@ -5,3 +5,4 @@ dist/
 !.env.example
 data/vocabulary.json
 data/*.tmp
+public/pages-dictionary.json

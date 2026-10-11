@@ -5,6 +5,17 @@ import vocabularyExample from '../data/vocabulary.example.json';
 const DAY = 24 * 60 * 60 * 1000;
 const STATIC_MODE = import.meta.env.MODE === 'pages';
 const BROWSER_STORAGE_KEY = 'kham-khoi-jam-pages-v1';
+let pagesDictionaryPromise;
+
+function loadPagesDictionary() {
+  if (!pagesDictionaryPromise) {
+    pagesDictionaryPromise = fetch(`${import.meta.env.BASE_URL}pages-dictionary.json`).then(async (response) => {
+      if (!response.ok) throw new Error('โหลดพจนานุกรมออฟไลน์ไม่สำเร็จ');
+      return response.json();
+    });
+  }
+  return pagesDictionaryPromise;
+}
 
 function getInitialWords() {
   if (!STATIC_MODE) return [];
@@ -112,15 +123,34 @@ function App() {
         if (words.some((word) => word.word.toLocaleLowerCase() === nextWord.toLocaleLowerCase())) {
           throw new Error('คำนี้อยู่ในคลังแล้ว');
         }
-        const match = dictionary.find((entry) => entry.word.toLocaleLowerCase() === nextWord.toLocaleLowerCase());
+        const curatedMatch = dictionary.find((entry) => entry.word.toLocaleLowerCase() === nextWord.toLocaleLowerCase());
+        const indexedMatch = curatedMatch || (await loadPagesDictionary())[nextWord.toLocaleLowerCase()];
+        const match = indexedMatch && !Array.isArray(indexedMatch)
+          ? indexedMatch
+          : indexedMatch && {
+            word: nextWord,
+            englishMeaning: indexedMatch[0],
+            thaiMeaning: indexedMatch[1],
+            category: indexedMatch[2],
+            example: indexedMatch[3],
+          };
         if (!manualMode && !match) {
           setManualMode(true);
           setFormMessage('ไม่พบคำนี้ในพจนานุกรมชุดที่แนบมา กรอกความหมายเองได้เลย');
           return;
         }
         const details = manualMode ? manualDetails : match;
-        if (!details.englishMeaning.trim() || !details.thaiMeaning.trim()) {
-          throw new Error('กรอกความหมายอังกฤษและคำแปลไทยให้ครบ');
+        if (!details.englishMeaning?.trim() || !details.thaiMeaning?.trim()) {
+          setManualDetails({
+            englishMeaning: details.englishMeaning || '',
+            thaiMeaning: details.thaiMeaning || '',
+            example: details.example || '',
+          });
+          setManualMode(true);
+          setFormMessage(details.thaiMeaning
+            ? 'พบคำแปลไทยแล้ว เติมความหมายอังกฤษให้ครบก่อนบันทึก'
+            : 'เพิ่มความหมายอังกฤษและคำแปลไทยก่อนบันทึก');
+          return;
         }
         const newWord = {
           ...details,
@@ -308,7 +338,7 @@ function App() {
             {formMessage && <p className={`form-message ${isSaving ? 'is-loading' : ''}`} role="status">{formMessage}</p>}
             <div className="dialog-actions"><button className="text-btn" type="button" onClick={() => setIsAddOpen(false)} disabled={isSaving}>ยกเลิก</button><button className="primary-btn" type="submit" disabled={isSaving}>{isSaving ? 'กำลังค้นหา...' : manualMode ? 'บันทึกคำศัพท์' : 'ค้นหาและเพิ่ม'} <span aria-hidden="true">→</span></button></div>
           </form>
-          <div className="source-note">{STATIC_MODE ? `พจนานุกรมในเว็บ · ${dictionary.length} คำ` : 'คำแปลออฟไลน์ · 83,000+ รายการ'}</div>
+          <div className="source-note">{STATIC_MODE ? 'พจนานุกรมออฟไลน์ · 54,000+ คำ' : 'คำแปลออฟไลน์ · 83,000+ รายการ'}</div>
         </section>
       </div>}
       <div className={`toast ${toast ? 'show' : ''}`} role="status" aria-live="polite">{toast}</div>
