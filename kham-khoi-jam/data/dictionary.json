@@ -61,5 +61,19 @@
     "thaiMeaning": "การลงทะเบียน, การสมัครเข้าเรียนหรือเป็นสมาชิก",
     "example": "Course enrollment opens next Monday.",
     "category": "การเรียน"
+  },
+  {
+    "word": "council",
+    "englishMeaning": "A group of people chosen to make decisions or give advice for an organization or community.",
+    "thaiMeaning": "สภา, คณะกรรมการ, คณะที่ปรึกษา",
+    "example": "The student council organized a book fair.",
+    "category": "การเรียน"
+  },
+  {
+    "word": "orientation",
+    "englishMeaning": "An introduction to a new school, job, or activity; also, the direction or position something faces.",
+    "thaiMeaning": "การปฐมนิเทศ; การกำหนดทิศทางหรือการวางแนว",
+    "example": "New students attend orientation before classes begin.",
+    "category": "การเรียน"
   }
 ]
