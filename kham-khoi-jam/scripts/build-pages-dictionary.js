@@ -20,8 +20,47 @@ function readEnglishGloss(gloss) {
 }
 
 function categoryFor(partOfSpeech) {
-  if (partOfSpeech === 'v') return 'การทำงาน';
+  if (partOfSpeech.includes('v')) return 'การทำงาน';
   return 'ทั่วไป';
+}
+
+function partOfSpeechLabel(code) {
+  const labels = {
+    n: 'คำนาม (noun)',
+    v: 'คำกริยา (verb)',
+    a: 'คำคุณศัพท์ (adjective)',
+    s: 'คำคุณศัพท์ (adjective)',
+    r: 'คำกริยาวิเศษณ์ (adverb)',
+    N: 'คำนาม (noun)',
+    V: 'คำกริยา (verb)',
+    VI: 'คำกริยาอกรรม (intransitive verb)',
+    VT: 'คำกริยาสกรรม (transitive verb)',
+    ADJ: 'คำคุณศัพท์ (adjective)',
+    ADV: 'คำกริยาวิเศษณ์ (adverb)',
+    PRON: 'คำสรรพนาม (pronoun)',
+    PRO: 'คำสรรพนาม (pronoun)',
+    PREP: 'คำบุพบท (preposition)',
+    PERP: 'คำบุพบท (preposition)',
+    CONJ: 'คำสันธาน (conjunction)',
+    DET: 'คำกำหนด (determiner)',
+    ART: 'คำนำหน้านาม (article)',
+    AUX: 'คำกริยาช่วย (auxiliary verb)',
+    INT: 'คำอุทาน (interjection)',
+    INTER: 'คำอุทาน (interjection)',
+    PHRV: 'กริยาวลี (phrasal verb)',
+    PHRV0: 'กริยาวลี (phrasal verb)',
+    PRF: 'คำอุปสรรค (prefix)',
+    SUF: 'คำปัจจัย (suffix)',
+    ABBR: 'คำย่อ (abbreviation)',
+    IDM: 'สำนวน (idiom)',
+    SL: 'คำสแลง (slang)',
+    DM: 'คำชี้เฉพาะ (demonstrative)',
+  };
+  return labels[code] || '';
+}
+
+function formatPartOfSpeech(codes) {
+  return [...new Set(codes.map(partOfSpeechLabel).filter(Boolean))].join(' / ');
 }
 
 async function loadWordNet() {
@@ -58,12 +97,15 @@ async function loadWordNet() {
   const byLemma = new Map();
   for (const [key, meanings] of lemmasByPartOfSpeech) {
     const [lemma, partOfSpeech] = key.split('\t');
-    const existing = byLemma.get(lemma) || { meanings: [], partOfSpeech };
+      const existing = byLemma.get(lemma) || { meanings: [], example: '', partOfSpeech: [] };
+      if (!existing.partOfSpeech.includes(partOfSpeech)) existing.partOfSpeech.push(partOfSpeech);
     for (const meaning of meanings) {
       const normalized = readEnglishGloss(meaning);
+        const isFirstMeaning = existing.meanings.length === 0;
       if (normalized && !existing.meanings.includes(normalized) && existing.meanings.length < 3) {
         existing.meanings.push(normalized);
       }
+        if (isFirstMeaning) existing.example = meaning.match(/"([^"]+)"/)?.[1] || '';
     }
     byLemma.set(lemma, existing);
   }
@@ -82,10 +124,11 @@ async function buildDictionary() {
     const partOfSpeech = readTag(record, 'ecat');
     if (!word || !thaiMeaning || !/^[a-z][a-z'-]{0,78}$/i.test(word)) continue;
 
-    const existing = entries.get(word) || { thaiMeanings: [], partOfSpeech };
+    const existing = entries.get(word) || { thaiMeanings: [], partOfSpeech: [] };
     if (!existing.thaiMeanings.includes(thaiMeaning) && existing.thaiMeanings.length < 3) {
       existing.thaiMeanings.push(thaiMeaning);
     }
+    if (partOfSpeech && !existing.partOfSpeech.includes(partOfSpeech)) existing.partOfSpeech.push(partOfSpeech);
     entries.set(word, existing);
   }
 
@@ -93,13 +136,17 @@ async function buildDictionary() {
   for (const [word, entry] of entries) {
     const wordNetEntry = wordNet.get(word);
     const englishMeaning = wordNetEntry?.meanings.join(' / ') || '';
-    const firstExample = wordNetEntry?.meanings
-      .map((meaning) => meaning.match(/"([^"]+)"/)?.[1])
-      .find(Boolean);
-    const example = firstExample
-      ? `${firstExample.charAt(0).toLocaleUpperCase()}${firstExample.slice(1)}.`
+    const example = wordNetEntry?.example
+      ? `${wordNetEntry.example.charAt(0).toLocaleUpperCase()}${wordNetEntry.example.slice(1)}.`
       : '';
-    output[word] = [englishMeaning, entry.thaiMeanings.join('; '), categoryFor(wordNetEntry?.partOfSpeech), example];
+    const partsOfSpeech = [...entry.partOfSpeech, ...(wordNetEntry?.partOfSpeech || [])];
+    output[word] = [
+      englishMeaning,
+      entry.thaiMeanings.join('; '),
+      categoryFor(wordNetEntry?.partOfSpeech || []),
+      example,
+      formatPartOfSpeech(partsOfSpeech),
+    ];
   }
 
   await mkdir(outputDirectory, { recursive: true });

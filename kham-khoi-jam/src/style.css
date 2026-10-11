@@ -77,6 +77,7 @@ h1 { font: 400 clamp(29px, 3.2vw, 42px)/1.2 var(--serif); margin: 7px 0 8px; }
 .word-list { border-top: 1px solid var(--line); }
 .word-row { display: grid; grid-template-columns: minmax(110px, .75fr) minmax(0, 1.65fr) 92px 75px 27px; align-items: center; gap: 12px; border-bottom: 1px solid var(--line); padding: 15px 8px; min-height: 92px; animation: arrive .2s ease both; }
 .word-main { font-weight: 600; font-size: 14px; overflow-wrap: anywhere; }
+.word-pos { color: #627665; font-size: 10px; margin-top: 3px; }
 .word-pronunciation { color: #92978d; font: 10px 'DM Mono', monospace; margin-top: 4px; }
 .word-details { min-width: 0; }
 .definition-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -115,6 +116,7 @@ h1 { font: 400 clamp(29px, 3.2vw, 42px)/1.2 var(--serif); margin: 7px 0 8px; }
 .card-inner { max-width: 100%; }
 .card-overline { color: #878d82; font: 10px 'DM Mono', monospace; text-transform: uppercase; }
 .card-word { font: 400 clamp(34px, 6vw, 55px)/1.1 var(--serif); margin: 16px 0 10px; overflow-wrap: anywhere; }
+.card-category { color: #93a094; font-size: 10px; }
 .card-hint { color: #9a9c92; font-size: 11px; margin-top: 25px; }
 .card-meaning { font-size: 24px; margin: 14px 0; }
 .card-definition { color: #555f56; font-size: 13px; line-height: 1.6; }

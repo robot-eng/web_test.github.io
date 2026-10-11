@@ -6,6 +6,14 @@ const DAY = 24 * 60 * 60 * 1000;
 const STATIC_MODE = import.meta.env.MODE === 'pages';
 const BROWSER_STORAGE_KEY = 'kham-khoi-jam-pages-v1';
 let pagesDictionaryPromise;
+const knownPartsOfSpeech = new Map([...dictionary, ...vocabularyExample].map((entry) => [entry.word.toLocaleLowerCase(), entry.partOfSpeech || '']));
+
+function addKnownPartsOfSpeech(words) {
+  return words.map((word) => ({
+    ...word,
+    partOfSpeech: word.partOfSpeech || knownPartsOfSpeech.get(word.word.toLocaleLowerCase()) || '',
+  }));
+}
 
 function loadPagesDictionary() {
   if (!pagesDictionaryPromise) {
@@ -23,12 +31,12 @@ function getInitialWords() {
     const saved = localStorage.getItem(BROWSER_STORAGE_KEY);
     if (saved !== null) {
       const parsed = JSON.parse(saved);
-      if (Array.isArray(parsed)) return parsed;
+      if (Array.isArray(parsed)) return addKnownPartsOfSpeech(parsed);
     }
   } catch (error) {
     console.warn('Could not load browser vocabulary.', error);
   }
-  return vocabularyExample;
+  return addKnownPartsOfSpeech(vocabularyExample);
 }
 
 function isMastered(word) {
@@ -45,7 +53,7 @@ function App() {
   const [filter, setFilter] = useState('all');
   const [search, setSearch] = useState('');
   const [wordInput, setWordInput] = useState('');
-  const [manualDetails, setManualDetails] = useState({ englishMeaning: '', thaiMeaning: '', example: '' });
+  const [manualDetails, setManualDetails] = useState({ englishMeaning: '', thaiMeaning: '', example: '', partOfSpeech: '' });
   const [formMessage, setFormMessage] = useState('');
   const [toast, setToast] = useState('');
   const [reviewQueue, setReviewQueue] = useState([]);
@@ -103,7 +111,7 @@ function App() {
 
   function openAddDialog() {
     setWordInput('');
-    setManualDetails({ englishMeaning: '', thaiMeaning: '', example: '' });
+    setManualDetails({ englishMeaning: '', thaiMeaning: '', example: '', partOfSpeech: '' });
     setManualMode(false);
     setFormMessage('');
     setIsAddOpen(true);
@@ -124,32 +132,33 @@ function App() {
           throw new Error('คำนี้อยู่ในคลังแล้ว');
         }
         const curatedMatch = dictionary.find((entry) => entry.word.toLocaleLowerCase() === nextWord.toLocaleLowerCase());
-        const indexedMatch = curatedMatch || (await loadPagesDictionary())[nextWord.toLocaleLowerCase()];
-        const match = indexedMatch && !Array.isArray(indexedMatch)
-          ? indexedMatch
-          : indexedMatch && {
-            word: nextWord,
-            englishMeaning: indexedMatch[0],
-            thaiMeaning: indexedMatch[1],
-            category: indexedMatch[2],
-            example: indexedMatch[3],
-          };
+        const indexedEntry = (await loadPagesDictionary())[nextWord.toLocaleLowerCase()];
+        const indexedMatch = indexedEntry && {
+          word: nextWord,
+          englishMeaning: indexedEntry[0],
+          thaiMeaning: indexedEntry[1],
+          category: indexedEntry[2],
+          example: indexedEntry[3],
+          partOfSpeech: indexedEntry[4],
+        };
+        const match = indexedMatch ? { ...indexedMatch, ...curatedMatch } : curatedMatch;
         if (!manualMode && !match) {
           setManualMode(true);
           setFormMessage('ไม่พบคำนี้ในพจนานุกรมชุดที่แนบมา กรอกความหมายเองได้เลย');
           return;
         }
         const details = manualMode ? manualDetails : match;
-        if (!details.englishMeaning?.trim() || !details.thaiMeaning?.trim()) {
+        if (!details.englishMeaning?.trim() || !details.thaiMeaning?.trim() || !details.partOfSpeech?.trim()) {
           setManualDetails({
             englishMeaning: details.englishMeaning || '',
             thaiMeaning: details.thaiMeaning || '',
             example: details.example || '',
+            partOfSpeech: details.partOfSpeech || '',
           });
           setManualMode(true);
           setFormMessage(details.thaiMeaning
-            ? 'พบคำแปลไทยแล้ว เติมความหมายอังกฤษให้ครบก่อนบันทึก'
-            : 'เพิ่มความหมายอังกฤษและคำแปลไทยก่อนบันทึก');
+            ? 'พบข้อมูลบางส่วน เติมความหมายอังกฤษ คำแปลไทย และชนิดคำให้ครบก่อนบันทึก'
+            : 'เพิ่มความหมายอังกฤษ คำแปลไทย และชนิดคำก่อนบันทึก');
           return;
         }
         const newWord = {
@@ -164,7 +173,7 @@ function App() {
         };
         setWords((current) => [newWord, ...current]);
         setWordInput('');
-        setManualDetails({ englishMeaning: '', thaiMeaning: '', example: '' });
+        setManualDetails({ englishMeaning: '', thaiMeaning: '', example: '', partOfSpeech: '' });
         setManualMode(false);
         setIsAddOpen(false);
         setFormMessage('');
@@ -181,7 +190,7 @@ function App() {
       if (!response.ok) throw new Error(result.error || 'เพิ่มคำศัพท์ไม่สำเร็จ');
       setWords((current) => [result.word, ...current]);
       setWordInput('');
-      setManualDetails({ englishMeaning: '', thaiMeaning: '', example: '' });
+      setManualDetails({ englishMeaning: '', thaiMeaning: '', example: '', partOfSpeech: '' });
       setManualMode(false);
       setIsAddOpen(false);
       setFormMessage('');
@@ -290,7 +299,7 @@ function App() {
                 </div>
                 <div className="word-list" aria-live="polite">
                   {isLoading ? <div className="empty-list">กำลังโหลดคลังคำศัพท์...</div> : filteredWords.length ? filteredWords.map((word) => <article className="word-row" key={word.id}>
-                    <div className="word-heading"><div className="word-main">{word.word}</div><div className="word-pronunciation">{word.streak ? `ทบทวนแล้ว ${word.streak} ครั้ง` : 'คำใหม่'}</div></div>
+                    <div className="word-heading"><div className="word-main">{word.word}</div><div className="word-pos">{word.partOfSpeech || 'ยังไม่ระบุชนิดคำ'}</div><div className="word-pronunciation">{word.streak ? `ทบทวนแล้ว ${word.streak} ครั้ง` : 'คำใหม่'}</div></div>
                     <div className="word-details">
                       <div className="definition-pair"><div><span className="detail-label">English meaning</span><p>{word.englishMeaning || 'ยังไม่ได้เพิ่มความหมายอังกฤษ'}</p></div><div><span className="detail-label">คำแปลไทย</span><p>{word.thaiMeaning || 'ยังไม่ได้เพิ่มคำแปล'}</p></div></div>
                       {word.example && <div className="word-example"><span className="detail-label">Example</span><p>{word.example}</p></div>}
@@ -312,8 +321,8 @@ function App() {
               <div className="progress-track"><div className="progress-fill" style={{ width: `${reviewQueue.length ? Math.min(reviewPosition, reviewQueue.length) / reviewQueue.length * 100 : 100}%` }} /></div>
               {currentWord ? <>
                 <button className={`flashcard ${revealed ? 'revealed' : ''}`} onClick={() => setRevealed(true)} aria-label="แตะเพื่อดูความหมาย">
-                  {!revealed ? <div className="card-inner"><div className="card-overline">คำศัพท์ · {currentWord.category}</div><div className="card-word">{currentWord.word}</div><div className="card-hint">แตะการ์ดเพื่อเปิดดูความหมาย</div></div> : <div className="card-inner card-answer">
-                    <div className="card-overline">{currentWord.word}</div><div className="card-meaning">{currentWord.thaiMeaning}</div><div className="card-definition"><span className="detail-label">English meaning</span>{currentWord.englishMeaning}</div>{currentWord.example && <div className="card-example"><span className="detail-label">Example</span>{currentWord.example}</div>}
+                  {!revealed ? <div className="card-inner"><div className="card-overline">คำศัพท์ · {currentWord.partOfSpeech || 'ยังไม่ระบุชนิดคำ'}</div><div className="card-word">{currentWord.word}</div><div className="card-category">{currentWord.category}</div><div className="card-hint">แตะการ์ดเพื่อเปิดดูความหมาย</div></div> : <div className="card-inner card-answer">
+                    <div className="card-overline">{currentWord.word} · {currentWord.partOfSpeech || 'ยังไม่ระบุชนิดคำ'}</div><div className="card-meaning">{currentWord.thaiMeaning}</div><div className="card-definition"><span className="detail-label">English meaning</span>{currentWord.englishMeaning}</div>{currentWord.example && <div className="card-example"><span className="detail-label">Example</span>{currentWord.example}</div>}
                   </div>}
                 </button>
                 <div className="review-controls"><button className="again-btn" disabled={!revealed} onClick={() => rateWord(false)}>ยังไม่แม่น · ทบทวนเร็ว ๆ นี้</button><button className="remember-btn" disabled={!revealed} onClick={() => rateWord(true)}>จำได้ · {currentWord.interval ? `อีก ${Math.min(30, Math.max(1, currentWord.interval * 2))} วัน` : 'พรุ่งนี้'}</button></div>
@@ -333,6 +342,7 @@ function App() {
               <p className="manual-note">ไม่พบข้อมูลครบในพจนานุกรม เพิ่มรายละเอียดเองได้เลย</p>
               <div className="field"><label htmlFor="manual-english">Meaning (English)</label><textarea id="manual-english" required value={manualDetails.englishMeaning} onChange={(event) => setManualDetails((current) => ({ ...current, englishMeaning: event.target.value }))} placeholder="คำอธิบายภาษาอังกฤษ" /></div>
               <div className="field"><label htmlFor="manual-thai">คำแปลไทย</label><textarea id="manual-thai" required value={manualDetails.thaiMeaning} onChange={(event) => setManualDetails((current) => ({ ...current, thaiMeaning: event.target.value }))} placeholder="ความหมายภาษาไทย" /></div>
+              <div className="field"><label htmlFor="manual-pos">ชนิดคำ</label><select id="manual-pos" required value={manualDetails.partOfSpeech} onChange={(event) => setManualDetails((current) => ({ ...current, partOfSpeech: event.target.value }))}><option value="">เลือกชนิดคำ</option><option>คำนาม (noun)</option><option>คำกริยา (verb)</option><option>คำคุณศัพท์ (adjective)</option><option>คำกริยาวิเศษณ์ (adverb)</option><option>คำสรรพนาม (pronoun)</option><option>คำบุพบท (preposition)</option><option>คำสันธาน (conjunction)</option><option>คำอุทาน (interjection)</option><option>อื่น ๆ</option></select></div>
               <div className="field"><label htmlFor="manual-example">ตัวอย่างประโยค (ไม่บังคับ)</label><input id="manual-example" value={manualDetails.example} onChange={(event) => setManualDetails((current) => ({ ...current, example: event.target.value }))} placeholder="ตัวอย่างการใช้คำ" /></div>
             </div>}
             {formMessage && <p className={`form-message ${isSaving ? 'is-loading' : ''}`} role="status">{formMessage}</p>}

@@ -4,62 +4,71 @@
     "englishMeaning": "Glowing with or giving off light.",
     "thaiMeaning": "ส่องแสง, เปล่งประกาย",
     "example": "The lucent moon lit the quiet path.",
-    "category": "ทั่วไป"
+    "category": "ทั่วไป",
+    "partOfSpeech": "คำคุณศัพท์ (adjective)"
   },
   {
     "word": "ephemeral",
     "englishMeaning": "Lasting for a very short time.",
     "thaiMeaning": "ชั่วคราว, อยู่เพียงไม่นาน",
     "example": "The beauty of the cherry blossoms is ephemeral.",
-    "category": "ทั่วไป"
+    "category": "ทั่วไป",
+    "partOfSpeech": "คำคุณศัพท์ (adjective)"
   },
   {
     "word": "tranquil",
     "englishMeaning": "Free from disturbance; calm.",
     "thaiMeaning": "สงบ, เงียบสงบ",
     "example": "We found a tranquil spot beside the lake.",
-    "category": "ความรู้สึก"
+    "category": "ความรู้สึก",
+    "partOfSpeech": "คำคุณศัพท์ (adjective)"
   },
   {
     "word": "curious",
     "englishMeaning": "Eager to know or learn something.",
     "thaiMeaning": "อยากรู้อยากเห็น, สนใจใคร่รู้",
     "example": "The curious student asked one more question.",
-    "category": "การเรียน"
+    "category": "การเรียน",
+    "partOfSpeech": "คำคุณศัพท์ (adjective)"
   },
   {
     "word": "diligent",
     "englishMeaning": "Showing care and effort in your work.",
     "thaiMeaning": "ขยัน, เอาใจใส่",
     "example": "Her diligent practice improved her writing.",
-    "category": "การทำงาน"
+    "category": "การทำงาน",
+    "partOfSpeech": "คำคุณศัพท์ (adjective)"
   },
   {
     "word": "luminous",
     "englishMeaning": "Giving off or reflecting a steady light.",
     "thaiMeaning": "เปล่งแสง, สว่างไสว",
     "example": "The luminous lanterns lined the street.",
-    "category": "ทั่วไป"
+    "category": "ทั่วไป",
+    "partOfSpeech": "คำคุณศัพท์ (adjective)"
   },
   {
     "word": "abundant",
     "englishMeaning": "Existing in large quantities; plentiful.",
     "thaiMeaning": "อุดมสมบูรณ์, มีมากมาย",
     "example": "Fresh fruit is abundant at the market in summer.",
-    "category": "ทั่วไป"
+    "category": "ทั่วไป",
+    "partOfSpeech": "คำคุณศัพท์ (adjective)"
   },
   {
     "word": "wanderlust",
     "englishMeaning": "A strong desire to travel and explore the world.",
     "thaiMeaning": "ความปรารถนาอย่างแรงกล้าที่จะเดินทาง",
     "example": "Her wanderlust took her to a new country each year.",
-    "category": "การเดินทาง"
+    "category": "การเดินทาง",
+    "partOfSpeech": "คำนาม (noun)"
   },
   {
     "word": "enrollment",
     "englishMeaning": "The act of enrolling in or joining a course, school, or organization.",
     "thaiMeaning": "การลงทะเบียน, การสมัครเข้าเรียนหรือเป็นสมาชิก",
     "example": "Course enrollment opens next Monday.",
-    "category": "การเรียน"
+    "category": "การเรียน",
+    "partOfSpeech": "คำนาม (noun)"
   }
 ]

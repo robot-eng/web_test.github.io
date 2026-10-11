@@ -6,6 +6,7 @@
     "thaiMeaning": "การพบสิ่งดีโดยบังเอิญ",
     "example": "Finding this little cafe was pure serendipity.",
     "category": "ทั่วไป",
+    "partOfSpeech": "คำนาม (noun)",
     "streak": 0,
     "interval": 0,
     "nextReview": 0
@@ -17,6 +18,7 @@
     "thaiMeaning": "ฟื้นตัวได้ดี, ยืดหยุ่น",
     "example": "Small plants are surprisingly resilient.",
     "category": "การเรียน",
+    "partOfSpeech": "คำคุณศัพท์ (adjective)",
     "streak": 1,
     "interval": 1,
     "nextReview": 0
@@ -28,6 +30,7 @@
     "thaiMeaning": "เดินเล่นอย่างไร้จุดหมาย",
     "example": "We wandered through the old town.",
     "category": "การเดินทาง",
+    "partOfSpeech": "คำกริยา (verb)",
     "streak": 0,
     "interval": 0,
     "nextReview": 0
@@ -39,6 +42,7 @@
     "thaiMeaning": "อ่อนโยน, ละมุน",
     "example": "She gave the old dog a tender smile.",
     "category": "ความรู้สึก",
+    "partOfSpeech": "คำคุณศัพท์ (adjective)",
     "streak": 3,
     "interval": 4,
     "nextReview": 0
@@ -50,6 +54,7 @@
     "thaiMeaning": "ใคร่ครวญ, พิจารณาอย่างรอบคอบ",
     "example": "Take a moment to contemplate your next step.",
     "category": "การทำงาน",
+    "partOfSpeech": "คำกริยา (verb)",
     "streak": 2,
     "interval": 2,
     "nextReview": 0

@@ -53,6 +53,17 @@ function readTag(record, tag) {
   return record.match(new RegExp(`<${tag}>([\\s\\S]*?)</${tag}>`, 'i'))?.[1]?.trim() || '';
 }
 
+function partOfSpeechLabels(definitions) {
+  const labels = {
+    noun: 'คำนาม (noun)',
+    verb: 'คำกริยา (verb)',
+    adjective: 'คำคุณศัพท์ (adjective)',
+    'adjective satellite': 'คำคุณศัพท์ (adjective)',
+    adverb: 'คำกริยาวิเศษณ์ (adverb)',
+  };
+  return [...new Set(definitions.map((entry) => labels[entry.meta.synsetType]).filter(Boolean))].join(' / ');
+}
+
 async function loadLexicon() {
   const source = iconv.decode(await readFile(lexiconFile), 'win874');
   const recordPattern = /<Doc>([\s\S]*?)<\/Doc>/gi;
@@ -78,8 +89,9 @@ async function enrichWord(word) {
   const definition = definitions?.[0];
   const englishMeaning = curatedEntry?.englishMeaning || definition?.glossary?.split('; "')[0].trim();
   const thaiMeaning = curatedEntry?.thaiMeaning || [...new Set(lexiconEntries.map((entry) => entry.thaiMeaning))].slice(0, 3).join('; ');
+  const partOfSpeech = curatedEntry?.partOfSpeech || partOfSpeechLabels(definitions || []);
 
-  if (!englishMeaning || !thaiMeaning) {
+  if (!englishMeaning || !thaiMeaning || !partOfSpeech) {
     throw new Error('ยังไม่พบข้อมูลคำนี้ครบทั้งอังกฤษและไทย สามารถกรอกข้อมูลเองได้');
   }
 
@@ -92,6 +104,7 @@ async function enrichWord(word) {
     word,
     englishMeaning,
     thaiMeaning,
+    partOfSpeech,
     example,
     category: curatedEntry?.category || ({ N: 'ทั่วไป', V: 'การทำงาน', ADJ: 'ทั่วไป', ADV: 'ทั่วไป' }[lexiconEntries[0]?.partOfSpeech] || 'ทั่วไป'),
   };
@@ -101,7 +114,13 @@ async function handleRequest(request, response) {
   const url = new URL(request.url, `http://${request.headers.host || 'localhost'}`);
 
   if (request.method === 'GET' && url.pathname === '/api/words') {
-    return sendJson(response, 200, await readWords());
+    const words = await readWords();
+    const withPartsOfSpeech = await Promise.all(words.map(async (word) => {
+      if (word.partOfSpeech) return word;
+      const definitions = await wordnet.lookup(word.word, true);
+      return { ...word, partOfSpeech: partOfSpeechLabels(definitions || []) };
+    }));
+    return sendJson(response, 200, withPartsOfSpeech);
   }
 
   if (request.method === 'POST' && url.pathname === '/api/words') {
@@ -121,13 +140,15 @@ async function handleRequest(request, response) {
       if (body.englishMeaning !== undefined || body.thaiMeaning !== undefined) {
         const englishMeaning = String(body.englishMeaning || '').trim();
         const thaiMeaning = String(body.thaiMeaning || '').trim();
-        if (!englishMeaning || !thaiMeaning) {
-          return sendJson(response, 400, { error: 'กรอกความหมายอังกฤษและคำแปลไทยให้ครบ' });
+        const partOfSpeech = String(body.partOfSpeech || '').trim();
+        if (!englishMeaning || !thaiMeaning || !partOfSpeech) {
+          return sendJson(response, 400, { error: 'กรอกความหมายอังกฤษ คำแปลไทย และชนิดคำให้ครบ' });
         }
         details = {
           word,
           englishMeaning,
           thaiMeaning,
+          partOfSpeech,
           example: String(body.example || '').trim() || `I came across the word "${word}" while reading today.`,
           category: String(body.category || 'ทั่วไป'),
         };
