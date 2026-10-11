@@ -5,7 +5,8 @@
     "thaiMeaning": "ส่องแสง, เปล่งประกาย",
     "example": "The lucent moon lit the quiet path.",
     "category": "ทั่วไป",
-    "partOfSpeech": "คำคุณศัพท์ (adjective)"
+    "partOfSpeech": "คำคุณศัพท์ (adjective)",
+    "thaiReading": "ลูเซนต์"
   },
   {
     "word": "ephemeral",
@@ -13,7 +14,8 @@
     "thaiMeaning": "ชั่วคราว, อยู่เพียงไม่นาน",
     "example": "The beauty of the cherry blossoms is ephemeral.",
     "category": "ทั่วไป",
-    "partOfSpeech": "คำคุณศัพท์ (adjective)"
+    "partOfSpeech": "คำคุณศัพท์ (adjective)",
+    "thaiReading": "อิเฟเมอรัล"
   },
   {
     "word": "tranquil",
@@ -21,7 +23,8 @@
     "thaiMeaning": "สงบ, เงียบสงบ",
     "example": "We found a tranquil spot beside the lake.",
     "category": "ความรู้สึก",
-    "partOfSpeech": "คำคุณศัพท์ (adjective)"
+    "partOfSpeech": "คำคุณศัพท์ (adjective)",
+    "thaiReading": "แทรงควิล"
   },
   {
     "word": "curious",
@@ -29,7 +32,8 @@
     "thaiMeaning": "อยากรู้อยากเห็น, สนใจใคร่รู้",
     "example": "The curious student asked one more question.",
     "category": "การเรียน",
-    "partOfSpeech": "คำคุณศัพท์ (adjective)"
+    "partOfSpeech": "คำคุณศัพท์ (adjective)",
+    "thaiReading": "คิวเรียส"
   },
   {
     "word": "diligent",
@@ -37,7 +41,8 @@
     "thaiMeaning": "ขยัน, เอาใจใส่",
     "example": "Her diligent practice improved her writing.",
     "category": "การทำงาน",
-    "partOfSpeech": "คำคุณศัพท์ (adjective)"
+    "partOfSpeech": "คำคุณศัพท์ (adjective)",
+    "thaiReading": "ดิลิเจนต์"
   },
   {
     "word": "luminous",
@@ -45,7 +50,8 @@
     "thaiMeaning": "เปล่งแสง, สว่างไสว",
     "example": "The luminous lanterns lined the street.",
     "category": "ทั่วไป",
-    "partOfSpeech": "คำคุณศัพท์ (adjective)"
+    "partOfSpeech": "คำคุณศัพท์ (adjective)",
+    "thaiReading": "ลูมินัส"
   },
   {
     "word": "abundant",
@@ -53,7 +59,8 @@
     "thaiMeaning": "อุดมสมบูรณ์, มีมากมาย",
     "example": "Fresh fruit is abundant at the market in summer.",
     "category": "ทั่วไป",
-    "partOfSpeech": "คำคุณศัพท์ (adjective)"
+    "partOfSpeech": "คำคุณศัพท์ (adjective)",
+    "thaiReading": "อะบันเดินต์"
   },
   {
     "word": "wanderlust",
@@ -61,7 +68,8 @@
     "thaiMeaning": "ความปรารถนาอย่างแรงกล้าที่จะเดินทาง",
     "example": "Her wanderlust took her to a new country each year.",
     "category": "การเดินทาง",
-    "partOfSpeech": "คำนาม (noun)"
+    "partOfSpeech": "คำนาม (noun)",
+    "thaiReading": "วอนเดอร์ลัสต์"
   },
   {
     "word": "enrollment",
@@ -69,7 +77,8 @@
     "thaiMeaning": "การลงทะเบียน, การสมัครเข้าเรียนหรือเป็นสมาชิก",
     "example": "Course enrollment opens next Monday.",
     "category": "การเรียน",
-    "partOfSpeech": "คำนาม (noun)"
+    "partOfSpeech": "คำนาม (noun)",
+    "thaiReading": "เอนโรลเมนต์"
   },
   {
     "word": "inspired",
@@ -77,6 +86,7 @@
     "thaiMeaning": "ยอดเยี่ยม, เปี่ยมด้วยแรงบันดาลใจ",
     "example": "She gave an inspired performance.",
     "category": "ทั่วไป",
-    "partOfSpeech": "คำคุณศัพท์ (adjective)"
+    "partOfSpeech": "คำคุณศัพท์ (adjective)",
+    "thaiReading": "อินสไพเอิร์ด"
   }
 ]

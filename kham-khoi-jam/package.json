@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@vitejs/plugin-react": "^5.0.0",
+    "cmu-pronouncing-dictionary": "^3.0.0",
     "iconv-lite": "^0.7.3",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",

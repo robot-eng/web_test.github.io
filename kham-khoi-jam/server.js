@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 import path from 'node:path';
 import iconv from 'iconv-lite';
+import { thaiReadingFor } from './thai-pronunciation.js';
 
 const dataDirectory = fileURLToPath(new URL('./data/', import.meta.url));
 const wordsFile = path.join(dataDirectory, 'vocabulary.json');
@@ -95,8 +96,9 @@ async function enrichWord(word) {
   const englishMeaning = curatedEntry?.englishMeaning || definition?.glossary?.split('; "')[0].trim();
   const thaiMeaning = curatedEntry?.thaiMeaning || [...new Set(lexiconEntries.map((entry) => entry.thaiMeaning))].slice(0, 3).join('; ');
   const partOfSpeech = curatedEntry?.partOfSpeech || partOfSpeechLabels(definitions || []);
+  const thaiReading = curatedEntry?.thaiReading || thaiReadingFor(word);
 
-  if (!englishMeaning || !thaiMeaning || !partOfSpeech) {
+  if (!englishMeaning || !thaiMeaning || !partOfSpeech || !thaiReading) {
     throw new Error('ยังไม่พบข้อมูลคำนี้ครบทั้งอังกฤษและไทย สามารถกรอกข้อมูลเองได้');
   }
 
@@ -110,6 +112,7 @@ async function enrichWord(word) {
     englishMeaning,
     thaiMeaning,
     partOfSpeech,
+    thaiReading,
     example,
     category: curatedEntry?.category || ({ N: 'ทั่วไป', V: 'การทำงาน', ADJ: 'ทั่วไป', ADV: 'ทั่วไป' }[lexiconEntries[0]?.partOfSpeech] || 'ทั่วไป'),
   };
@@ -121,9 +124,13 @@ async function handleRequest(request, response) {
   if (request.method === 'GET' && url.pathname === '/api/words') {
     const words = await readWords();
     const withPartsOfSpeech = await Promise.all(words.map(async (word) => {
-      if (word.partOfSpeech) return word;
+      if (word.partOfSpeech && word.thaiReading) return word;
       const definitions = await wordnet.lookup(word.word, true);
-      return { ...word, partOfSpeech: partOfSpeechLabels(definitions || []) };
+      return {
+        ...word,
+        partOfSpeech: partOfSpeechLabels(definitions || []),
+        thaiReading: word.thaiReading || thaiReadingFor(word.word),
+      };
     }));
     return sendJson(response, 200, withPartsOfSpeech);
   }
@@ -146,14 +153,16 @@ async function handleRequest(request, response) {
         const englishMeaning = String(body.englishMeaning || '').trim();
         const thaiMeaning = String(body.thaiMeaning || '').trim();
         const partOfSpeech = String(body.partOfSpeech || '').trim();
-        if (!englishMeaning || !thaiMeaning || !partOfSpeech) {
-          return sendJson(response, 400, { error: 'กรอกความหมายอังกฤษ คำแปลไทย และชนิดคำให้ครบ' });
+        const thaiReading = String(body.thaiReading || '').trim();
+        if (!englishMeaning || !thaiMeaning || !partOfSpeech || !thaiReading) {
+          return sendJson(response, 400, { error: 'กรอกความหมายอังกฤษ คำแปลไทย ชนิดคำ และคำอ่านไทยให้ครบ' });
         }
         details = {
           word,
           englishMeaning,
           thaiMeaning,
           partOfSpeech,
+          thaiReading,
           example: String(body.example || '').trim(),
           category: String(body.category || 'ทั่วไป'),
         };

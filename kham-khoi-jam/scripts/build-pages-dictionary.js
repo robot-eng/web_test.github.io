@@ -3,6 +3,7 @@ import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import iconv from 'iconv-lite';
+import { thaiReadingFor } from '../thai-pronunciation.js';
 
 const require = createRequire(import.meta.url);
 const wordnetDb = require('wordnet-db');
@@ -158,6 +159,7 @@ async function buildDictionary() {
       categoryFor(wordNetEntry?.partOfSpeech || []),
       example,
       formatPartOfSpeech(partsOfSpeech),
+      thaiReadingFor(word),
     ];
   }
 
@@ -169,6 +171,7 @@ async function buildDictionary() {
       entry.category || 'ทั่วไป',
       entry.example || '',
       entry.partOfSpeech || '',
+      entry.thaiReading || thaiReadingFor(entry.word),
     ];
   }
 

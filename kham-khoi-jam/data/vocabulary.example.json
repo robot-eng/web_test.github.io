@@ -7,6 +7,7 @@
     "example": "Finding this little cafe was pure serendipity.",
     "category": "ทั่วไป",
     "partOfSpeech": "คำนาม (noun)",
+    "thaiReading": "เซเรนดิพิที",
     "streak": 0,
     "interval": 0,
     "nextReview": 0
@@ -19,6 +20,7 @@
     "example": "Small plants are surprisingly resilient.",
     "category": "การเรียน",
     "partOfSpeech": "คำคุณศัพท์ (adjective)",
+    "thaiReading": "รีซิลเลียนต์",
     "streak": 1,
     "interval": 1,
     "nextReview": 0
@@ -31,6 +33,7 @@
     "example": "We wandered through the old town.",
     "category": "การเดินทาง",
     "partOfSpeech": "คำกริยา (verb)",
+    "thaiReading": "วอนเดอร์",
     "streak": 0,
     "interval": 0,
     "nextReview": 0
@@ -43,6 +46,7 @@
     "example": "She gave the old dog a tender smile.",
     "category": "ความรู้สึก",
     "partOfSpeech": "คำคุณศัพท์ (adjective)",
+    "thaiReading": "เทนเดอร์",
     "streak": 3,
     "interval": 4,
     "nextReview": 0
@@ -55,6 +59,7 @@
     "example": "Take a moment to contemplate your next step.",
     "category": "การทำงาน",
     "partOfSpeech": "คำกริยา (verb)",
+    "thaiReading": "คอนเทมเพลต",
     "streak": 2,
     "interval": 2,
     "nextReview": 0

@@ -21,6 +21,8 @@ Open http://127.0.0.1:5173. The development command starts the web app and its J
 
 The LEXiTRON-derived source is copyrighted by NECTEC. This product is created by the adaptation of LEXiTRON developed by NECTEC (http://www.nectec.or.th/). LEXiTRON data does not provide English definitions or example sentences; WordNet supplies definitions, and the app uses an available WordNet phrase as an example when possible.
 
+Thai readings are approximate transliterations generated from the CMU Pronouncing Dictionary (ARPABET), with curated overrides for common words. See `data/CMU-PRONOUNCING-LICENSE.txt`.
+
 ## GitHub
 
 The local vocabulary file is excluded from commits. Create a private or public GitHub repository, then connect and push it with:
