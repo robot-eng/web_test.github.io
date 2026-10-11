@@ -64,6 +64,11 @@ function partOfSpeechLabels(definitions) {
   return [...new Set(definitions.map((entry) => labels[entry.meta.synsetType]).filter(Boolean))].join(' / ');
 }
 
+function exampleForWord(gloss, word) {
+  const candidates = [...gloss.matchAll(/"([^"]+)"/g)].map((match) => match[1]);
+  return candidates.find((candidate) => candidate.toLocaleLowerCase().split(/[^a-z]+/).includes(word.toLocaleLowerCase())) || '';
+}
+
 async function loadLexicon() {
   const source = iconv.decode(await readFile(lexiconFile), 'win874');
   const recordPattern = /<Doc>([\s\S]*?)<\/Doc>/gi;
@@ -95,7 +100,7 @@ async function enrichWord(word) {
     throw new Error('ยังไม่พบข้อมูลคำนี้ครบทั้งอังกฤษและไทย สามารถกรอกข้อมูลเองได้');
   }
 
-  const quotedExample = definition?.glossary?.match(/"([^"]+)"/)?.[1];
+  const quotedExample = definition?.glossary ? exampleForWord(definition.glossary, word) : '';
   const example = curatedEntry?.example || (quotedExample
     ? `${quotedExample.charAt(0).toLocaleUpperCase()}${quotedExample.slice(1)}.`
     : '');

@@ -8,6 +8,7 @@ const require = createRequire(import.meta.url);
 const wordnetDb = require('wordnet-db');
 const rootDirectory = fileURLToPath(new URL('../', import.meta.url));
 const sourceFile = path.join(rootDirectory, 'data', 'lexitron-etlex.dat');
+const curatedFile = path.join(rootDirectory, 'data', 'dictionary.json');
 const outputDirectory = path.join(rootDirectory, 'public');
 const outputFile = path.join(outputDirectory, 'pages-dictionary.json');
 const exampleOverrides = new Map([
@@ -15,6 +16,11 @@ const exampleOverrides = new Map([
   ['orientation', 'New students attend orientation before classes begin.'],
   ['implement', 'The school will implement a new attendance policy next term.'],
 ]);
+
+function exampleForWord(gloss, word) {
+  const candidates = [...gloss.matchAll(/"([^"]+)"/g)].map((match) => match[1]);
+  return candidates.find((candidate) => candidate.toLocaleLowerCase().split(/[^a-z]+/).includes(word)) || '';
+}
 
 function readTag(record, tag) {
   return record.match(new RegExp(`<${tag}>([\\s\\S]*?)</${tag}>`, 'i'))?.[1]?.trim() || '';
@@ -110,7 +116,7 @@ async function loadWordNet() {
       if (normalized && !existing.meanings.includes(normalized) && existing.meanings.length < 3) {
         existing.meanings.push(normalized);
       }
-        if (isFirstMeaning) existing.example = meaning.match(/"([^"]+)"/)?.[1] || '';
+        if (isFirstMeaning) existing.example = exampleForWord(meaning, lemma);
     }
     byLemma.set(lemma, existing);
   }
@@ -152,6 +158,17 @@ async function buildDictionary() {
       categoryFor(wordNetEntry?.partOfSpeech || []),
       example,
       formatPartOfSpeech(partsOfSpeech),
+    ];
+  }
+
+  const curatedEntries = await readFile(curatedFile, 'utf8').then(JSON.parse);
+  for (const entry of curatedEntries) {
+    output[entry.word.toLocaleLowerCase()] = [
+      entry.englishMeaning,
+      entry.thaiMeaning,
+      entry.category || 'ทั่วไป',
+      entry.example || '',
+      entry.partOfSpeech || '',
     ];
   }
 

@@ -70,5 +70,13 @@
     "example": "Course enrollment opens next Monday.",
     "category": "การเรียน",
     "partOfSpeech": "คำนาม (noun)"
+  },
+  {
+    "word": "inspired",
+    "englishMeaning": "Exceptionally good or creative, as if produced by inspiration.",
+    "thaiMeaning": "ยอดเยี่ยม, เปี่ยมด้วยแรงบันดาลใจ",
+    "example": "She gave an inspired performance.",
+    "category": "ทั่วไป",
+    "partOfSpeech": "คำคุณศัพท์ (adjective)"
   }
 ]
