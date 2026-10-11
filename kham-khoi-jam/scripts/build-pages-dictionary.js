@@ -10,6 +10,11 @@ const rootDirectory = fileURLToPath(new URL('../', import.meta.url));
 const sourceFile = path.join(rootDirectory, 'data', 'lexitron-etlex.dat');
 const outputDirectory = path.join(rootDirectory, 'public');
 const outputFile = path.join(outputDirectory, 'pages-dictionary.json');
+const exampleOverrides = new Map([
+  ['council', 'The council voted to fund a new community center.'],
+  ['orientation', 'New students attend orientation before classes begin.'],
+  ['implement', 'The school will implement a new attendance policy next term.'],
+]);
 
 function readTag(record, tag) {
   return record.match(new RegExp(`<${tag}>([\\s\\S]*?)</${tag}>`, 'i'))?.[1]?.trim() || '';
@@ -136,9 +141,10 @@ async function buildDictionary() {
   for (const [word, entry] of entries) {
     const wordNetEntry = wordNet.get(word);
     const englishMeaning = wordNetEntry?.meanings.join(' / ') || '';
-    const example = wordNetEntry?.example
+    const wordNetExample = wordNetEntry?.example
       ? `${wordNetEntry.example.charAt(0).toLocaleUpperCase()}${wordNetEntry.example.slice(1)}.`
       : '';
+    const example = exampleOverrides.get(word) || wordNetExample;
     const partsOfSpeech = [...entry.partOfSpeech, ...(wordNetEntry?.partOfSpeech || [])];
     output[word] = [
       englishMeaning,

@@ -165,7 +165,7 @@ function App() {
           ...details,
           word: nextWord,
           id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-          example: details.example?.trim() || `I came across the word "${nextWord}" while reading today.`,
+          example: details.example?.trim() || '',
           category: details.category || 'ทั่วไป',
           streak: 0,
           interval: 0,
@@ -302,7 +302,7 @@ function App() {
                     <div className="word-heading"><div className="word-main">{word.word}</div><div className="word-pos">{word.partOfSpeech || 'ยังไม่ระบุชนิดคำ'}</div><div className="word-pronunciation">{word.streak ? `ทบทวนแล้ว ${word.streak} ครั้ง` : 'คำใหม่'}</div></div>
                     <div className="word-details">
                       <div className="definition-pair"><div><span className="detail-label">English meaning</span><p>{word.englishMeaning || 'ยังไม่ได้เพิ่มความหมายอังกฤษ'}</p></div><div><span className="detail-label">คำแปลไทย</span><p>{word.thaiMeaning || 'ยังไม่ได้เพิ่มคำแปล'}</p></div></div>
-                      {word.example && <div className="word-example"><span className="detail-label">Example</span><p>{word.example}</p></div>}
+                      <div className={`word-example ${word.example ? '' : 'no-example'}`}><span className="detail-label">Example</span><p>{word.example || 'ยังไม่มีตัวอย่างประโยคจากพจนานุกรม'}</p></div>
                     </div>
                     <span className="tag">{word.category}</span>
                     <span className="level">{isMastered(word) ? 'คล่องแล้ว' : Number(word.nextReview || 0) <= Date.now() ? 'รอทบทวน' : `อีก ${Math.max(1, Math.ceil((word.nextReview - Date.now()) / DAY))} วัน`}</span>

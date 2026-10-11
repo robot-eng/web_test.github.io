@@ -98,7 +98,7 @@ async function enrichWord(word) {
   const quotedExample = definition?.glossary?.match(/"([^"]+)"/)?.[1];
   const example = curatedEntry?.example || (quotedExample
     ? `${quotedExample.charAt(0).toLocaleUpperCase()}${quotedExample.slice(1)}.`
-    : `I came across the word "${word}" while reading today.`);
+    : '');
 
   return {
     word,
@@ -149,7 +149,7 @@ async function handleRequest(request, response) {
           englishMeaning,
           thaiMeaning,
           partOfSpeech,
-          example: String(body.example || '').trim() || `I came across the word "${word}" while reading today.`,
+          example: String(body.example || '').trim(),
           category: String(body.category || 'ทั่วไป'),
         };
       } else {

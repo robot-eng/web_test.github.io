@@ -85,6 +85,7 @@ h1 { font: 400 clamp(29px, 3.2vw, 42px)/1.2 var(--serif); margin: 7px 0 8px; }
 .detail-label { display: block; color: #8a9085; font: 9px 'DM Mono', monospace; }
 .word-example { color: var(--muted); margin-top: 7px; font: italic 11px var(--serif); }
 .word-example p { font: italic 11px/1.5 var(--serif); }
+.word-example.no-example, .word-example.no-example p { color: #9a9c92; font-style: normal; }
 .tag { justify-self: start; color: #536953; background: #e4ecdf; border-radius: 3px; padding: 5px 8px; font-size: 10px; white-space: nowrap; }
 .level { color: #7c857a; font: 10px 'DM Mono', monospace; }
 .delete-btn { width: 27px; height: 27px; border: 0; border-radius: 4px; color: #9b9d92; background: transparent; font-size: 15px; }
