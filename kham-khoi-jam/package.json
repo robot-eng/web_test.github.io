@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "concurrently -k -n api,web \"node server.js\" \"vite --host 127.0.0.1\"",
     "build": "vite build",
+    "build:pages": "vite build --mode pages",
     "preview": "vite preview"
   },
   "dependencies": {

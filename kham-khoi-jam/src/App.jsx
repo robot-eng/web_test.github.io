@@ -1,14 +1,32 @@
 import React, { useEffect, useState } from 'react';
+import dictionary from '../data/dictionary.json';
+import vocabularyExample from '../data/vocabulary.example.json';
 
 const DAY = 24 * 60 * 60 * 1000;
+const STATIC_MODE = import.meta.env.MODE === 'pages';
+const BROWSER_STORAGE_KEY = 'kham-khoi-jam-pages-v1';
+
+function getInitialWords() {
+  if (!STATIC_MODE) return [];
+  try {
+    const saved = localStorage.getItem(BROWSER_STORAGE_KEY);
+    if (saved !== null) {
+      const parsed = JSON.parse(saved);
+      if (Array.isArray(parsed)) return parsed;
+    }
+  } catch (error) {
+    console.warn('Could not load browser vocabulary.', error);
+  }
+  return vocabularyExample;
+}
 
 function isMastered(word) {
   return word.streak >= 3;
 }
 
 function App() {
-  const [words, setWords] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [words, setWords] = useState(getInitialWords);
+  const [isLoading, setIsLoading] = useState(!STATIC_MODE);
   const [isSaving, setIsSaving] = useState(false);
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [manualMode, setManualMode] = useState(false);
@@ -34,6 +52,7 @@ function App() {
   }).sort((a, b) => Number(a.nextReview || 0) - Number(b.nextReview || 0));
 
   useEffect(() => {
+    if (STATIC_MODE) return undefined;
     let cancelled = false;
     fetch('/api/words')
       .then(async (response) => {
@@ -45,6 +64,15 @@ function App() {
       .finally(() => { if (!cancelled) setIsLoading(false); });
     return () => { cancelled = true; };
   }, []);
+
+  useEffect(() => {
+    if (!STATIC_MODE || isLoading) return;
+    try {
+      localStorage.setItem(BROWSER_STORAGE_KEY, JSON.stringify(words));
+    } catch (error) {
+      setToast('บันทึกใน browser ไม่สำเร็จ พื้นที่จัดเก็บอาจเต็ม');
+    }
+  }, [words, isLoading]);
 
   useEffect(() => {
     if (!toast) return undefined;
@@ -78,8 +106,42 @@ function App() {
       return;
     }
     setIsSaving(true);
-    setFormMessage(manualMode ? 'กำลังบันทึกคำศัพท์...' : 'กำลังค้นหาคำแปลจากพจนานุกรมออฟไลน์...');
+    setFormMessage(manualMode ? 'กำลังบันทึกคำศัพท์...' : STATIC_MODE ? 'กำลังค้นหาจากพจนานุกรมในเว็บ...' : 'กำลังค้นหาคำแปลจากพจนานุกรมออฟไลน์...');
     try {
+      if (STATIC_MODE) {
+        if (words.some((word) => word.word.toLocaleLowerCase() === nextWord.toLocaleLowerCase())) {
+          throw new Error('คำนี้อยู่ในคลังแล้ว');
+        }
+        const match = dictionary.find((entry) => entry.word.toLocaleLowerCase() === nextWord.toLocaleLowerCase());
+        if (!manualMode && !match) {
+          setManualMode(true);
+          setFormMessage('ไม่พบคำนี้ในพจนานุกรมชุดที่แนบมา กรอกความหมายเองได้เลย');
+          return;
+        }
+        const details = manualMode ? manualDetails : match;
+        if (!details.englishMeaning.trim() || !details.thaiMeaning.trim()) {
+          throw new Error('กรอกความหมายอังกฤษและคำแปลไทยให้ครบ');
+        }
+        const newWord = {
+          ...details,
+          word: nextWord,
+          id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+          example: details.example?.trim() || `I came across the word "${nextWord}" while reading today.`,
+          category: details.category || 'ทั่วไป',
+          streak: 0,
+          interval: 0,
+          nextReview: Date.now(),
+        };
+        setWords((current) => [newWord, ...current]);
+        setWordInput('');
+        setManualDetails({ englishMeaning: '', thaiMeaning: '', example: '' });
+        setManualMode(false);
+        setIsAddOpen(false);
+        setFormMessage('');
+        setToast('เพิ่มคำศัพท์ลงคลังใน browser นี้แล้ว');
+        return;
+      }
+
       const response = await fetch('/api/words', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -104,6 +166,12 @@ function App() {
 
   async function removeWord(word) {
     if (!window.confirm(`ลบคำว่า “${word.word}” ออกจากคลังหรือไม่?`)) return;
+    if (STATIC_MODE) {
+      setWords((current) => current.filter((item) => item.id !== word.id));
+      setReviewQueue((current) => current.filter((id) => id !== word.id));
+      setToast('ลบคำศัพท์ออกจาก browser นี้แล้ว');
+      return;
+    }
     try {
       const response = await fetch(`/api/words/${encodeURIComponent(word.id)}`, { method: 'DELETE' });
       if (!response.ok) throw new Error('ลบคำศัพท์ไม่สำเร็จ');
@@ -121,6 +189,12 @@ function App() {
     const update = remembered
       ? { streak: Number(currentWord.streak || 0) + 1, interval, nextReview: Date.now() + interval * DAY }
       : { streak: 0, interval: 0, nextReview: Date.now() + 10 * 60 * 1000 };
+    if (STATIC_MODE) {
+      setWords((current) => current.map((word) => word.id === currentWord.id ? { ...word, ...update } : word));
+      setReviewPosition((position) => position + 1);
+      setRevealed(false);
+      return;
+    }
     try {
       const response = await fetch(`/api/words/${encodeURIComponent(currentWord.id)}`, {
         method: 'PATCH',
@@ -153,7 +227,7 @@ function App() {
             <button className={page === 'review' ? 'active' : ''} onClick={() => navigate('review')}><span className="nav-icon" aria-hidden="true">↻</span><span className="nav-text">ทบทวนวันนี้</span><span className="nav-count">{dueWords.length}</span></button>
           </nav>
         </div>
-        <div className="sidebar-bottom"><div className="local-status">บันทึกลงไฟล์ JSON</div>คำศัพท์อยู่ในโปรเจกต์<br />data/vocabulary.json</div>
+        <div className="sidebar-bottom"><div className="local-status">{STATIC_MODE ? 'บันทึกใน browser นี้' : 'บันทึกลงไฟล์ JSON'}</div>{STATIC_MODE ? <>ข้อมูลอยู่ใน browser<br />ของอุปกรณ์นี้เท่านั้น</> : <>คำศัพท์อยู่ในโปรเจกต์<br />data/vocabulary.json</>}</div>
       </aside>
 
       <main>
@@ -222,7 +296,7 @@ function App() {
       {isAddOpen && <div className="dialog-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget && !isSaving) setIsAddOpen(false); }}>
         <section className="add-dialog" role="dialog" aria-modal="true" aria-labelledby="add-dialog-title">
           <div className="dialog-head"><div><div className="eyebrow">เพิ่มลงสมุดคำศัพท์</div><h2 id="add-dialog-title">เก็บคำใหม่</h2></div><button className="delete-btn dialog-close" aria-label="ปิด" onClick={() => setIsAddOpen(false)} disabled={isSaving}>×</button></div>
-          <p className="dialog-copy">พิมพ์คำภาษาอังกฤษ ระบบจะค้นความหมายและคำแปลจากพจนานุกรมที่ติดตั้งไว้ในเครื่อง</p>
+          <p className="dialog-copy">{STATIC_MODE ? 'พิมพ์คำศัพท์เพื่อค้นในรายการที่แนบมากับเว็บ หากไม่พบสามารถกรอกความหมายเองได้' : 'พิมพ์คำภาษาอังกฤษ ระบบจะค้นความหมายและคำแปลจากพจนานุกรมที่ติดตั้งไว้ในเครื่อง'}</p>
           <form onSubmit={handleSubmit}>
             <div className="field"><label htmlFor="word-input">คำศัพท์</label><input id="word-input" value={wordInput} onChange={(event) => setWordInput(event.target.value)} placeholder="เช่น enrollment" required maxLength={80} autoFocus /></div>
             {manualMode && <div className="manual-fields">
@@ -234,7 +308,7 @@ function App() {
             {formMessage && <p className={`form-message ${isSaving ? 'is-loading' : ''}`} role="status">{formMessage}</p>}
             <div className="dialog-actions"><button className="text-btn" type="button" onClick={() => setIsAddOpen(false)} disabled={isSaving}>ยกเลิก</button><button className="primary-btn" type="submit" disabled={isSaving}>{isSaving ? 'กำลังค้นหา...' : manualMode ? 'บันทึกคำศัพท์' : 'ค้นหาและเพิ่ม'} <span aria-hidden="true">→</span></button></div>
           </form>
-          <div className="source-note">คำแปลออฟไลน์ · 83,000+ รายการ</div>
+          <div className="source-note">{STATIC_MODE ? `พจนานุกรมในเว็บ · ${dictionary.length} คำ` : 'คำแปลออฟไลน์ · 83,000+ รายการ'}</div>
         </section>
       </div>}
       <div className={`toast ${toast ? 'show' : ''}`} role="status" aria-live="polite">{toast}</div>

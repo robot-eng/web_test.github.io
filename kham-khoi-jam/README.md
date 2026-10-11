@@ -31,3 +31,7 @@ git push -u origin main
 ```
 
 Do not publish personal vocabulary unless you intend to share it.
+
+## GitHub Pages build
+
+This repository's `kham-khoi-jam/site/` folder contains the static build for GitHub Pages. The public build stores words in each visitor's browser; it cannot write to the server-side JSON file. To rebuild it, run `npm run build:pages`. The Node API and full offline dictionaries remain available with `npm run dev`.
