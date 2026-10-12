@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Calculator</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+        .calculator {
+            background-color: #333;
+            padding: 20px;
+            width: 400px;
+            height: 600px;
+            margin: 6.8% auto auto;
+            border-radius: 10px;
+            box-shadow: 0 0 20px #999;
+        }
+
+        .display {
+            background-color: #eee;
+            color: #333;
+            height: 80px;
+            width: 100%;
+            font-size: 36px;
+            text-align: center;
+            padding-right: 20px;
+            box-sizing: border-box;
+            border: none;
+            border-bottom: solid 2px #ccc;
+        }
+
+        button {
+            background-color: #eee;
+            border: none;
+            color: #333;
+            font-size: 24px;
+            height: 70px;
+            width: 77px;
+            margin: 5px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #ddd;
+            cursor: pointer;
+        }
+
+        .btn-danger {
+            background-color: #ff5050;
+            border-color: #ff5050;
+            color: #fff;
+        }
+
+        .btn-danger:hover {
+            background-color: #ff0000;
+            border-color: #ff0000;
+        }
+
+        .btn-success {
+            background-color: #50ff50;
+            border-color: #50ff50;
+            color: #fff;
+        }
+
+        .btn-success:hover {
+            background-color: #00ff00;
+            border-color: #00ff00;
+        }
+
+        .btn-warning {
+            background-color: #ffd700;
+            border-color: #ffd700;
+            color: #333;
+        }
+
+        .ze {
+            padding-right: 153.2px;
+        }
+
+        .btn-warning:hover {
+            background-color: #ffc107;
+            border-color: #ffc107;
+        }
+
+        @media (max-width: 480px) {
+            .calculator {
+                background-color: #333;
+                padding: 20px;
+                width: 250px;
+                height: 320px;
+                margin: 50% auto auto auto;
+                border-radius: 5px;
+                box-shadow: 0 0 10px #999;
+            }
+
+            .display {
+                background-color: #eee;
+                color: #333;
+                height: 40px;
+                width: 100%;
+                font-size: 18px;
+                text-align: right;
+                padding-right: 10px;
+                box-sizing: border-box;
+                border: none;
+                border-bottom: solid 1px #ccc;
+            }
+
+            button {
+                background-color: #eee;
+                border: none;
+                color: #333;
+                font-size: 16px;
+                height: 30px;
+                width: 45px;
+                margin: 1px;
+                border-radius: 5px;
+                transition: all 0.3s ease;
+            }
+
+            .ze {
+                padding-right: 83px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="calculator card text-center bg-light mt -100">
+                    <div class="card-body">
+                        <form>
+                            <div class="form-group">
+                                <input type="text" class="form-control display" id="display" disabled>
+                            </div>
+                            <div class="form-group">
+                                <button type="button" class="btn btn-danger" id="clear">C</button>
+                                <button type="button" class="btn btn-warning" id="backspace">CE</button>
+                                <button type="button" class="btn btn-warning" id="percent">%</button>
+                                <button type="button" class="btn btn-success" id="divide">/</button>
+                            </div>
+                            <div class="form-group">
+                                <button type="button" class="btn btn-warning" id="seven">7</button>
+                                <button type="button" class="btn btn-warning" id="eight">8</button>
+                                <button type="button" class="btn btn-warning" id="nine">9</button>
+                                <button type="button" class="btn btn-success" id="multiply">*</button>
+                            </div>
+                            <div class="form-group">
+                                <button type="button" class="btn btn-warning" id="four">4</button>
+                                <button type="button" class="btn btn-warning" id="five">5</button>
+                                <button type="button" class="btn btn-warning" id="six">6</button>
+                                <button type="button" class="btn btn-success" id="subtract">-</button>
+                            </div>
+                            <div class="form-group">
+                                <button type="button" class="btn btn-warning" id="one">1</button>
+                                <button type="button" class="btn btn-warning" id="two">2</button>
+                                <button type="button" class="btn btn-warning" id="three">3</button>
+                                <button type="button" class="btn btn-success" id="add">+</button>
+                            </div>
+                            <div class="form-group">
+                                <button type="button" class="btn btn-warning ze" id="zero">0</button>
+                                <button type="button" class="btn btn-warning" id="decimal">.</button>
+                                <button type="button" class="btn btn-success" id="equals">=</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+<script>
+    const buttons = document.querySelectorAll("button");
+    const display = document.querySelector(".display");
+
+    for (let i = 0; i < buttons.length; i++) {
+        buttons[i].addEventListener("click", function () {
+            if (this.innerHTML === "CE") {
+                display.value = "";
+            } else if (this.innerHTML === "C") {
+                // Clear the last entered character
+                display.value = display.value.slice(0, -1);
+            } else if (this.innerHTML === "=") {
+                try {
+                    display.value = Function('return ' + display.value)();
+                } catch (error) {
+                    display.value = "Error";
+                }
+            } else if (this.innerHTML === "%") {
+                // Calculate the percentage of the value
+                try {
+                    display.value = Function('return ' + display.value + '/100')();
+                } catch (error) {
+                    display.value = "Error";
+                }
+            } else {
+                display.value += this.innerHTML;
+            }
+        });
+    }
+
+
+</script>
+
+</html>

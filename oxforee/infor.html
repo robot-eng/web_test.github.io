@@ -1,0 +1,2669 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>English Encyclopedia | Oxford 3000 Master</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="uiux.css">
+    <script src="script.js"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Inter:wght@400;600;700&family=Sarabun:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="app">
+        <div id="infor">
+        <!-- HEADER (Duplicate from index.html for consistency) -->
+        <header class="header" id="mainHeader">
+            <div class="flex items-center">
+                <button class="back-btn" onclick="history.back()" title="Go Back">🔙🏠</button>
+                <a href="index.html" class="logo-link">
+                    <div class="logo">
+                        <div class="logo-icon">O</div>
+                        <div class="logo-text">
+                            <h1>Oxford 3000</h1>
+                            <span>Master Vocabulary</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="user-actions">
+                <div class="theme-selector">
+                    <button class="theme-opt" onclick="APP.setTheme('light')" id="theme-light" title="Light Mode">☀️</button>
+                    <button class="theme-opt" onclick="APP.setTheme('dark')" id="theme-dark" title="Dark Mode">🌙</button>
+                    <button class="theme-opt" onclick="APP.setTheme('pastel')" id="theme-pastel" title="Pastel Mode" aria-label="Pastel">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                            <circle cx="12" cy="12" r="9" fill="url(#g2)" />
+                            <defs>
+                                <linearGradient id="g2" x1="0" x2="1">
+                                    <stop offset="0" stop-color="#FFD6F0" />
+                                    <stop offset="1" stop-color="#D6C6FF" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </button>
+                </div>
+                <!-- <div class="streak-pill">🔥 <span id="streakCount">12</span></div>
+                <button class="sound-btn"
+                    onclick="if(confirm('Reset all progress?')){localStorage.clear(); location.reload();}">↺</button> -->
+            </div>
+        </header>
+
+        <!-- NAVIGATION TABS -->
+        <div class="nav-tab-container">
+            <button class="nav-tab-btn active" id="tabVocab" onclick="location.href='index.html'">📚 คำศัพท์</button>
+            <button class="nav-tab-btn" id="tabInfor" onclick="location.href='infor.html'">📖 คู่มือ</button>
+            <button class="nav-tab-btn" id="tabgame" onclick="location.href='game.html'">👾 เกม</button>
+        </div>
+
+        <div id="tips-section" class="page-content active max-w-4xl mx-auto p-4 md:p-8">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl md:text-4xl font-black text-slate-800 mb-2">English Encyclopedia 📘</h1>
+                <p class="text-slate-600">รวมทุกกฎ ทุกเทคนิค ตั้งแต่พื้นฐานจนถึงการประยุกต์ใช้จริง (ฉบับละเอียด)</p>
+            </div>
+
+            <!-- 1. Structure & Parts of Speech -->
+            <div class="accordion-item shadow-sm">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <div class="flex items-center">
+                        <div class="section-num bg-pink-100 text-pink-600">1</div>
+                        <span>Structure & Parts of Speech (โครงสร้างประโยค & ชนิดคำ)</span>
+                    </div>
+                    <span class="arrow text-slate-400">▼</span>
+                </div>
+                <div class="accordion-content">
+                    <div class="accordion-body space-y-8">
+
+                        <!-- Parts of Speech Table -->
+                        <div>
+                            <h4 class="font-bold text-pink-700 mb-4 border-b pb-2">1.1 เจาะลึก 8 ชนิดคำ (Parts of
+                                Speech)
+                            </h4>
+                            <div class="highlight-box bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4 rounded-r">
+                                <b class="text-yellow-800">💡 Tip:</b> Suffix (หางคำ) คือกุญแจลับ! ถ้าจำหางคำได้
+                                จะรู้ทันทีว่าคำนั้นทำหน้าที่อะไร โดยไม่ต้องเปิดดิกชันนารี
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="grammar-table">
+                                    <thead>
+                                        <tr>
+                                            <th>ชนิด</th>
+                                            <th>หน้าที่</th>
+                                            <th>จุดสังเกต (Suffixes)</th>
+                                            <th>ตัวอย่างประโยค</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><span class="badge badge-n">Noun</span></td>
+                                            <td>ชื่อคน/สัตว์/สิ่งของ</td>
+                                            <td>-tion, -ment, -ness, -ity, -er<br><span
+                                                    class="text-xs text-slate-500">Ex.
+                                                    Action, Happiness</span></td>
+                                            <td><b class="text-blue-600">Happiness</b> depends on
+                                                you.<br>(ความสุขขึ้นอยู่กับคุณ)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="badge badge-v">Verb</span></td>
+                                            <td>การกระทำ</td>
+                                            <td>-ate, -en, -ify, -ize<br><span class="text-xs text-slate-500">Ex.
+                                                    Realize,
+                                                    Shorten</span></td>
+                                            <td>I <b class="text-red-600">eat</b> an apple.<br>(ฉันกินแอปเปิ้ล)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="badge badge-adj">Adj</span></td>
+                                            <td>ขยาย Noun (บอกลักษณะ)</td>
+                                            <td>-al, -ful, -ous, -ive, -ble<br><span class="text-xs text-slate-500">Ex.
+                                                    Beautiful, Possible</span></td>
+                                            <td>She is <b class="text-green-600">beautiful</b>.<br>(หล่อนสวย - ขยาย She)
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="badge badge-adv">Adv</span></td>
+                                            <td>ขยาย V./Adj. (บอกอาการ)</td>
+                                            <td>-ly (ส่วนใหญ่)<br><span class="text-xs text-slate-500">Ex. Quickly,
+                                                    Happily</span></td>
+                                            <td>He runs <b class="text-orange-600">quickly</b>.<br>(เขาวิ่ง"อย่าง"เร็ว -
+                                                ขยายวิ่ง)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Pronoun</b></td>
+                                            <td>แทนชื่อ (ลดคำซ้ำ)</td>
+                                            <td>I, You, He, She, It...</td>
+                                            <td><b class="text-purple-600">She</b> is my friend.</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Prep</b></td>
+                                            <td>บอกตำแหน่ง/เวลา</td>
+                                            <td>In, On, At, Under...</td>
+                                            <td>It is <b class="text-teal-600">on</b> the table.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Common Mistake Warning -->
+                            <div class="mt-4 p-4 bg-red-50 border border-red-200 rounded-xl">
+                                <h5 class="font-bold text-red-700 flex items-center mb-2">🚫 จุดนรก: Good vs Well</h5>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                                    <div>
+                                        <p class="font-bold text-slate-700">Good (Adj) - ขยายคำนาม</p>
+                                        <p>✅ He is a <b class="text-green-600">good</b> boy.</p>
+                                        <p>❌ He plays football <b class="text-red-500">good</b>.</p>
+                                    </div>
+                                    <div>
+                                        <p class="font-bold text-slate-700">Well (Adv) - ขยายกริยา</p>
+                                        <p>✅ He plays football <b class="text-green-600">well</b>.</p>
+                                        <p>❌ He is a <b class="text-red-500">well</b> boy.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 1.2 Deep Dive Parts of Speech (NEW) -->
+                        <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                            <h4 class="font-bold text-slate-800 mb-4 border-b pb-2">1.2 ประเภทของคำแต่ละชนิด
+                                (Classification)</h4>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Nouns Deep Dive -->
+                                <div class="bg-white p-4 rounded-xl shadow-sm">
+                                    <h5 class="font-bold text-blue-700 mb-2 flex items-center">
+                                        <span class="mr-2">🏠</span> Nouns (นาม)
+                                    </h5>
+                                    <ul class="text-sm space-y-2">
+                                        <li><b>Common/Proper:</b> <br>
+                                            <span class="text-xs text-slate-500">Man (ทั่วไป) vs John
+                                                (เฉพาะเจาะจง)</span>
+                                        </li>
+                                        <li><b>Concrete/Abstract:</b> <br>
+                                            <span class="text-xs text-slate-500">Table (จับต้องได้) vs Love
+                                                (นามธรรม)</span>
+                                        </li>
+                                        <li><b>Collective:</b> <br>
+                                            <span class="text-xs text-slate-500">Team, Family, Group (นามกลุ่ม)</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <!-- Verbs Deep Dive -->
+                                <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-red-400">
+                                    <h5 class="font-bold text-red-700 mb-2 flex items-center">
+                                        <span class="mr-2">⚡</span> Verbs (กริยา)
+                                    </h5>
+                                    <div class="p-2 mb-2 bg-red-50 rounded text-xs">
+                                        <b class="text-red-800 font-bold">🔥 สำคัญมาก:</b> Stative Verbs (สภาพ)
+                                        <b>ห้ามเติม
+                                            -ing</b> เช่น <i>Love, Know, Believe, Hate</i>
+                                    </div>
+                                    <ul class="text-sm space-y-2">
+                                        <li><b>Transitive:</b> ต้องการกรรม <br>
+                                            <span class="text-xs text-slate-500">I <u>bought</u> a book.</span>
+                                        </li>
+                                        <li><b>Intransitive:</b> ไม่ต้องการกรรม <br>
+                                            <span class="text-xs text-slate-500">Birds <u>fly</u>.</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <!-- Adverbs Deep Dive -->
+                                <div
+                                    class="bg-white p-4 rounded-xl shadow-sm md:col-span-2 border-l-4 border-orange-400">
+                                    <h5 class="font-bold text-orange-700 mb-2 flex items-center">
+                                        <span class="mr-2">🚀</span> Adverbs (กริยาวิเศษณ์)
+                                    </h5>
+                                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs text-slate-600">
+                                        <div>
+                                            <b class="text-slate-800">Frequency (บ่อยแค่ไหน)</b><br>
+                                            Always, Never
+                                        </div>
+                                        <div>
+                                            <b class="text-slate-800">Manner (อย่างไร)</b><br>
+                                            Carefully, Quickly
+                                        </div>
+                                        <div>
+                                            <b class="text-slate-800">Time (เมื่อไหร่)</b><br>
+                                            Yesterday, Now
+                                        </div>
+                                        <div>
+                                            <b class="text-slate-800">Place (ที่ไหน)</b><br>
+                                            Everywhere, Here
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pronouns Table -->
+                        <div>
+                            <h4 class="font-bold text-pink-700 mb-4 border-b pb-2">1.3 ตาราง Pronouns (สรรพนาม)
+                                ฉบับสมบูรณ์
+                            </h4>
+                            <div class="overflow-x-auto">
+                                <table class="grammar-table text-center">
+                                    <thead>
+                                        <tr>
+                                            <th>Subject<br>(ประธาน)</th>
+                                            <th>Object<br>(กรรม)</th>
+                                            <th>Possessive Adj<br>(+นาม)</th>
+                                            <th>Possessive Pron<br>(ไม่มีนาม)</th>
+                                            <th>Reflexive<br>(ตนเอง)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>I</td>
+                                            <td>Me</td>
+                                            <td>My</td>
+                                            <td>Mine</td>
+                                            <td>Myself</td>
+                                        </tr>
+                                        <tr>
+                                            <td>You</td>
+                                            <td>You</td>
+                                            <td>Your</td>
+                                            <td>Yours</td>
+                                            <td>Yourself</td>
+                                        </tr>
+                                        <tr>
+                                            <td>We</td>
+                                            <td>Us</td>
+                                            <td>Our</td>
+                                            <td>Ours</td>
+                                            <td>Ourselves</td>
+                                        </tr>
+                                        <tr>
+                                            <td>They</td>
+                                            <td>Them</td>
+                                            <td>Their</td>
+                                            <td>Theirs</td>
+                                            <td>Themselves</td>
+                                        </tr>
+                                        <tr>
+                                            <td>He</td>
+                                            <td>Him</td>
+                                            <td>His</td>
+                                            <td>His</td>
+                                            <td>Himself</td>
+                                        </tr>
+                                        <tr>
+                                            <td>She</td>
+                                            <td>Her</td>
+                                            <td>Her</td>
+                                            <td>Hers</td>
+                                            <td>Herself</td>
+                                        </tr>
+                                        <tr>
+                                            <td>It</td>
+                                            <td>It</td>
+                                            <td>Its</td>
+                                            <td>Its</td>
+                                            <td>Itself</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Sentence Structure -->
+                        <div>
+                            <h4 class="font-bold text-pink-700 mb-4 border-b pb-2">1.4 สูตรโครงสร้างประโยค (Sentence
+                                Structures)</h4>
+
+                            <!-- Phrase vs Clause -->
+                            <div class="mb-6 bg-orange-50 p-4 rounded-xl border border-orange-200">
+                                <h5 class="font-bold text-orange-800 mb-2">🧱 Phrase vs Clause (วลี vs ประโยค)</h5>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="bg-white p-3 rounded border border-orange-100">
+                                        <div class="font-bold text-slate-700 mb-1">Phrase (วลี)</div>
+                                        <p class="text-sm text-slate-600 mb-2">กลุ่มคำที่ <b class="text-red-500">ไม่มี
+                                                S +
+                                                V</b> (ใจความไม่ครบ)</p>
+                                        <ul class="text-sm list-disc list-inside">
+                                            <li>A big black dog</li>
+                                            <li>In the morning</li>
+                                        </ul>
+                                    </div>
+                                    <div class="bg-white p-3 rounded border border-orange-100">
+                                        <div class="font-bold text-slate-700 mb-1">Clause (อนุประโยค)</div>
+                                        <p class="text-sm text-slate-600 mb-2">กลุ่มคำที่มี <b class="text-green-600">S
+                                                +
+                                                V</b> (มีประธาน+กริยา)</p>
+                                        <ul class="text-sm list-disc list-inside">
+                                            <li>The dog <b>is</b> big.</li>
+                                            <li>Because I <b>am</b> hungry.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white border rounded-xl p-4 mb-6">
+                                <h5 class="font-bold text-slate-700 mb-2">5 รูปแบบพื้นฐาน (Basic Patterns)</h5>
+                                <ul class="space-y-2 text-sm text-slate-600">
+                                    <li><b>1. S + V</b> (สมบูรณ์ในตัว): Birds fly. / I sleep.</li>
+                                    <li><b>2. S + V + O</b> (ต้องการกรรม): I eat rice. / She likes cats.</li>
+                                    <li><b>3. S + V + C</b> (บอกสภาพ): She is beautiful. (C ขยาย S)</li>
+                                    <li><b>4. S + V + O + O</b> (ให้ ใคร อะไร): He gave me a gift.</li>
+                                    <li><b>5. S + V + O + C</b> (ทำ ให้กรรม เป็นยังไง): They named the dog Lucky. (C
+                                        ขยาย O)
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-200">
+                                <h5 class="font-bold text-indigo-800 mb-2">🔥 Master Formula: สูตรเรียงประโยคยาว</h5>
+                                <div
+                                    class="font-mono text-sm overflow-x-auto whitespace-nowrap bg-white p-3 rounded border border-indigo-100 shadow-sm mb-2">
+                                    [Who] + [Freq] + [Action] + [What/Whom] + [Manner] + [Place] + [Time]
+                                </div>
+                                <p class="text-sm"><b>Ex:</b> She (Who) <b>always</b> (Freq) <b>drives</b> (Action)
+                                    <b>her
+                                        car</b> (What) <b>carefully</b> (Manner) <b>to work</b> (Place) <b>every
+                                        morning</b>
+                                    (Time).
+                                </p>
+                            </div>
+
+                            <!-- Sentence Types (Simple/Compound/Complex) -->
+                            <div class="mb-6">
+                                <h5 class="font-bold text-slate-700 mb-3">1.3 🏗️ 3 ประเภทประโยค (Sentence Types)</h5>
+                                <div class="space-y-3">
+                                    <!-- Simple -->
+                                    <div class="border-l-4 border-green-400 bg-green-50 p-3 pl-4 rounded-r">
+                                        <div class="font-bold text-green-800">1. Simple Sentence (เอกรรถประโยค)</div>
+                                        <p class="text-sm text-slate-600">ประโยคใจความเดียว (1 S + 1 V)</p>
+                                        <div class="mt-1 text-sm bg-white p-2 rounded border border-green-100">
+                                            ✅ I <b class="text-green-600">love</b> cats.
+                                        </div>
+                                    </div>
+                                    <!-- Compound -->
+                                    <div class="border-l-4 border-blue-400 bg-blue-50 p-3 pl-4 rounded-r">
+                                        <div class="font-bold text-blue-800">2. Compound Sentence (อเนกรรถประโยค)</div>
+                                        <p class="text-sm text-slate-600">2 ประโยค เชื่อมด้วย <b>FANBOYS</b> (For, And,
+                                            Nor,
+                                            But, Or, Yet, So)</p>
+                                        <div class="mt-1 text-sm bg-white p-2 rounded border border-blue-100">
+                                            ✅ I love cats, <b class="text-blue-600">but</b> he loves dogs.
+                                        </div>
+                                    </div>
+                                    <!-- Complex -->
+                                    <div class="border-l-4 border-purple-400 bg-purple-50 p-3 pl-4 rounded-r">
+                                        <div class="font-bold text-purple-800">3. Complex Sentence (สังกรประโยค)</div>
+                                        <p class="text-sm text-slate-600">ประโยคหลัก + ประโยครอ (เชื่อมด้วย Because,
+                                            Although, If...)</p>
+                                        <div class="mt-1 text-sm bg-white p-2 rounded border border-purple-100">
+                                            ✅ I stay home <b class="text-purple-600">because</b> it is raining.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-6">
+                                <h5 class="font-bold text-slate-700 mb-2">1.4 สูตรเรียง Adjective (OSASCOMP)</h5>
+                                <div
+                                    class="flex flex-wrap gap-2 text-xs mb-2 font-mono text-slate-500 bg-gray-100 p-2 rounded">
+                                    Opinion > Size > Age > Shape > Color > Origin > Material
+                                </div>
+                                <p class="text-sm italic">"A <b class="text-yellow-600">beautiful</b> <b
+                                        class="text-green-600">big</b> <b class="text-red-600">red</b> car."</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Tenses -->
+            <div class="accordion-item shadow-sm">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <div class="flex items-center">
+                        <div class="section-num bg-red-100 text-red-600">2</div>
+                        <span>Tenses Cheat Sheet (12 Tenses เจาะลึก)</span>
+                    </div>
+                    <span class="arrow text-slate-400">▼</span>
+                </div>
+                <div class="accordion-content">
+                    <div class="accordion-body space-y-6">
+                        <p class="text-slate-600 bg-red-50 p-3 rounded-lg border border-red-100 text-sm mb-4">
+                            <b>หลักการจำ:</b><br>
+                            • <b>Simple:</b> ความจริง/นิสัย/จบแล้ว<br>
+                            • <b>Continuous:</b> กำลังทำ/ยังไม่จบ (ต้องมี V.ing)<br>
+                            • <b>Perfect:</b> เน้นผลลัพธ์/ตั้งแต่อดีตถึงปัจจุบัน (ต้องมี Have + V.3)<br>
+                            • <b>Perfect Cont.:</b> เน้นระยะเวลาที่ทำมาอย่างต่อเนื่อง (Have been + V.ing)
+                        </p>
+
+                        <!-- Present -->
+                        <div class="tense-group border-l-blue-500 pl-4">
+                            <span class="tense-title text-blue-700 font-bold block mb-2 text-lg">2.1 Present
+                                (ปัจจุบัน)</span>
+                            <table class="grammar-table text-sm">
+                                <tr>
+                                    <td width="25%"><b>Present Simple</b><br>S + V.1 (s/es)</td>
+                                    <td>เรื่องจริง / กิจวัตร / ตารางเวลา<br><i>Ex. The sun rises in the east.</i></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Present Cont.</b><br>S + is/am/are + V.ing</td>
+                                    <td>กำลังทำอยู่ตอนนี้ (ชั่วคราว)<br><i>Ex. I am eating now.</i></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Present Perfect</b><br>S + has/have + V.3</td>
+                                    <td><b class="text-blue-600">เน้นผลลัพธ์</b> / ทำเสร็จแล้ว / เคยทำ<br><i>Ex. I have
+                                            eaten. (อิ่มแล้ว)</i></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Present Perfect Cont.</b><br>S + has/have + been + V.ing</td>
+                                    <td><b class="text-blue-600">เน้นระยะเวลา</b> (ทำมาตลอดและยังทำอยู่)<br><i>Ex. I
+                                            have
+                                            been waiting for 2 hours.</i></td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <!-- Past -->
+                        <div class="tense-group border-l-orange-500 pl-4">
+                            <span class="tense-title text-orange-700 font-bold block mb-2 text-lg">2.2 Past
+                                (อดีต)</span>
+
+                            <!-- Comparison Box -->
+                            <div class="bg-orange-50 p-3 rounded-lg border border-orange-100 mb-2">
+                                <b class="text-orange-800">🔥 Past Simple vs Present Perfect</b>
+                                <p class="text-xs mt-1">
+                                    • <b>Past Simple:</b> จบแล้ว ระบุเวลาเจาะจง (Yesterday)<br>
+                                    • <b>Pres. Perfect:</b> ไม่เน้นเวลา เน้นว่า "ทำแล้ว" หรือ "ส่งผลถึงตอนนี้"
+                                </p>
+                            </div>
+
+                            <table class="grammar-table text-sm">
+                                <tr>
+                                    <td width="25%"><b>Past Simple</b><br>S + V.2</td>
+                                    <td>จบไปแล้ว มีเวลาบอกชัดเจน<br><i>Ex. I ate yesterday.</i></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Past Cont.</b><br>S + was/were + V.ing</td>
+                                    <td>กำลังทำในอดีต (แล้วมีอีกสิ่งแทรก)<br><i>Ex. I was sleeping when you called.</i>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><b>Past Perfect</b><br>S + had + V.3</td>
+                                    <td>เกิดก่อนอีกเหตุการณ์ในอดีต (อดีตกว่า)<br><i>Ex. She had left before I
+                                            arrived.</i>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <!-- Future -->
+                        <div class="tense-group border-l-green-500 pl-4">
+                            <span class="tense-title text-green-700 font-bold block mb-2 text-lg">2.3 Future
+                                (อนาคต)</span>
+                            <table class="grammar-table text-sm">
+                                <tr>
+                                    <td width="25%"><b>Future Simple</b><br>S + will + V.1</td>
+                                    <td>คาดเดา / ตัดสินใจเดี๋ยวนี้<br><i>Ex. I will call you back.</i></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Future Cont.</b><br>S + will be + V.ing</td>
+                                    <td>กำลังจะทำแน่ๆ ในเวลานั้น<br><i>Ex. At 9 PM, I will be sleeping.</i></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Future Perfect</b><br>S + will have + V.3</td>
+                                    <td>กะว่าถึงเวลานั้น จะทำเสร็จพอดี<br><i>Ex. By next year, I will have
+                                            graduated.</i>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Will vs Going to (NEW) -->
+                            <div class="mt-4 bg-green-50 p-4 rounded-xl border border-green-200">
+                                <h5 class="font-bold text-green-800 mb-2">2.4 Will vs Going to (ใช้ต่างกันยังไง?)</h5>
+                                <div class="grid md:grid-cols-2 gap-4 text-sm">
+                                    <div>
+                                        <b class="text-indigo-600">Will (จะ... 50%)</b>
+                                        <ul class="list-disc pl-4 mt-1 text-slate-600">
+                                            <li>ตัดสินใจเดี๋ยวนี้ (I will take it.)</li>
+                                            <li>สัญญา (I promise I will go.)</li>
+                                            <li>คาดเดาอนาคตไกลๆ (Humans will live on Mars.)</li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <b class="text-indigo-600">Going to (จะ... 100%)</b>
+                                        <ul class="list-disc pl-4 mt-1 text-slate-600">
+                                            <li>วางแผนมาแล้ว (I am going to fly tomorrow.)</li>
+                                            <li>เห็นแววว่าจะเกิดแน่ๆ (Look at clouds! It is going to rain.)</li>
+                                            <li>*ฝรั่งพูดย่อว่า "Gonna"</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Question Helper -->
+            <div class="accordion-item shadow-sm">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <div class="flex items-center">
+                        <div class="section-num bg-blue-100 text-blue-600">3</div>
+                        <span>Question Helper (การตั้งคำถาม)</span>
+                    </div>
+                    <span class="arrow text-slate-400">▼</span>
+                </div>
+                <div class="accordion-content">
+                    <div class="accordion-body space-y-6">
+                        <p class="text-slate-600 text-center bg-blue-50 p-2 rounded border border-blue-100">🔑 ดูที่
+                            <b>"กริยา (Verb)"</b> ในประโยคบอกเล่า
+                        </p>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="bg-white border p-4 rounded-xl shadow-sm border-l-4 border-l-blue-500">
+                                <b class="text-blue-700 block mb-1">Do / Does / Did</b> (Action)
+                                <p class="text-xs text-slate-500 mb-2">ใช้กับกริยาที่มีการกระทำ (กิน, เดิน, ซื้อ)</p>
+                                <ul class="list-disc pl-4 text-sm">
+                                    <li><b>Do</b> you <u>like</u> pizza? (ชอบไหม)</li>
+                                    <li><b>Did</b> you <u>go</u> yesterday? (ไปมาไหม)</li>
+                                </ul>
+                            </div>
+                            <div class="bg-white border p-4 rounded-xl shadow-sm border-l-4 border-l-purple-500">
+                                <b class="text-purple-700 block mb-1">Is / Am / Are / Was</b> (Status/Ing)
+                                <p class="text-xs text-slate-500 mb-2">ใช้บอกสภาพ (Adj/Noun) หรือ กำลังทำ (Ing)</p>
+                                <ul class="list-disc pl-4 text-sm">
+                                    <li><b>Are</b> you <u>hungry</u>? (หิวไหม)</li>
+                                    <li><b>Is</b> she <u>reading</u>? (กำลังอ่านไหม)</li>
+                                </ul>
+                            </div>
+                            <div class="bg-white border p-4 rounded-xl shadow-sm border-l-4 border-l-green-500">
+                                <b class="text-green-700 block mb-1">Have / Has</b> (Perfect)
+                                <p class="text-xs text-slate-500 mb-2">ทำ...หรือยัง (V.3)</p>
+                                <ul class="list-disc pl-4 text-sm">
+                                    <li><b>Have</b> you <u>eaten</u>? (กินหรือยัง)</li>
+                                    <li><b>Has</b> she <u>arrived</u>? (ถึงหรือยัง)</li>
+                                </ul>
+                            </div>
+                            <div class="bg-white border p-4 rounded-xl shadow-sm border-l-4 border-l-orange-500">
+                                <b class="text-orange-700 block mb-1">Will, Can, Should</b> (Modal)
+                                <p class="text-xs text-slate-500 mb-2">จะ..., ได้ไหม..., ควรจะ...</p>
+                                <ul class="list-disc pl-4 text-sm">
+                                    <li><b>Will</b> you <u>marry</u> me? (จะแต่งงานไหม)</li>
+                                    <li><b>Can</b> you <u>swim</u>? (ว่ายน้ำได้ไหม)</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Wh-Questions -->
+                        <div class="mt-4">
+                            <h4 class="font-bold text-blue-700 mb-2 border-b pb-1">3.1 Wh-Questions (ต้องการรายละเอียด)
+                            </h4>
+                            <table class="grammar-table text-sm">
+                                <tr>
+                                    <th>คำ</th>
+                                    <th>ถามหา...</th>
+                                    <th>ตัวอย่าง</th>
+                                </tr>
+                                <tr>
+                                    <td><b>Who</b></td>
+                                    <td>คน</td>
+                                    <td><b>Who</b> is he?</td>
+                                </tr>
+                                <tr>
+                                    <td><b>What</b></td>
+                                    <td>สิ่งของ/การกระทำ</td>
+                                    <td><b>What</b> is this?</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Where</b></td>
+                                    <td>สถานที่</td>
+                                    <td><b>Where</b> do you live?</td>
+                                </tr>
+                                <tr>
+                                    <td><b>When</b></td>
+                                    <td>เวลา</td>
+                                    <td><b>When</b> will you go?</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Why</b></td>
+                                    <td>เหตุผล</td>
+                                    <td><b>Why</b> are you sad?</td>
+                                </tr>
+                                <tr>
+                                    <td><b>How</b></td>
+                                    <td>วิธีการ</td>
+                                    <td><b>How</b> do you do it?</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <!-- How Family -->
+                        <div class="mt-4">
+                            <h4 class="font-bold text-blue-700 mb-2 border-b pb-1">3.2 The "How" Family</h4>
+                            <div class="grid grid-cols-2 gap-2 text-sm">
+                                <div class="bg-gray-50 p-2 rounded border"><b>How much:</b> ราคา/นามนับไม่ได้</div>
+                                <div class="bg-gray-50 p-2 rounded border"><b>How many:</b> จำนวน (นับได้)</div>
+                                <div class="bg-gray-50 p-2 rounded border"><b>How long:</b> ระยะเวลา/ความยาว</div>
+                                <div class="bg-gray-50 p-2 rounded border"><b>How far:</b> ระยะทาง</div>
+                                <div class="bg-gray-50 p-2 rounded border"><b>How often:</b> ความถี่ (บ่อยแค่ไหน)</div>
+                                <div class="bg-gray-50 p-2 rounded border"><b>How old:</b> อายุ</div>
+                            </div>
+                        </div>
+
+                        <!-- Question Tags (NEW) -->
+                        <div class="mt-4 p-4 bg-indigo-50 border border-indigo-200 rounded-xl">
+                            <h5 class="font-bold text-indigo-700 mb-2">3.3 Question Tags (..., ใช่มั้ย?)</h5>
+                            <p class="text-sm text-slate-600 mb-2">คนไทยชอบพูด "..., chai mai?"
+                                แต่อังกฤษมีวิธีพูดที่โปรกว่า
+                            </p>
+                            <table class="w-full text-sm">
+                                <tr class="border-b border-indigo-100">
+                                    <td class="py-2"><b>บอกเล่า, ปฏิเสธ?</b></td>
+                                    <td>She is beautiful, <b>isn't she?</b></td>
+                                </tr>
+                                <tr class="border-b border-indigo-100">
+                                    <td class="py-2"><b>ปฏิเสธ, บอกเล่า?</b></td>
+                                    <td>You don't eat spicy, <b>do you?</b></td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2"><b>ง่ายที่สุด (Right?)</b></td>
+                                    <td>You are tired, <b>right?</b> (ใช้ได้ทุกกรณี)</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Modal Verbs -->
+            <div class="accordion-item shadow-sm">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <div class="flex items-center">
+                        <div class="section-num bg-indigo-100 text-indigo-600">4</div>
+                        <span>4. Modal Verbs (กริยาช่วย)</span>
+                    </div>
+                    <span class="arrow text-slate-400">▼</span>
+                </div>
+                <div class="accordion-content">
+                    <div class="accordion-body space-y-6">
+                        <div class="highlight-box">
+                            <b class="text-amber-800">กฎเหล็ก:</b> ตามด้วย V.1 (Infinitive) เสมอ ห้ามเติม s/ed/ing
+                            และไม่ต้องใช้ Do ช่วย
+                        </div>
+                        <h5 class="font-bold text-indigo-800 mb-2">4.1 กริยาช่วยพื้นฐาน (Modal Verbs)</h5>
+                        <table class="grammar-table text-sm">
+                            <tr>
+                                <th>คำศัพท์</th>
+                                <th>ความหมาย</th>
+                                <th>ตัวอย่าง & เทคนิค</th>
+                            </tr>
+                            <tr>
+                                <td><b>Can / Could</b></td>
+                                <td>ทำได้ (Could สุภาพกว่า)</td>
+                                <td>Can you help me? (เพื่อน)<br>Could you help me? (ลูกค้า/ผู้ใหญ่)</td>
+                            </tr>
+                            <tr>
+                                <td><b>May / Might</b></td>
+                                <td>อาจจะ (50/50)</td>
+                                <td>It <b>might</b> rain today. (พกร่มไว้ก็ดี)</td>
+                            </tr>
+                            <tr>
+                                <td><b>Will</b></td>
+                                <td>จะ (100% / สัญญา)</td>
+                                <td>I <b>will</b> love you forever.</td>
+                            </tr>
+                            <tr>
+                                <td><b>Should</b></td>
+                                <td>ควรจะ (แนะนำ)</td>
+                                <td>You <b>should</b> see a doctor. (แนะนำเฉยๆ)</td>
+                            </tr>
+                            <tr>
+                                <td><b>Must</b></td>
+                                <td>ต้อง (เด็ดขาด/กฎ)</td>
+                                <td>You <b>must</b> wear a uniform. (กฎบังคับ)</td>
+                            </tr>
+                            <tr class="bg-red-50">
+                                <td><b class="text-red-700">Mustn't</b></td>
+                                <td>ห้ามเด็ดขาด</td>
+                                <td>You <b>mustn't</b> smoke here. (ผิดกฎหมาย/อันตราย)</td>
+                            </tr>
+                            <tr class="bg-green-50">
+                                <td><b class="text-green-700">Don't have to</b></td>
+                                <td>ไม่จำเป็นต้อง (ทำก็ได้)</td>
+                                <td>You <b>don't have to</b> come. (แต่ถ้าจะมาก็ได้นะ)</td>
+                            </tr>
+                        </table>
+
+                        <!-- Past Modals (NEW) -->
+                        <div class="mt-4 bg-indigo-50 border border-indigo-200 rounded-xl p-4">
+                            <h5 class="font-bold text-indigo-700 mb-2">4.2 Modals in Past (เสียดายอดีต)</h5>
+                            <table class="w-full text-sm">
+                                <tr class="border-b border-indigo-100">
+                                    <td class="py-2"><b class="text-indigo-900">Should have + V.3</b></td>
+                                    <td class="text-slate-600">รู้งี้น่าจะ... (แต่มันผ่านไปแล้ว)</td>
+                                    <td class="italic text-slate-500">"I <b>should have studied</b> harder."</td>
+                                </tr>
+                                <tr class="border-b border-indigo-100">
+                                    <td class="py-2"><b class="text-indigo-900">Must have + V.3</b></td>
+                                    <td class="text-slate-600">ต้อง...แน่ๆเลย (มั่นใจว่าเกิดแล้ว)</td>
+                                    <td class="italic text-slate-500">"She <b>must have forgotten</b>."</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2"><b class="text-indigo-900">Could have + V.3</b></td>
+                                    <td class="text-slate-600">จริงๆก็ทำได้นะ (แต่เลือกไม่ทำ)</td>
+                                    <td class="italic text-slate-500">"I <b>could have won</b>."</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <!-- Must vs Have to -->
+                        <div class="mt-4 p-4 bg-indigo-50 border border-indigo-200 rounded-xl">
+                            <h5 class="font-bold text-indigo-700 mb-2">4.3 Must vs Have to ต่างกันยังไง?</h5>
+                            <ul class="text-sm space-y-2">
+                                <li><b>Must:</b> ต้อง (ความรู้สึกส่วนตัว / เราคิดว่าสำคัญ) <br><i>Ex. I must go now.
+                                        (ฉันต้องไปละ สายแล้ว)</i></li>
+                                <li><b>Have to:</b> ต้อง (คนอื่นบังคับ / สถานการณ์บังคับ) <br><i>Ex. I have to work
+                                        today.
+                                        (หัวหน้าสั่ง/ตารางงาน)</i></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. Comparison -->
+            <div class="accordion-item shadow-sm">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <div class="flex items-center">
+                        <div class="section-num bg-green-100 text-green-600">5</div>
+                        <span>5. Comparison (การเปรียบเทียบ)</span>
+                    </div>
+                    <span class="arrow text-slate-400">▼</span>
+                </div>
+                <div class="accordion-content">
+                    <div class="accordion-body space-y-6">
+                        <h5 class="font-bold text-green-800 mb-2 text-center">5.1 3 ระดับการเปรียบเทียบ (Degrees of
+                            Comparison)</h5>
+                        <div class="grid md:grid-cols-3 gap-4 text-center">
+                            <div class="p-4 border rounded-xl bg-slate-50">
+                                <b>ขั้นปกติ (Equal)</b><br><span class="text-xs">as...as (เท่ากัน)</span>
+                                <p class="text-sm mt-1 text-slate-600">"This is as <b>good</b> as that."</p>
+                            </div>
+                            <div class="p-4 border rounded-xl bg-yellow-50 border-yellow-200">
+                                <b>ขั้นกว่า (Comparative)</b><br><span class="text-xs">-er / more ... than</span>
+                                <p class="text-sm mt-1 text-yellow-800">"This is <b>better</b> than that."</p>
+                            </div>
+                            <div class="p-4 border rounded-xl bg-pink-50 border-pink-200">
+                                <b>ขั้นสุด (Superlative)</b><br><span class="text-xs">the ...-est / the most</span>
+                                <p class="text-sm mt-1 text-pink-800">"This is <b>the best</b>."</p>
+                            </div>
+                        </div>
+                        <table class="grammar-table text-sm mt-4">
+                            <thead>
+                                <tr>
+                                    <th>กฎการเปลี่ยน</th>
+                                    <th>ขั้นกว่า (-er/more)</th>
+                                    <th>ขั้นสุด (The -est/most)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>พยางค์เดียว</td>
+                                    <td>Tall → Taller</td>
+                                    <td>The Tallest</td>
+                                </tr>
+                                <tr>
+                                    <td>สระเสียงสั้น</td>
+                                    <td>Big → Bigger (เบิ้ลตัวท้าย)</td>
+                                    <td>The Biggest</td>
+                                </tr>
+                                <tr>
+                                    <td>ลงท้าย Y</td>
+                                    <td>Happy → Happier (เปลี่ยน y→i)</td>
+                                    <td>The Happiest</td>
+                                </tr>
+                                <tr>
+                                    <td>คำยาว (2+ พยางค์)</td>
+                                    <td>Beautiful → <b>More</b> beautiful</td>
+                                    <td><b>The Most</b> beautiful</td>
+                                </tr>
+                                <tr class="bg-gray-100 font-bold">
+                                    <td>เปลี่ยนรูป (จำ!)</td>
+                                    <td>Good → Better<br>Bad → Worse</td>
+                                    <td>The Best<br>The Worst</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- Advanced Comparison (NEW) -->
+                        <div class="mt-4 grid md:grid-cols-2 gap-4">
+                            <div class="bg-yellow-50 p-4 rounded-xl border border-yellow-200">
+                                <b class="text-yellow-800 block mb-2">5.2 The more..., the more...</b>
+                                <p class="text-xs text-slate-600 mb-2">"ยิ่ง... ก็ยิ่ง..."</p>
+                                <ul class="text-sm list-disc pl-4 space-y-1">
+                                    <li><b>The more</b> you learn, <b>the more</b> you earn.</li>
+                                    <li><b>The sooner</b>, <b>the better</b>. (ยิ่งเร็วยิ่งดี)</li>
+                                </ul>
+                            </div>
+                            <div class="bg-pink-50 p-4 rounded-xl border border-pink-200">
+                                <b class="text-pink-800 block mb-2">5.3 Techniques</b>
+                                <ul class="text-sm list-disc pl-4 space-y-2">
+                                    <li><b>Not as ... as</b> (ไม่เท่ากับ)<br><i class="text-xs text-slate-500">"This is
+                                            <b>not as good as</b> that."</i></li>
+                                    <li><b>Twice as ... as</b> (มากกว่า 2 เท่า)<br><i
+                                            class="text-xs text-slate-500">"She is
+                                            <b>twice as old as</b> me."</i></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. Prepositions & Collocations -->
+            <div class="accordion-item shadow-sm">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <div class="flex items-center">
+                        <div class="section-num bg-gray-200 text-gray-700">6</div>
+                        <span>6. Prepositions (In/On/At)</span>
+                    </div>
+                    <span class="arrow text-slate-400">▼</span>
+                </div>
+                <div class="accordion-content">
+                    <div class="accordion-body">
+                        <h5 class="font-bold text-gray-700 mb-4 text-center italic">6.1 พีระมิดเวลา & สถานที่ (In/On/At
+                            Pyramid)</h5>
+                        <div class="flex flex-col items-center gap-2 mb-6 text-sm">
+                            <div class="w-full bg-green-100 p-3 rounded text-center border border-green-200"><b
+                                    class="text-green-800">IN (ใหญ่/ใน)</b> เดือน, ปี, เมือง, ประเทศ<br><i>Ex. In April,
+                                    In
+                                    2024, In Bangkok</i></div>
+                            <div class="w-3/4 bg-yellow-100 p-3 rounded text-center border border-yellow-200"><b
+                                    class="text-yellow-800">ON (กลาง/บน)</b> วัน, วันที่, ถนน, ชั้น<br><i>Ex. On Monday,
+                                    On
+                                    Sukhumvit Rd.</i></div>
+                            <div class="w-1/2 bg-red-100 p-3 rounded text-center border border-red-200"><b
+                                    class="text-red-800">AT (เล็ก/จุด)</b> เวลา, สถานที่เฉพาะ<br><i>Ex. At 6 PM, At
+                                    home, At
+                                    the bus stop</i></div>
+                        </div>
+
+                        <div class="space-y-8">
+                            <!-- 6.1 Between vs. Among (Detailed) -->
+                            <div class="bg-indigo-50 p-5 rounded-2xl border border-indigo-200">
+                                <h5 class="font-bold text-indigo-800 mb-4 flex items-center">
+                                    <span
+                                        class="bg-indigo-200 text-indigo-800 w-8 h-8 rounded-full flex items-center justify-center mr-2 text-xs">1</span>
+                                    6.2 Between vs. Among (ต่างกันที่ความชัดเจน)
+                                </h5>
+                                <div class="overflow-x-auto">
+                                    <table
+                                        class="w-full text-sm bg-white rounded-xl shadow-sm border-collapse overflow-hidden">
+                                        <thead class="bg-indigo-600 text-white">
+                                            <tr>
+                                                <th class="p-3 text-left">คำศัพท์</th>
+                                                <th class="p-3 text-left">ความลับการใช้งาน (Deep Logic)</th>
+                                                <th class="p-3 text-left">ตัวอย่างภาพในหัว</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-indigo-100 italic font-medium">
+                                            <tr>
+                                                <td class="p-3 font-bold text-indigo-700">Between</td>
+                                                <td class="p-3 text-slate-700 leading-relaxed">ใช้กับสิ่งที่
+                                                    <b>แยกออกจากกันชัดเจน (Distinct)</b> <br><span
+                                                        class="text-xs text-slate-500 font-normal">ไม่เกี่ยงว่าจะมี 2, 3
+                                                        หรือ 10 สิ่ง ถ้าเรามองเห็นเป็นรายชิ้น/รายชื่อ/รายประเทศ เราใช้
+                                                        Between</span>
+                                                </td>
+                                                <td class="p-3 text-slate-600">"The negotiations <b>between</b> Brazil,
+                                                    Iceland, and Thailand." <br>(📍 มองเห็น 3 ประเทศแยกกันชัดเจน)</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="p-3 font-bold text-indigo-700">Among</td>
+                                                <td class="p-3 text-slate-700 leading-relaxed">ใช้กับสิ่งที่มองเห็นเป็น
+                                                    <b>กลุ่มก้อน (Mass/Group)</b> <br><span
+                                                        class="text-xs text-slate-500 font-normal">ใช้เมื่อเรา "กลืน"
+                                                        ไปกับกลุ่ม หรือสิ่งที่ไม่ระบุชื่อเรียกเฉพาะเจาะจง</span>
+                                                </td>
+                                                <td class="p-3 text-slate-600">"I felt at home <b>among</b> the crowd."
+                                                    <br>(🌳 มองเป็นฝูงชนกลุ่มใหญ่ ไม่ระบุรายคน)
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- 6.2 During vs. While (Detailed) -->
+                            <div class="bg-blue-50 p-5 rounded-2xl border border-blue-200">
+                                <h5 class="font-bold text-blue-800 mb-4 flex items-center">
+                                    <span
+                                        class="bg-blue-200 text-blue-800 w-8 h-8 rounded-full flex items-center justify-center mr-2 text-xs">2</span>
+                                    6.3 During vs. While (ในระหว่างที่)
+                                </h5>
+                                <div class="grid md:grid-cols-2 gap-4">
+                                    <div class="bg-white p-4 rounded-xl border-t-4 border-blue-500 shadow-sm">
+                                        <div class="flex items-center mb-2">
+                                            <b class="text-blue-700 text-lg font-bold">During</b>
+                                            <span
+                                                class="ml-2 px-2 py-0.5 bg-blue-100 text-blue-700 text-[10px] rounded font-bold">+
+                                                Noun</span>
+                                        </div>
+                                        <ul class="text-xs text-slate-600 space-y-2">
+                                            <li>✅ บอกว่าเหตุการณ์เกิด <b>"ช่วงเวลาไหน" (When)</b></li>
+                                            <li>❌ ห้ามตามด้วยประโยค (S+V)</li>
+                                            <li class="p-2 bg-slate-50 rounded italic border border-slate-100">"I fell
+                                                asleep <b>during</b> the film."</li>
+                                        </ul>
+                                    </div>
+                                    <div class="bg-white p-4 rounded-xl border-t-4 border-green-500 shadow-sm">
+                                        <div class="flex items-center mb-2">
+                                            <b class="text-green-700 text-lg font-bold">While</b>
+                                            <span
+                                                class="ml-2 px-2 py-0.5 bg-green-100 text-green-700 text-[10px] rounded font-bold">+
+                                                S + V / V-ing</span>
+                                        </div>
+                                        <ul class="text-xs text-slate-600 space-y-2">
+                                            <li>✅ บอกว่า 2 อย่างเกิด <b>"พร้อมกัน" (Parallel)</b></li>
+                                            <li>✅ เทคนิค: ถ้าหลัง "ในระหว่าง" เป็น <b>V-ing</b> ใช้ While เสมอ!</li>
+                                            <li class="p-2 bg-slate-50 rounded italic border border-slate-100">"While
+                                                walking home, I saw a cat."</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 6.3 By vs. Until (Detailed) -->
+                            <div class="bg-orange-50 p-5 rounded-2xl border border-orange-200">
+                                <h5 class="font-bold text-orange-800 mb-4 flex items-center">
+                                    <span
+                                        class="bg-orange-200 text-orange-800 w-8 h-8 rounded-full flex items-center justify-center mr-2 text-xs">3</span>
+                                    6.4 By vs. Until (สับสนบ่อยที่สุด!)
+                                </h5>
+                                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                                    <div class="space-y-4">
+                                        <div
+                                            class="bg-white p-4 rounded-xl border-l-4 border-red-500 shadow-sm relative overflow-hidden">
+                                            <b class="text-red-700 block mb-1 font-bold">By (เส้นตาย - Deadline)</b>
+                                            <p class="text-[11px] text-slate-500 leading-relaxed italic">
+                                                ต้องเสร็จ <b>"ไม่เกิน"</b> เวลานั้น <br>
+                                                <u>เน้นที่จุดสิ้นสุด</u> (จะทำตอนไหนก็ได้ แต่ห้ามเลท)
+                                            </p>
+                                            <div class="mt-2 text-xs font-bold text-slate-700">📍 ภาพจำ: เสียงนาฬิกาปลุก
+                                                (ดังปุ๊บ ต้องเสร็จปั๊บ)</div>
+                                        </div>
+                                        <div class="bg-white p-4 rounded-xl border-l-4 border-green-500 shadow-sm">
+                                            <b class="text-green-700 block mb-1 font-bold">Until (ความต่อเนื่อง -
+                                                Continuity)</b>
+                                            <p class="text-[11px] text-slate-500 leading-relaxed italic">
+                                                กระทำนั้น <b>"ดำเนินต่อไปเรื่อยๆ"</b> จนถึงจุดนั้นแล้วค่อยหยุด <br>
+                                                <u>เน้นระยะเวลาที่ต่อเนื่อง</u>
+                                            </p>
+                                            <div class="mt-2 text-xs font-bold text-slate-700">⏳ ภาพจำ: Progress Bar
+                                                (ค่อยๆ
+                                                โหลดจนเต็ม)</div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="bg-white p-5 rounded-xl border border-orange-100 flex flex-col justify-center items-center text-center shadow-sm">
+                                        <div class="text-xs font-bold text-orange-800 mb-2 underline decoration-wavy">💡
+                                            ประโยคเดียวเข้าใจแจ่มแจ้ง!</div>
+                                        <div
+                                            class="text-[11px] text-slate-600 bg-orange-50 p-4 rounded-lg border border-orange-100 italic leading-relaxed">
+                                            "I stay at work <b>until</b> 8 PM so I can finish the project <b>by</b>
+                                            tonight."
+                                        </div>
+                                        <p class="text-[10px] text-slate-400 mt-2 px-2">(อยู่ต่อเนื่องจนถึงเวลา...
+                                            เพื่อให้เสร็จตามกำหนด...)</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 6.4 The Many Faces of BY (Deep Mastery) -->
+                            <div class="bg-slate-800 p-6 rounded-2xl shadow-xl text-white">
+                                <h5 class="font-bold text-yellow-400 mb-4 flex items-center text-lg">
+                                    6.5 Mastering "BY" (7 บทบาทที่คนไทยต้องรู้)
+                                </h5>
+                                <div class="grid md:grid-cols-2 gap-6 text-xs leading-relaxed">
+                                    <div class="space-y-4">
+                                        <div class="flex items-start">
+                                            <span
+                                                class="bg-yellow-500 text-slate-900 w-5 h-5 rounded flex items-center justify-center mr-2 flex-shrink-0 text-[10px] font-bold">1</span>
+                                            <div><b>Method / Transport:</b> โดย (วิธี) <br><i class="text-slate-400">By
+                                                    car,
+                                                    By email, By credit card</i></div>
+                                        </div>
+                                        <div class="flex items-start">
+                                            <span
+                                                class="bg-yellow-500 text-slate-900 w-5 h-5 rounded flex items-center justify-center mr-2 flex-shrink-0 text-[10px] font-bold">2</span>
+                                            <div><b>Agent (Passive Voice):</b> โดย (ใครทำ) <br><i
+                                                    class="text-slate-400">Written
+                                                    by Shakespeare, Directed by Nolan</i>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-start">
+                                            <span
+                                                class="bg-yellow-500 text-slate-900 w-5 h-5 rounded flex items-center justify-center mr-2 flex-shrink-0 text-[10px] font-bold">3</span>
+                                            <div><b>Place / Next to:</b> ข้างๆ (อยู่ติดกับ) <br><i
+                                                    class="text-slate-400">Sit by
+                                                    the window, A house by the sea</i></div>
+                                        </div>
+                                        <div class="flex items-start">
+                                            <span
+                                                class="bg-yellow-500 text-slate-900 w-5 h-5 rounded flex items-center justify-center mr-2 flex-shrink-0 text-[10px] font-bold">4</span>
+                                            <div><b>Reflexive:</b> ด้วยตัวเอง / คนเดียว <br><i class="text-slate-400">I
+                                                    fixed it by myself. (ฉันซ่อมมันด้วยตัวคนเดียว)</i></div>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-4">
+                                        <div class="flex items-start">
+                                            <span
+                                                class="bg-yellow-500 text-slate-900 w-5 h-5 rounded flex items-center justify-center mr-2 flex-shrink-0 text-[10px] font-bold">5</span>
+                                            <div><b>Amount / Rate:</b> ทีละ / ตาม <br><i class="text-slate-400">One by
+                                                    one,
+                                                    Page by page, Day by day</i></div>
+                                        </div>
+                                        <div class="flex items-start">
+                                            <span
+                                                class="bg-yellow-500 text-slate-900 w-5 h-5 rounded flex items-center justify-center mr-2 flex-shrink-0 text-[10px] font-bold">6</span>
+                                            <div><b>Measurement Gap:</b> ทีละ (ผลต่าง) <br><i
+                                                    class="text-slate-400">Price
+                                                    rose by 10%, He won by 2 points.</i></div>
+                                        </div>
+                                        <div class="flex items-start">
+                                            <span
+                                                class="bg-yellow-500 text-slate-900 w-5 h-5 rounded flex items-center justify-center mr-2 flex-shrink-0 text-[10px] font-bold">7</span>
+                                            <div><b>Fixed Idioms:</b> สำนวนเฉพาะ <br><i class="text-slate-400">By chance
+                                                    (โดยบังเอิญ), By heart (ขึ้นใจ)</i></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Thai Logic Trap -->
+                                <div class="mt-8 p-4 bg-red-950/50 border border-red-500/50 rounded-xl relative">
+                                    <h6 class="text-red-300 font-bold text-sm mb-3 flex items-center">
+                                        ⚠️ Thai Logic Trap: "โดย" ที่ใช้ By ไม่ได้!
+                                    </h6>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-medium">
+                                        <div class="p-3 bg-black/30 rounded-lg border border-red-900/50">
+                                            <span class="text-slate-400 mb-1 block">ไป "โดย" การเดินเท้า:</span>
+                                            <span class="text-red-400">❌ By foot</span> ➡️ <span
+                                                class="text-green-400 font-bold">✅ On foot</span>
+                                        </div>
+                                        <div class="p-3 bg-black/30 rounded-lg border border-red-900/50">
+                                            <span class="text-slate-400 mb-1 block">ทำ "โดย" ความตั้งใจ:</span>
+                                            <span class="text-red-400">❌ By intention</span> ➡️ <span
+                                                class="text-green-400 font-bold">✅ On purpose</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Transport Prepositions (NEW) -->
+                        <div class="mb-6 p-4 bg-blue-50 rounded-xl border border-blue-200">
+                            <h5 class="font-bold text-blue-800 mb-2">6.6 🚗 In vs On (ยานพาหนะ)</h5>
+                            <div class="grid grid-cols-2 gap-4 text-sm">
+                                <div>
+                                    <b class="text-slate-700">In (ต้องมุด/ก้มหัว)</b>
+                                    <p class="text-xs text-slate-500">พื้นที่แคบ เดินไม่ได้</p>
+                                    <ul class="list-disc pl-4 mt-1">
+                                        <li>In a car</li>
+                                        <li>In a taxi</li>
+                                        <li>In a helicopter</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <b class="text-slate-700">On (ยืน/เดินได้)</b>
+                                    <p class="text-xs text-slate-500">พื้นที่กว้าง / ขนส่งสาธารณะ</p>
+                                    <ul class="list-disc pl-4 mt-1">
+                                        <li>On a bus</li>
+                                        <li>On a train</li>
+                                        <li>On a plane</li>
+                                        <li>On a ship</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h4 class="font-bold text-slate-700 mb-2 border-b pb-1">6.7 Collocations (คำคู่ที่ต้องจำให้แม่น)
+                        </h4>
+                        <div class="grid grid-cols-2 gap-2 text-sm bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <div>Good <b>at</b> (เก่งเรื่อง)</div>
+                            <div>Interested <b>in</b> (สนใจใน)</div>
+                            <div>Afraid <b>of</b> (กลัว)</div>
+                            <div>Proud <b>of</b> (ภูมิใจ)</div>
+                            <div>Wait <b>for</b> (รอคอย)</div>
+                            <div>Famous <b>for</b> (ดังเรื่อง)</div>
+                            <div>Listen <b>to</b> (ฟัง)</div>
+                            <div>Married <b>to</b> (แต่งงานกับ)</div>
+                            <div>Depend <b>on</b> (ขึ้นอยู่กับ)</div>
+                            <div>Focus <b>on</b> (จดจ่อกับ)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7. Nouns & Quantifiers (Updated No/None/Not) -->
+            <div class="accordion-item shadow-sm">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <div class="flex items-center">
+                        <div class="section-num bg-orange-100 text-orange-600">7</div>
+                        <span>7. Nouns & Quantifiers (คำนาม & ปริมาณ)</span>
+                    </div>
+                    <span class="arrow text-slate-400">▼</span>
+                </div>
+                <div class="accordion-content">
+                    <div class="accordion-body space-y-6">
+
+                        <!-- Articles (A/An/The) (NEW) -->
+                        <div class="mb-6">
+                            <h4 class="font-bold text-orange-700 mb-4 border-b pb-2">7.1 Articles (A / An / The / -)
+                            </h4>
+                            <div class="grid md:grid-cols-2 gap-4 text-sm">
+                                <div class="bg-white p-3 rounded border-l-4 border-l-orange-400 shadow-sm">
+                                    <b class="text-orange-800 block mb-1">A / An (ไม่เจาะจง)</b>
+                                    <p class="text-xs text-slate-500 mb-2">อันไหนก็ได้ / พูดครั้งแรก</p>
+                                    <ul class="list-disc pl-4">
+                                        <li><b>A</b> car (รถคันนึง คันไหนก็ได้)</li>
+                                        <li><b>An</b> apple (แออปเปิ้ลผลนึง)</li>
+                                    </ul>
+                                </div>
+                                <div class="bg-white p-3 rounded border-l-4 border-l-blue-400 shadow-sm">
+                                    <b class="text-blue-800 block mb-1">The (เจาะจง)</b>
+                                    <p class="text-xs text-slate-500 mb-2">รู้นะว่าอันไหน / มีอันเดียวในโลก</p>
+                                    <ul class="list-disc pl-4">
+                                        <li><b>The</b> car (รถคันนั้นน่ะ)</li>
+                                        <li><b>The</b> sun (พระอาทิตย์)</li>
+                                    </ul>
+                                </div>
+                                <div class="col-span-2 bg-gray-50 p-3 rounded border border-gray-200 text-center">
+                                    <b class="text-slate-700">No Article (-)</b>
+                                    <p class="text-xs text-slate-500">พูดลอยๆ รูปพหูพจน์ (General)</p>
+                                    <p class="mt-1">"I like <b>dogs</b>." (ชอบหมาทั่วไปในโลก)</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- No / None / Not Table -->
+                        <div>
+                            <h4 class="font-bold text-red-700 mb-4 border-b pb-2">7.2 🔥 No vs None vs Not
+                                (ใช้ต่างกันยังไง?)</h4>
+                            <div class="overflow-x-auto">
+                                <table class="grammar-table text-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>คำ</th>
+                                            <th>หน้าที่</th>
+                                            <th>วิธีใช้</th>
+                                            <th>ตัวอย่าง</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><b>No</b> + Noun</td>
+                                            <td>Adjective</td>
+                                            <td>วางหน้า <b>Noun</b> เท่านั้น</td>
+                                            <td>I have <b class="text-red-500">no money</b>.<br>(ไม่มีเงิน)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>None</b> .</td>
+                                            <td>Pronoun</td>
+                                            <td>อยู่เดี่ยวๆ <b>ห้ามมี Noun ตามหลัง</b></td>
+                                            <td>Do you have money? <b class="text-red-500">None</b>.<br>(ไม่มีเลย)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Not</b></td>
+                                            <td>Adverb</td>
+                                            <td>วางหลัง V.ช่วย / หน้า V.แท้</td>
+                                            <td>I do <b class="text-red-500">not</b> like it.<br>(ไม่ชอบ)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Quantifiers Spectrum -->
+                        <div>
+                            <h4 class="font-bold text-orange-700 mb-2 border-b pb-1">7.3 ตารางคำบอกปริมาณ (The
+                                Quantifier
+                                Spectrum)</h4>
+                            <div class="overflow-x-auto">
+                                <table class="grammar-table text-sm">
+                                    <tr>
+                                        <th>ปริมาณ</th>
+                                        <th>นับได้ (Countable)</th>
+                                        <th>นับไม่ได้ (Uncountable)</th>
+                                    </tr>
+                                    <tr>
+                                        <td>มาก</td>
+                                        <td>Many</td>
+                                        <td>Much</td>
+                                    </tr>
+                                    <tr>
+                                        <td>เยอะ (กลางๆ)</td>
+                                        <td colspan="2" class="text-center font-bold text-indigo-600">A lot of / Lots of
+                                            /
+                                            Plenty of</td>
+                                    </tr>
+                                    <tr>
+                                        <td>บ้าง</td>
+                                        <td>Some / Any</td>
+                                        <td>Some / Any</td>
+                                    </tr>
+                                    <tr>
+                                        <td>น้อย (พอมี)</td>
+                                        <td>A few</td>
+                                        <td>A little</td>
+                                    </tr>
+                                    <tr>
+                                        <td>น้อย (แทบไม่มี)</td>
+                                        <td>Few</td>
+                                        <td>Little</td>
+                                    </tr>
+                                    <tr>
+                                        <td>ไม่มีเลย</td>
+                                        <td>No / None</td>
+                                        <td>No / None</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Trick Words (NEW) -->
+                        <div class="mt-4 p-4 bg-indigo-50 border border-indigo-200 rounded-xl">
+                            <h5 class="font-bold text-indigo-700 mb-2">7.4 💡 คำที่หน้าตาเหมือนกัน แต่ความหมายต่างกัน
+                            </h5>
+                            <table class="w-full text-sm">
+                                <tr class="border-b border-indigo-100">
+                                    <td class="py-2"><b>Few / Little</b> (ไม่มี A)</td>
+                                    <td class="text-red-600">เชิงลบ: มีน้อยมาก (แทบไม่มี)</td>
+                                    <td><i>"I have <b>few</b> friends." (เหงา)</i></td>
+                                </tr>
+                                <tr class="border-b border-indigo-100">
+                                    <td class="py-2"><b>A few / A little</b> (มี A)</td>
+                                    <td class="text-green-600">เชิงบวก: พอมีอยู่บ้าง</td>
+                                    <td><i>"I have <b>a few</b> friends." (โอเค)</i></td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2"><b>Each / Every</b></td>
+                                    <td>Each (เน้นรายคน) / Every (เน้นภาพรวม)</td>
+                                    <td><i>"Each student" vs "Every student"</i></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 8. Thai to English Logic -->
+            <div class="accordion-item shadow-sm">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <div class="flex items-center">
+                        <div class="section-num bg-teal-100 text-teal-600">8</div>
+                        <span>Thai to English Logic (แก้ปมคิดไทย)</span>
+                    </div>
+                    <span class="arrow text-slate-400">▼</span>
+                </div>
+                <div class="accordion-content">
+                    <div class="accordion-body space-y-6">
+
+                        <!-- Part 1: Passive Voice Fix (NEW) -->
+                        <div class="bg-teal-50 p-4 rounded-xl border border-teal-200">
+                            <h4 class="font-bold text-teal-800 mb-2">8.1 Active vs Passive (ไทยชอบใช้ผิด)</h4>
+                            <p class="text-sm text-slate-600 mb-2">ไทยชอบใช้ "โดน" กับเรื่องไม่ดี แต่อังกฤษใช้ Passive
+                                (ถูกกระทำ) ได้หมดถ้าเน้นกรรม</p>
+                            <div class="grid md:grid-cols-2 gap-4 text-sm">
+                                <div class="bg-white p-3 rounded shadow-sm">
+                                    <b class="text-green-600">Active (ประธานทำ)</b>
+                                    <p class="text-xs">"Someone stole my car."</p>
+                                </div>
+                                <div class="bg-white p-3 rounded shadow-sm">
+                                    <b class="text-blue-600">Passive (ถูกกระทำ)</b>
+                                    <p class="text-xs">"My car <b>was stolen</b>." (Be + V.3)</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Loei & Missing Words -->
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="border border-pink-200 rounded-xl p-4 bg-pink-50/30">
+                                <h4 class="font-bold text-pink-700 mb-2">8.2 คำว่า "เลย" (Loei)</h4>
+                                <ul class="text-sm space-y-1 list-disc pl-4">
+                                    <li>เน้นอารมณ์ -> It's <b>so</b> beautiful.</li>
+                                    <li>ทันที -> Go <b>now</b>. / <b>Right</b> now.</li>
+                                    <li>ปฏิเสธ -> Don't know <b>at all</b>.</li>
+                                    <li>เกินไป -> Too much.</li>
+                                </ul>
+                            </div>
+                            <div class="border border-indigo-200 rounded-xl p-4 bg-indigo-50/30">
+                                <h4 class="font-bold text-indigo-700 mb-2">8.3 แก้ปม: "ในส่วนของ..."</h4>
+                                <ul class="text-sm space-y-1 list-disc pl-4">
+                                    <li><b>ห้ามแปลตรงตัว!</b> ตัดทิ้งไปเลย</li>
+                                    <li>❌ In part of the price...</li>
+                                    <li>✅ <b>The price</b> is... (เอาเรื่องที่จะพูดขึ้นมาเลย)</li>
+                                    <li>✅ <b>Regarding</b> the price... (ถ้าทางการ)</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- New Era of Thai Logic -->
+                        <div class="space-y-6 mt-6">
+
+                            <!-- Existence vs Possession -->
+                            <div class="bg-amber-50 p-4 rounded-xl border border-amber-200">
+                                <h4 class="font-bold text-amber-800 mb-2">8.4 "มี" (Have vs There is) 🚫
+                                    ผิดกันทั้งประเทศ
+                                </h4>
+                                <p class="text-sm text-slate-700 mb-2">ภาษาไทยใช้คำว่า "มี" คำเดียว แต่อังกฤษต้องแยก!
+                                </p>
+                                <div
+                                    class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm bg-white p-3 rounded shadow-sm">
+                                    <div>
+                                        <b class="text-blue-600">Have (เจ้าของ)</b>
+                                        <p class="text-xs text-slate-500">ประธานต้องเป็น คน/สัตว์/องค์กร</p>
+                                        <p class="mt-1">✅ <b>I have</b> a car.</p>
+                                        <p class="text-red-500 text-xs">❌ Stadium has many people.</p>
+                                    </div>
+                                    <div>
+                                        <b class="text-green-600">There is/are (อุบัติขึ้น/มีอยู่)</b>
+                                        <p class="text-xs text-slate-500">ใช้บอกว่ามีสิ่งนี้อยู่ในสถานที่</p>
+                                        <p class="mt-1">✅ <b>There are</b> many people in the stadium.</p>
+                                        <p class="text-xs text-slate-500">(ในสเตเดียม มีคนเยอะ)</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 2 Face of Have (The Main Request) -->
+                            <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-200">
+                                <h4 class="font-bold text-indigo-800 mb-2">8.5 The 2 Faces of Have (Have เป็นได้ 2
+                                    อย่าง!)
+                                </h4>
+                                <p class="text-sm text-slate-700 mb-2">คนไทยชอบสับสนว่า Have ต้องตามด้วย V.3 เสมอ...
+                                    <b>ผิด!</b> ต้องดูหน้าที่มัน
+                                </p>
+
+                                <div class="space-y-3 text-sm">
+                                    <div class="bg-white p-3 rounded border-l-4 border-l-orange-500">
+                                        <b class="text-orange-700 block text-base">1. Main Verb (กริยาแท้) = "มี / กิน /
+                                            ดื่ม"</b>
+                                        <ul class="list-disc pl-4 mt-1 text-slate-600">
+                                            <li>ต้องใช้ <b>Do / Does / Did</b> มาช่วยถาม/ปฏิเสธ</li>
+                                            <li>✅ I <b>have</b> a dog. -> <b>Do</b> you have a dog?</li>
+                                            <li>❌ Have you a dog? (ห้าม!)</li>
+                                        </ul>
+                                    </div>
+                                    <div class="bg-white p-3 rounded border-l-4 border-l-green-500">
+                                        <b class="text-green-700 block text-base">2. Helper Verb (กริยาช่วย) = "Perfect
+                                            Tense"</b>
+                                        <ul class="list-disc pl-4 mt-1 text-slate-600">
+                                            <li>ตามด้วย <b>V.3</b> เสมอ (แปลว่า ทำ...แล้ว)</li>
+                                            <li>ใช้ <b>Have</b> ถาม/ปฏิเสธ ได้เลย (ไม่ต้องง้อ Do)</li>
+                                            <li>✅ I <b>have eaten</b>. -> <b>Have</b> you eaten?</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Action Verbs Fix -->
+                            <div class="bg-rose-50 p-4 rounded-xl border border-rose-200">
+                                <h4 class="font-bold text-rose-800 mb-2">8.6 คำกริยาเจ้าปัญหา (Tricky Verbs)</h4>
+                                <ul class="text-sm space-y-3 pl-2">
+                                    <li>
+                                        <b>Win vs Beat</b> (ชนะ)
+                                        <br><span class="text-slate-600">Win + สิ่งของ/รางวัล (Win the game, Win the
+                                            lottery)</span>
+                                        <br><span class="text-slate-600">Beat + คู่แข่ง (Beat Liverpool, Beat
+                                            him)</span>
+                                    </li>
+                                    <li>
+                                        <b>Marry</b> (แต่งงาน)
+                                        <br><span class="text-red-500">❌ Marry with him</span>
+                                        <br><span class="text-green-600">✅ Marry him (ไม่ต้องมี with!)</span>
+                                    </li>
+                                    <li>
+                                        <b>Listen</b> (ฟัง)
+                                        <br><span class="text-red-500">❌ Listen music</span>
+                                        <br><span class="text-green-600">✅ Listen <b>to</b> music (ต้องมี to
+                                            เสมอ)</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- Thai Culture Words -->
+                            <div class="bg-purple-50 p-4 rounded-xl border border-purple-200">
+                                <h4 class="font-bold text-purple-800 mb-2">8.7 ศัพท์ไทยที่ไม่มีในอังกฤษ (Thai Concepts)
+                                </h4>
+                                <table class="w-full text-sm">
+                                    <tr class="border-b border-purple-100">
+                                        <td class="py-2"><b>เกรงใจ</b></td>
+                                        <td><i>"I don't want to <b>impose</b>."</i> (ทางการ)<br><i>"I don't want to
+                                                <b>trouble</b> you."</i> (ทั่วไป)</td>
+                                    </tr>
+                                    <tr class="border-b border-purple-100">
+                                        <td class="py-2"><b>เสียดาย</b></td>
+                                        <td><i>"What a <b>pity</b>!" / "It's a <b>shame</b>."</i> (น่าเสียดายจัง)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2"><b>งอน</b></td>
+                                        <td><i>"She is <b>sulking</b>."</i> (งอนตุ๊บป่อง ไม่พูดด้วย)</td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                        </div>
+
+                        <!-- Common Mistakes -->
+                        <div>
+                            <h4 class="font-bold text-red-700 mb-2 border-b pb-1">8.8 แก้คำผิดยอดฮิต</h4>
+                            <table class="grammar-table text-sm">
+                                <tr>
+                                    <th>ไทย</th>
+                                    <th>ผิด ❌</th>
+                                    <th>ถูก ✅</th>
+                                </tr>
+                                <tr>
+                                    <td>เปิด/ปิด (ไฟ)</td>
+                                    <td>Open/Close</td>
+                                    <td><b>Turn on/off</b></td>
+                                </tr>
+                                <tr>
+                                    <td>ลองใหม่</td>
+                                    <td>Try new</td>
+                                    <td><b>Try again</b></td>
+                                </tr>
+                                <tr>
+                                    <td>เล่นมือถือ</td>
+                                    <td>Play mobile</td>
+                                    <td><b>Use phone</b></td>
+                                </tr>
+                                <tr>
+                                    <td>อิน (กำลังอิน)</td>
+                                    <td>I am in</td>
+                                    <td><b>I am into it</b></td>
+                                </tr>
+                                <tr>
+                                    <td>เว่อร์</td>
+                                    <td>Over</td>
+                                    <td><b>Exaggerate</b></td>
+                                </tr>
+                                <tr>
+                                    <td>เช็คบิล</td>
+                                    <td>Check bill</td>
+                                    <td><b>Check, please</b></td>
+                                </tr>
+                                <tr>
+                                    <td>อายุ 20</td>
+                                    <td>I have 20 years</td>
+                                    <td>I <b>am</b> 20 years old</td>
+                                </tr>
+                                <tr>
+                                    <td>ยืม (ขอยืม)</td>
+                                    <td>Borrow me</td>
+                                    <td><b>Lend</b> me</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 9. If-Clauses & Connectors -->
+            <div class="accordion-item shadow-sm">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <div class="flex items-center">
+                        <div class="section-num bg-purple-100 text-purple-600">9</div>
+                        <span>If-Clauses & Connectors</span>
+                    </div>
+                    <span class="arrow text-slate-400">▼</span>
+                </div>
+                <div class="accordion-content">
+                    <div class="accordion-body space-y-6">
+                        <div>
+                            <h4 class="font-bold text-purple-700 mb-2">9.1 4 สูตร If-Clause (จำง่ายๆ)</h4>
+                            <table class="grammar-table text-sm">
+                                <tr>
+                                    <th>Type</th>
+                                    <th>โครงสร้าง</th>
+                                    <th>วิธีจำ</th>
+                                </tr>
+                                <tr>
+                                    <td>Zero</td>
+                                    <td>If V1, V1</td>
+                                    <td><b>จริงเสมอ</b> (น้ำเดือด, พระอาทิตย์ขึ้น)<br><i>If you heat ice, it melts.</i>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>1st</td>
+                                    <td>If V1, Will</td>
+                                    <td><b>อนาคต</b> (ถ้า... จะ...)<br><i>If it rains, I will stay home.</i></td>
+                                </tr>
+                                <tr>
+                                    <td>2nd</td>
+                                    <td>If V2, Would</td>
+                                    <td><b>มโนปัจจุบัน</b> (ถ้าฉันรวย... ซึ่งตอนนี้ไม่รวย)<br><i>If I were rich, I would
+                                            buy
+                                            a car.</i></td>
+                                </tr>
+                                <tr>
+                                    <td>3rd</td>
+                                    <td>If Had V3, Would have V3</td>
+                                    <td><b>เสียดายอดีต</b> (ถ้ารู้ตอนนั้น... ก็คงไม่ทำ)<br><i>If I had known, I would
+                                            have
+                                            told you.</i></td>
+                                </tr>
+                            </table>
+                            <div class="mt-2 text-xs text-slate-500">*Tip: Type 2 ใช้ <b class="text-purple-600">If I
+                                    were</b> เสมอ ไม่ใช้ was</div>
+
+                            <!-- Wishes (NEW) -->
+                            <div class="mt-4 bg-pink-50 p-4 rounded-xl border border-pink-200">
+                                <h5 class="font-bold text-pink-800 mb-2">✨ I wish... (อยากให้...)</h5>
+                                <p class="text-sm text-slate-600 mb-2">ใช้พูดถึงสิ่งที่ "เป็นไปไม่ได้ในตอนนี้" หรือ
+                                    "เสียดาย"</p>
+                                <table class="w-full text-sm">
+                                    <tr class="border-b border-pink-100">
+                                        <td class="py-2"><b>Wish + Past (V.2)</b></td>
+                                        <td>อยากให้เป็น... (แต่ตอนนี้ไม่เป็น)</td>
+                                        <td><i>"I wish I <b>was</b> rich." (จนอยู่)</i></td>
+                                    </tr>
+                                    <tr class="border-b border-pink-100">
+                                        <td class="py-2"><b>Wish + Past Perfect</b></td>
+                                        <td>รู้งี้... (เสียดายอดีต)</td>
+                                        <td><i>"I wish I <b>hadn't</b> done it."</i></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2"><b>Wish + Would</b></td>
+                                        <td>อยากให้เปลี่ยน (รำคาญ)</td>
+                                        <td><i>"I wish it <b>would</b> stop raining."</i></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="space-y-8">
+                            <div>
+                                <h4 class="font-bold text-purple-700 mb-4 border-b pb-2">คำเชื่อม (Connectors Master
+                                    Guide)
+                                </h4>
+
+                                <!-- 9.1 Grammar Logic (The Big 3) -->
+                                <div class="bg-purple-50 p-5 rounded-2xl border border-purple-200 mb-6 font-medium">
+                                    <h5 class="text-purple-800 font-bold mb-3">9.2 📍 กฎเหล็ก 3 ประเภท (ห้ามใช้ปนกัน!)
+                                    </h5>
+                                    <div class="grid md:grid-cols-3 gap-4 text-xs">
+                                        <div class="bg-white p-3 rounded-xl shadow-sm border-l-4 border-purple-500">
+                                            <b class="text-purple-700 block mb-1">1. Conjunctions</b>
+                                            <p class="text-slate-500">เชื่อม 2 ประโยคเข้าด้วยกัน <br><span
+                                                    class="text-xs font-bold text-slate-800">+ Sentence (S+V)</span></p>
+                                            <p class="mt-2 text-xs italic">"Because I am tired, I sleep."</p>
+                                        </div>
+                                        <div class="bg-white p-3 rounded-xl shadow-sm border-l-4 border-blue-500">
+                                            <b class="text-blue-700 block mb-1">2. Prepositions</b>
+                                            <p class="text-slate-500">เชื่อมคำนามเข้ากับประโยค <br><span
+                                                    class="text-xs font-bold text-slate-800">+ Noun / V-ing</span></p>
+                                            <p class="mt-2 text-xs italic">"Because of the noise, I sleep."</p>
+                                        </div>
+                                        <div class="bg-white p-3 rounded-xl shadow-sm border-l-4 border-orange-500">
+                                            <b class="text-orange-700 block mb-1">3. Transition Adverbs</b>
+                                            <p class="text-slate-500">ขึ้นต้นประโยคใหม่ (ต้องมี ,) <br><span
+                                                    class="text-xs font-bold text-slate-800">Sentence. [Word],
+                                                    S+V.</span>
+                                            </p>
+                                            <p class="mt-2 text-xs italic">"I am tired. Therefore, I sleep."</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 9.2 The 6 Logic Categories -->
+                                <div class="overflow-x-auto">
+                                    <table class="grammar-table text-sm">
+                                        <thead>
+                                            <tr class="bg-slate-100">
+                                                <th width="15%">Logical Group</th>
+                                                <th width="30%">1. Need Sentence (+ S+V)</th>
+                                                <th width="25%">2. Need Noun (+ Noun)</th>
+                                                <th width="30%">3. Start New Sentence</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="text-[12px]">
+                                            <!-- Reason -->
+                                            <tr>
+                                                <td class="bg-green-50 font-bold text-green-700">9.2 The 6 Logic
+                                                    Categories
+                                                    (Reason)</td>
+                                                <td>Because/Since/As (เพราะว่า) <br>Due to the fact that
+                                                    <br>(เนื่องจากข้อเท็จจริงที่ว่า)
+                                                </td>
+                                                <td>Because of/Due to/Owing to <br>(เพราะ/เนื่องมาจาก)</td>
+                                                <td>- (Use Therefore for result)</td>
+                                            </tr>
+                                            <!-- Result -->
+                                            <tr>
+                                                <td class="bg-orange-50 font-bold text-orange-700">Result (ผลลัพธ์)</td>
+                                                <td>So (ดังนั้น/ก็เลย)</td>
+                                                <td>-</td>
+                                                <td>Therefore/Consequently <br>(ดังนั้น/ผลที่ตามมาคือ)</td>
+                                            </tr>
+                                            <!-- Contrast -->
+                                            <tr>
+                                                <td class="bg-red-50 font-bold text-red-700">Contrast (ขัดแย้ง)</td>
+                                                <td>Although/Even though (แม้ว่า) <br>While/Whereas (ในขณะที่)
+                                                    <br><b>But/Yet (แต่/แต่กระนั้น)</b>
+                                                </td>
+                                                <td>Despite/In spite of <br>(ทั้งที่/ทั้ง ๆ ที่)</td>
+                                                <td>However/Nevertheless <br>(อย่างไรก็ตาม) <br>On the other hand
+                                                    (ในทางกลับกัน)</td>
+                                            </tr>
+                                            <!-- Addition -->
+                                            <tr>
+                                                <td class="bg-blue-50 font-bold text-blue-700">Addition (เพิ่มเติม)</td>
+                                                <td>And (และ)</td>
+                                                <td>In addition to (นอกเหนือจาก)</td>
+                                                <td>Moreover/Furthermore <br>(ยิ่งไปกว่านั้น)</td>
+                                            </tr>
+                                            <!-- Purpose -->
+                                            <tr>
+                                                <td class="bg-cyan-50 font-bold text-cyan-700">Purpose (เพื่อที่จะ)</td>
+                                                <td>So that/In order that <br>(เพื่อที่ว่า + ประโยค)</td>
+                                                <td>To/In order to (+V.inf) <br>(เพื่อที่จะ)</td>
+                                                <td>-</td>
+                                            </tr>
+                                            <!-- Condition -->
+                                            <tr>
+                                                <td class="bg-indigo-50 font-bold text-indigo-700">Condition (เงื่อนไข)
+                                                </td>
+                                                <td>If (ถ้า) / Unless (ถ้าไม่) <br>Provided that/As long as
+                                                    <br>(ตราบเท่าที่/หากว่า) <br>In case (ในกรณีที่)
+                                                </td>
+                                                <td>-</td>
+                                                <td>Otherwise (มิฉะนั้น/ไม่งั้น...)</td>
+                                            </tr>
+                                            <!-- Choice -->
+                                            <tr>
+                                                <td class="bg-yellow-50 font-bold text-yellow-700">Choice (ทางเลือก)
+                                                </td>
+                                                <td>Or (หรือ) <br>Whether... or (ไม่ว่า... หรือ)</td>
+                                                <td>Instead of (แทนที่จะ)</td>
+                                                <td>Alternatively (อีกทางเลือกหนึ่ง)</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <!-- 9.3 Thai Logic Fixes (Critical) -->
+                                <div
+                                    class="mt-6 p-5 bg-red-50 rounded-2xl border-2 border-red-100 relative overflow-hidden">
+                                    <div
+                                        class="absolute top-0 right-0 p-2 bg-red-100 text-red-600 text-xs font-bold uppercase tracking-widest">
+                                        Crucial Fix</div>
+                                    <h5 class="text-red-800 font-bold mb-3 flex items-center">
+                                        9.4 🚫 Thai Logic Error: "คำเชื่อมซ้ำซ้อน"
+                                    </h5>
+                                    <p class="text-xs text-slate-600 mb-4 leading-relaxed">
+                                        ในภาษาไทย เราพูดว่า "<b>เพราะว่า</b>... <b>ดังนั้น</b>..." หรือ
+                                        "<b>แม้ว่า</b>...
+                                        <b>แต่</b>..." ได้ <br>
+                                        แต่ในภาษาอังกฤษ <b>ห้ามใส่ทั้งคู่ในประโยคเดียวกันเด็ดขาด!</b>
+                                        ให้เลือกแค่อย่างเดียว
+                                    </p>
+                                    <div class="grid md:grid-cols-2 gap-4">
+                                        <div class="bg-white p-3 rounded-xl border border-red-100 shadow-sm">
+                                            <b class="text-slate-500 block mb-1 text-xs">❌ Error: Because... so...</b>
+                                            <p class="text-xs text-red-500 italic">"Because I'm tired, <b>so</b> I
+                                                sleep."
+                                            </p>
+                                            <div class="mt-2 text-xs text-green-600 font-bold">✅ Fix: Choose ONE</div>
+                                            <p class="text-xs italic text-slate-400">"Because I'm tired, I sleep." <br>
+                                                OR "I'm tired, so I sleep."</p>
+                                        </div>
+                                        <div class="bg-white p-3 rounded-xl border border-red-100 shadow-sm">
+                                            <b class="text-slate-500 block mb-1 text-xs">❌ Error: Although... but...</b>
+                                            <p class="text-xs text-red-500 italic">"Although he is rich, <b>but</b> he
+                                                is
+                                                sad."</p>
+                                            <div class="mt-2 text-xs text-green-600 font-bold">✅ Fix: Choose ONE</div>
+                                            <p class="text-xs italic text-slate-400">"Although he is rich, he is sad."
+                                                <br> OR "He is rich, but he is sad."
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 9.4 Complete Example Guide (Exhaustive) -->
+                                <div class="mt-8">
+                                    <h5 class="font-bold text-purple-800 mb-4 flex items-center">
+                                        <span
+                                            class="bg-purple-200 text-purple-800 w-8 h-8 rounded-full flex items-center justify-center mr-2 text-xs">9.4</span>
+                                        9.5 เจาะลึกตัวอย่างให้ครบทุกประเภท (The Ultimate Connector Guide)
+                                    </h5>
+
+                                    <div class="grid md:grid-cols-2 gap-6">
+                                        <!-- 1. Reason (เหตุผล) -->
+                                        <div class="bg-green-50/50 p-5 rounded-2xl border border-green-100 shadow-sm">
+                                            <b
+                                                class="text-green-800 block mb-3 border-b border-green-200 pb-1 text-sm flex items-center">
+                                                🌱 1. การบอกเหตุผล (Reason)
+                                            </b>
+                                            <div class="space-y-3 text-xs leading-relaxed">
+                                                <div>
+                                                    <span class="text-green-700 font-bold">Conjunction (+S+V):</span>
+                                                    <p>• <i>I stayed home <b>because/since/as</b> it was raining.</i>
+                                                        <br>
+                                                        <span class="text-slate-400">(= ฉันอยู่บ้านเพราะฝนตก)</span>
+                                                    </p>
+                                                    <p class="text-[9px] text-slate-400 italic">(As/Since
+                                                        ดูเป็นทางการกว่า
+                                                        Because)</p>
+                                                    <p>• <i><b>Due to the fact that</b> it was raining, the game was
+                                                            canceled.</i> <br>
+                                                        <span class="text-slate-400">(= เนื่องจากข้อเท็จจริงที่ว่าฝนตก
+                                                            เกมเลยถูกยกเลิก)</span>
+                                                    </p>
+                                                </div>
+                                                <div>
+                                                    <span class="text-green-700 font-bold">Preposition (+Noun):</span>
+                                                    <p>• <i>I stayed home <b>because of/due to/owing to</b> the
+                                                            rain.</i>
+                                                        <br>
+                                                        <span class="text-slate-400">(= ฉันอยู่บ้านเพราะฝน
+                                                            (ตามด้วยคำนาม))</span>
+                                                    </p>
+                                                    <p class="text-[9px] text-slate-400 italic">(Due to/Owing to
+                                                        มักใช้ในระดับทางการ หรือข่าวสาร)</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 2. Contrast (ขัดแย้ง) -->
+                                        <div class="bg-red-50/50 p-5 rounded-2xl border border-red-100 shadow-sm">
+                                            <b
+                                                class="text-red-800 block mb-3 border-b border-red-200 pb-1 text-sm flex items-center">
+                                                🌗 2. ความขัดแย้ง (Contrast)
+                                            </b>
+                                            <div class="space-y-3 text-xs leading-relaxed">
+                                                <div>
+                                                    <span class="text-red-700 font-bold">Conjunction (+S+V):</span>
+                                                    <p>• <i><b>Although/Even though</b> it was cold, he went out.</i>
+                                                        <br>
+                                                        <span class="text-slate-400">(= แม้ว่าอากาศจะหนาว
+                                                            เขาก็ยังออกไปข้างนอก)</span>
+                                                    </p>
+                                                    <p>• <i>I like tea, <b>whereas/while</b> she likes coffee.</i> <br>
+                                                        <span class="text-slate-400">(= ฉันชอบชา
+                                                            ในขณะที่เธอชอบกาแฟ)</span>
+                                                    </p>
+                                                    <p>• <i>It was cold, <b>but/yet</b> he went out.</i> <br>
+                                                        <span class="text-slate-400">(= มันหนาว แต่เขาก็ยังออกไป)</span>
+                                                    </p>
+                                                </div>
+                                                <div>
+                                                    <span class="text-red-700 font-bold">Preposition (+Noun):</span>
+                                                    <p>• <i><b>Despite/In spite of</b> the cold, he went out.</i> <br>
+                                                        <span class="text-slate-400">(= ทั้งที่อากาศหนาว
+                                                            เขาก็ยังออกไป)</span>
+                                                    </p>
+                                                </div>
+                                                <div>
+                                                    <span class="text-red-700 font-bold">Adverb (Start New):</span>
+                                                    <p>• <i>It was cold. <b>However/Nevertheless</b>, he went out.</i>
+                                                        <br>
+                                                        <span class="text-slate-400">(= อากาศมันหนาว อย่างไรก็ตาม
+                                                            เขาก็ยังออกไป)</span>
+                                                    </p>
+                                                    <p>• <i>He is rich. <b>On the other hand</b>, he is not happy.</i>
+                                                        <br>
+                                                        <span class="text-slate-400">(= เขารวย ในอีกมุมหนึ่ง
+                                                            เขากลับไม่มีความสุข)</span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 3. Result (บอกผลลัพธ์) -->
+                                        <div class="bg-orange-50/50 p-5 rounded-2xl border border-orange-100 shadow-sm">
+                                            <b
+                                                class="text-orange-800 block mb-3 border-b border-orange-200 pb-1 text-sm flex items-center">
+                                                🎯 3. การบอกผล (Result)
+                                            </b>
+                                            <div class="space-y-3 text-xs leading-relaxed">
+                                                <div>
+                                                    <span class="text-orange-700 font-bold">Conjunction:</span>
+                                                    <p>• <i>I was tired, <b>so</b> I went to bed.</i> <br>
+                                                        <span class="text-slate-400">(= ฉันเหนื่อย ฉันก็เลยไปนอน)</span>
+                                                    </p>
+                                                </div>
+                                                <div>
+                                                    <span class="text-orange-700 font-bold">Adverb (Formal):</span>
+                                                    <p>• <i>I was tired. <b>Therefore/Consequently</b>, I went to
+                                                            bed.</i>
+                                                        <br>
+                                                        <span class="text-slate-400">(= ฉันเหนื่อย
+                                                            ดังนั้นฉันจึงไปนอน)</span>
+                                                    </p>
+                                                    <p class="text-[9px] text-slate-400 italic">(ดูเป็นทางการกว่า So
+                                                        มาก)
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 4. Condition (เงื่อนไข) -->
+                                        <div class="bg-indigo-50/50 p-5 rounded-2xl border border-indigo-100 shadow-sm">
+                                            <b
+                                                class="text-indigo-800 block mb-3 border-b border-indigo-200 pb-1 text-sm flex items-center">
+                                                💎 4. เงื่อนไข (Condition)
+                                            </b>
+                                            <div class="space-y-3 text-xs leading-relaxed">
+                                                <div>
+                                                    <span class="text-indigo-700 font-bold">Sentence:</span>
+                                                    <p>• <i><b>If</b> it rains, we'll cancel the trip.</i> <br>
+                                                        <span class="text-slate-400">(= ถ้าฝนตก เราจะยกเลิกทริป)</span>
+                                                    </p>
+                                                    <p>• <i><b>Unless</b> it rains, we'll go.</i> <br>
+                                                        <span class="text-slate-400">(= ถ้าฝนไม่ตก เราจะไป)</span>
+                                                    </p>
+                                                    <p>• <i>You can go out <b>as long as/provided that</b> you finish
+                                                            your
+                                                            work.</i> <br>
+                                                        <span class="text-slate-400">(= คุณออกไปได้
+                                                            ตราบเท่าที่คุณทำงานเสร็จ)</span>
+                                                    </p>
+                                                </div>
+                                                <div>
+                                                    <span class="text-indigo-700 font-bold">Caution:</span>
+                                                    <p>• <i>Take an umbrella <b>in case</b> it rains.</i> <br>
+                                                        <span class="text-slate-400">(= พกร่มไว้ เผื่อว่าฝนจะตก
+                                                            (เตรียมพร้อม))</span>
+                                                    </p>
+                                                    <p>• <i>You must study; <b>otherwise</b>, you will fail.</i> <br>
+                                                        <span class="text-slate-400">(= คุณต้องเรียน
+                                                            ไม่งั้นคุณจะสอบตก)</span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 5. Purpose (วัตถุประสงค์) -->
+                                        <div class="bg-cyan-50/50 p-5 rounded-2xl border border-cyan-100 shadow-sm">
+                                            <b
+                                                class="text-cyan-800 block mb-3 border-b border-cyan-200 pb-1 text-sm flex items-center">
+                                                🚀 5. วัตถุประสงค์ (Purpose)
+                                            </b>
+                                            <div class="space-y-3 text-xs leading-relaxed">
+                                                <div>
+                                                    <span class="text-cyan-700 font-bold">Conjunction (+S+V):</span>
+                                                    <p>• <i>I save money <b>so that/in order that</b> I can buy a
+                                                            car.</i>
+                                                        <br>
+                                                        <span class="text-slate-400">(=
+                                                            ฉันออมเงินเพื่อที่ฉันจะได้ซื้อรถ)</span>
+                                                    </p>
+                                                </div>
+                                                <div>
+                                                    <span class="text-cyan-700 font-bold">Preposition (+V.inf):</span>
+                                                    <p>• <i>I save money <b>to/in order to</b> buy a car.</i> <br>
+                                                        <span class="text-slate-400">(= ฉันออมเงินเพื่อซื้อรถ)</span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 6. Choice (ทางเลือก) -->
+                                        <div class="bg-yellow-50/50 p-5 rounded-2xl border border-yellow-100 shadow-sm">
+                                            <b
+                                                class="text-yellow-800 block mb-3 border-b border-yellow-200 pb-1 text-sm flex items-center">
+                                                ⚖️ 6. ทางเลือก (Choice)
+                                            </b>
+                                            <div class="space-y-3 text-xs leading-relaxed">
+                                                <div>
+                                                    <span class="text-yellow-700 font-bold">Conjunction:</span>
+                                                    <p>• <i>Do you want tea <b>or</b> coffee?</i> <br>
+                                                        <span class="text-slate-400">(= คุณจะรับชาหรือกาแฟดี?)</span>
+                                                    </p>
+                                                    <p>• <i>I don't know <b>whether</b> to stay <b>or</b> leave.</i>
+                                                        <br>
+                                                        <span class="text-slate-400">(=
+                                                            ฉันไม่รู้ว่าจะอยู่ต่อหรือจะไปดี)</span>
+                                                    </p>
+                                                </div>
+                                                <div>
+                                                    <span class="text-yellow-700 font-bold">Instead:</span>
+                                                    <p>• <i>Let's walk <b>instead of</b> taking the bus.</i> <br>
+                                                        <span class="text-slate-400">(= เดินกันเถอะ
+                                                            แทนที่จะนั่งรถเมล์)</span>
+                                                    </p>
+                                                </div>
+                                                <div>
+                                                    <span class="text-yellow-700 font-bold">Adverb:</span>
+                                                    <p>• <i>We could go to the park. <b>Alternatively</b>, we could go
+                                                            to
+                                                            the mall.</i> <br>
+                                                        <span class="text-slate-400">(= เราไปสวนกันได้
+                                                            หรืออีกทางเลือกคือไปห้าง)</span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Speaking Power Tips (Advanced) -->
+                            <div
+                                class="mt-6 bg-slate-800 p-6 rounded-3xl text-white shadow-2xl relative overflow-hidden">
+                                <div class="absolute -top-4 -right-4 w-24 h-24 bg-purple-500/20 rounded-full blur-2xl">
+                                </div>
+                                <h6 class="text-sm font-bold text-yellow-400 mb-4 flex items-center italic">
+                                    ✨ Native Speaking Transitions (เทคนิคพูดให้เหมือนฝรั่ง)
+                                </h6>
+                                <div class="grid md:grid-cols-2 gap-4 text-xs leading-relaxed">
+                                    <div class="space-y-3">
+                                        <div class="p-2 bg-slate-700/50 rounded-lg border border-slate-600">
+                                            <p><b class="text-blue-300">Moving on to next point:</b> <br>
+                                                - "Furthermore, ..." <br>
+                                                - "Moving on to..."</p>
+                                        </div>
+                                        <div class="p-2 bg-slate-700/50 rounded-lg border border-slate-600">
+                                            <p><b class="text-pink-300">Adding a contrast:</b> <br>
+                                                - "On the other hand, ..." <br>
+                                                - "However, ..."</p>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-3">
+                                        <div class="p-2 bg-slate-700/50 rounded-lg border border-slate-600">
+                                            <p><b class="text-green-300">Giving Examples:</b> <br>
+                                                - "For instance, ..." <br>
+                                                - "Such as..."</p>
+                                        </div>
+                                        <div class="p-2 bg-slate-700/50 rounded-lg border border-slate-600">
+                                            <p><b class="text-yellow-300">Summarizing:</b> <br>
+                                                - "To sum up, ..." <br>
+                                                - "In short, ..."</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 10. Advanced (Updated with Participles & Used to) -->
+            <div class="accordion-item shadow-sm">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <div class="flex items-center">
+                        <div class="section-num bg-rose-100 text-rose-600">10</div>
+                        <span>Advanced: Gerunds, Participles & Used to</span>
+                    </div>
+                    <span class="arrow text-slate-400">▼</span>
+                </div>
+                <div class="accordion-content">
+                    <div class="accordion-body space-y-6">
+
+                        <!-- Bored vs Boring -->
+                        <div class="bg-rose-50 p-4 rounded-xl border border-rose-200">
+                            <h4 class="font-bold text-rose-800 mb-2">10.1 Participial Adjectives (-ed vs -ing)</h4>
+                            <div class="grid md:grid-cols-2 gap-4 text-sm">
+                                <div>
+                                    <b class="text-blue-600">-ed (ความรู้สึก)</b>
+                                    <p>ใช้กับคน (รู้สึก...)</p>
+                                    <p class="italic">I am <b>bored</b>. (ฉันรู้สึกเบื่อ)</p>
+                                </div>
+                                <div>
+                                    <b class="text-green-600">-ing (หน้าตา/คุณสมบัติ)</b>
+                                    <p>ใช้กับสิ่งของ/คน (น่า...)</p>
+                                    <p class="italic">The movie is <b>boring</b>. (หนังน่าเบื่อ)</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Used to (Deep Dive) -->
+                        <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-200">
+                            <h4 class="font-bold text-indigo-800 mb-2">10.2 Used to vs Be used to (ตระกูล "เคย")</h4>
+                            <table class="w-full text-sm">
+                                <tr class="border-b border-indigo-100">
+                                    <td class="py-2"><b class="text-indigo-900">Used to + V.1</b></td>
+                                    <td class="text-slate-600">เคยทำ (ตอนนี้ไม่ทำแล้ว)</td>
+                                    <td class="italic text-slate-500">"I <b>used to smoke</b>."</td>
+                                </tr>
+                                <tr class="border-b border-indigo-100">
+                                    <td class="py-2"><b class="text-indigo-900">Be used to + V.ing</b></td>
+                                    <td class="text-slate-600">ชินกับการ... (เป็นนิสัย)</td>
+                                    <td class="italic text-slate-500">"I <b>am used to getting</b> up early."</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2"><b class="text-indigo-900">Get used to + V.ing</b></td>
+                                    <td class="text-slate-600">เริ่มจะชิน... (ปรับตัว)</td>
+                                    <td class="italic text-slate-500">"I'm <b>getting used to</b> the noise."</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <!-- Gerund vs Infinitive (Tricky Ones) -->
+                        <div>
+                            <h4 class="font-bold text-slate-700 mb-2">10.3 คำกริยาที่ความหมายเปลี่ยน (Tricky Verbs)</h4>
+                            <div class="grid md:grid-cols-2 gap-4 text-sm">
+                                <div class="bg-red-50 p-3 rounded border border-red-100">
+                                    <b class="text-red-700 block mb-1">Stop + V.ing (เลิกทำถาวร)</b>
+                                    <p>Stop smoking = เลิกบุหรี่</p>
+                                </div>
+                                <div class="bg-green-50 p-3 rounded border border-green-100">
+                                    <b class="text-green-700 block mb-1">Stop + to V.1 (หยุดเพื่อจะทำ)</b>
+                                    <p>Stop to smoke = หยุด(เดิน) เพื่อมาสูบ</p>
+                                </div>
+                                <div class="bg-red-50 p-3 rounded border border-red-100">
+                                    <b class="text-red-700 block mb-1">Remember + V.ing (ความทรงจำ)</b>
+                                    <p>Remember sending = จำได้ว่าส่งแล้ว</p>
+                                </div>
+                                <div class="bg-green-50 p-3 rounded border border-green-100">
+                                    <b class="text-green-700 block mb-1">Remember + to V.1 (เตือนใจ)</b>
+                                    <p>Remember to send = อย่าลืมส่งนะ</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Relative Clauses (Expanded) -->
+                        <div class="bg-cyan-50 p-5 rounded-2xl border border-cyan-200">
+                            <h4 class="font-bold text-cyan-800 mb-4 border-b border-cyan-200 pb-2">10.4 Relative Clauses
+                                (ประโยคขยายความนาม)</h4>
+
+                            <div class="overflow-x-auto mb-6">
+                                <table class="grammar-table text-sm">
+                                    <thead>
+                                        <tr class="bg-cyan-100">
+                                            <th>Relative Pronoun</th>
+                                            <th>ใช้กับ...</th>
+                                            <th>ทำหน้าที่เป็น...</th>
+                                            <th>ตัวอย่างประโยค</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><b>Who</b></td>
+                                            <td>คน (People)</td>
+                                            <td>ประธาน (Subject)</td>
+                                            <td>The man <b>who</b> called you is my boss.</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Whom</b></td>
+                                            <td>คน (People)</td>
+                                            <td>กรรม (Object)</td>
+                                            <td>The man <b>whom</b> I met yesterday.</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Whose</b></td>
+                                            <td>คน/สัตว์ (Possession)</td>
+                                            <td>แสดงความเป็นเจ้าของ</td>
+                                            <td>The girl <b>whose</b> phone was stolen.</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Which</b></td>
+                                            <td>สัตว์/สิ่งของ</td>
+                                            <td>ประธาน/กรรม</td>
+                                            <td>The car <b>which</b> is red.</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>That</b></td>
+                                            <td>ทุกอย่าง</td>
+                                            <td>แทน Who/Which</td>
+                                            <td>The house <b>that</b> Jack built.</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Where</b></td>
+                                            <td>สถานที่</td>
+                                            <td>ระบุตำแหน่ง</td>
+                                            <td>The city <b>where</b> I was born.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Commas vs No Commas -->
+                            <div class="grid md:grid-cols-2 gap-4 mb-6">
+                                <div class="bg-white p-4 rounded-xl border-l-4 border-l-red-400 shadow-sm">
+                                    <h5 class="font-bold text-slate-800 mb-2">1. Defining (ห้ามมีคอมม่า)</h5>
+                                    <p class="text-xs text-slate-500 mb-2">เป็นข้อมูลสำคัญ ขาดไม่ได้
+                                        ไม่งั้นไม่รู้ว่าใคร/อันไหน</p>
+                                    <p class="text-sm italic">"The students <b>who</b> study hard pass the exam."</p>
+                                    <p class="text-[10px] text-slate-400 mt-1">(หมายถึงเฉพาะนักเรียนที่ขยันเท่านั้น!)
+                                    </p>
+                                </div>
+                                <div class="bg-white p-4 rounded-xl border-l-4 border-l-blue-400 shadow-sm">
+                                    <h5 class="font-bold text-slate-800 mb-2">2. Non-defining (ต้องมีคอมม่า , ,)</h5>
+                                    <p class="text-xs text-slate-500 mb-2">เป็นข้อมูลเสริม (Extra)
+                                        เอาออกประโยคก็ยังรู้เรื่อง</p>
+                                    <p class="text-sm italic">"My father<b>, who</b> is 60<b>,</b> still works."</p>
+                                    <p class="text-[10px] text-slate-400 mt-1">(รู้ว่าพ่อเราคือคนไหน
+                                        ข้อมูลอายุคือแค่เรื่องเสริม)</p>
+                                </div>
+                            </div>
+
+                            <!-- Special Rules -->
+                            <div class="space-y-3">
+                                <div class="p-3 bg-yellow-50 rounded-lg border border-yellow-100">
+                                    <h6 class="font-bold text-yellow-800 text-sm mb-1">💡 การละคำเชื่อม (Omitting)</h6>
+                                    <p class="text-xs text-slate-600">ถ้า Relative Pronoun ทำหน้าที่เป็น **กรรม
+                                        (Object)**
+                                        เราตัดทิ้งได้เลย!</p>
+                                    <p class="text-sm mt-1">"The movie (<s>that</s>) I watched was great."</p>
+                                </div>
+
+                                <div class="p-3 bg-red-50 rounded-lg border border-red-100">
+                                    <h6 class="font-bold text-red-800 text-sm mb-1">🚫 Thai Logic Trap: ห้ามใส่ S ซ้ำ!
+                                    </h6>
+                                    <p class="text-xs text-slate-600">คนไทยมักเผลอใส่สรรพนามตัวเดิมกลับมาใน Relative
+                                        Clause
+                                    </p>
+                                    <ul class="text-xs mt-1 space-y-1">
+                                        <li>❌ The man who <b>he</b> called me.</li>
+                                        <li>✅ The man who called me.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Reported Speech (NEW) -->
+                        <div class="mt-6 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <h4 class="font-bold text-slate-700 mb-2">10.5 Reported Speech (เล่าต่อ)</h4>
+                            <p class="text-sm text-slate-600 mb-2">เมื่อเอาคำพูดคนอื่นมาเล่าต่อ ต้อง <b>"ถอย Tense ลง 1
+                                    ขั้น"</b> (อดีตกว่าเดิม)</p>
+                            <table class="w-full text-sm">
+                                <tr class="border-b border-slate-200">
+                                    <td class="py-2 font-bold text-red-600">Direct (พูดสด)</td>
+                                    <td class="font-bold text-green-600">Indirect (เล่าต่อ)</td>
+                                </tr>
+                                <tr class="border-b border-slate-100">
+                                    <td class="py-2">"I <b>am</b> happy."</td>
+                                    <td>He said he <b>was</b> happy. (Am -> Was)</td>
+                                </tr>
+                                <tr class="border-b border-slate-100">
+                                    <td class="py-2">"I <b>will</b> go."</td>
+                                    <td>He said he <b>would</b> go. (Will -> Would)</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2">"I <b>ate</b> already."</td>
+                                    <td>He said he <b>had eaten</b>. (V.2 -> Had V.3)</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 11. Speaking & Pronunciation (New) -->
+            <div class="accordion-item shadow-sm">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <div class="flex items-center">
+                        <div class="section-num bg-amber-100 text-amber-600">11</div>
+                        <span>Speaking Secrets (เคล็ดลับพูดเหมือนฝรั่ง)</span>
+                    </div>
+                    <span class="arrow text-slate-400">▼</span>
+                </div>
+                <div class="accordion-content">
+                    <div class="accordion-body space-y-6">
+
+                        <!-- Magic E (Silent E) -->
+                        <!-- Magic E (Silent E) -->
+                        <div class="bg-cyan-50 p-4 rounded-xl border border-cyan-200">
+                            <h4 class="font-bold text-cyan-800 mb-2">11.1 Magic E (เปลี่ยนสระเสียงสั้น -> ยาว)</h4>
+                            <p class="text-sm text-slate-600 mb-2">กฎ: ถ้ามี <b>e</b> อยู่ท้ายสุด
+                                ให้เปลี่ยนเสียงสระตัวหน้าให้ยาวขึ้น (แล้วไม่ออกเสียง e)</p>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-sm text-left">
+                                    <tr class="bg-cyan-100 text-cyan-900">
+                                        <th class="p-2 rounded-l-lg pl-3">No E (เสียงสั้น)</th>
+                                        <th class="p-2 text-center">➡️</th>
+                                        <th class="p-2 rounded-r-lg">Magic E! (เสียงยาว)</th>
+                                    </tr>
+                                    <tr class="bg-white border-b border-cyan-100">
+                                        <td class="p-3">
+                                            <span class="text-lg">🎩</span> <b>Hat</b> (แฮท)<br>
+                                            <span class="text-xs text-slate-500">สระแอ (เสียงสั้น)</span>
+                                        </td>
+                                        <td class="text-center text-slate-400">➡️</td>
+                                        <td class="p-3">
+                                            <span class="text-lg">😡</span> <b>Hate</b> (เฮท)<br>
+                                            <span class="text-xs text-cyan-700 font-bold">สระเอ (เสียงยาว)</span>
+                                        </td>
+                                    </tr>
+                                    <tr class="bg-white border-b border-cyan-100">
+                                        <td class="p-3">
+                                            <span class="text-lg">📦</span> <b>Kit</b> (คิท)<br>
+                                            <span class="text-xs text-slate-500">สระอิ (เสียงสั้น)</span>
+                                        </td>
+                                        <td class="text-center text-slate-400">➡️</td>
+                                        <td class="p-3">
+                                            <span class="text-lg">🪁</span> <b>Kite</b> (ไคท์)<br>
+                                            <span class="text-xs text-cyan-700 font-bold">สระไอ (เสียงยาว)</span>
+                                        </td>
+                                    </tr>
+                                    <tr class="bg-white">
+                                        <td class="p-3">
+                                            <span class="text-lg">🐰</span> <b>Hop</b> (ฮอพ)<br>
+                                            <span class="text-xs text-slate-500">สระเอาะ (เสียงสั้น)</span>
+                                        </td>
+                                        <td class="text-center text-slate-400">➡️</td>
+                                        <td class="p-3">
+                                            <span class="text-lg">🙏</span> <b>Hope</b> (โฮพ)<br>
+                                            <span class="text-xs text-cyan-700 font-bold">สระโอ (เสียงยาว)</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Digraphs -->
+                        <div class="bg-fuchsia-50 p-4 rounded-xl border border-fuchsia-200">
+                            <h4 class="font-bold text-fuchsia-800 mb-2">11.2 Digraphs (2 ตัว 1 เสียง)</h4>
+                            <ul class="text-sm space-y-2 list-disc pl-4">
+                                <li><b>PH = F</b> (Phone = โฟน, Elephant = เอเลเฟ่น)</li>
+                                <li><b>CH = ช</b> (Chair) <b>หรือ ค</b> (School = สคูล)</li>
+                                <li><b>TION = ชั่น</b> (Station = สเตชั่น, Action = แอคชั่น)</li>
+                            </ul>
+                        </div>
+
+                        <!-- Ending Sounds -->
+                        <div class="bg-amber-50 p-4 rounded-xl border border-amber-200">
+                            <h4 class="font-bold text-amber-800 mb-2">11.3 Ending Sounds (เสียงท้ายคำ) ⚠️ สำคัญมาก!</h4>
+                            <p class="text-sm text-slate-700 mb-2">คนไทยมักตัดเสียงท้ายทิ้ง ทำให้ฝรั่งฟังไม่ออก
+                                หรือเข้าใจผิด</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm bg-white p-3 rounded shadow-sm">
+                                <div>
+                                    <b class="text-red-600">❌ ผิด (คนไทยชอบพูด)</b>
+                                    <ul class="list-none space-y-1 mt-1 text-slate-500">
+                                        <li>"ไล้" (Like/Light/Life?)</li>
+                                        <li>"ไน้" (Nice/Night/Nine?)</li>
+                                        <li>"ซิก" (Six/Sick/Sit?)</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <b class="text-green-600">✅ ถูก (ต้องออกเสียงท้าย)</b>
+                                    <ul class="list-none space-y-1 mt-1">
+                                        <li>Like = ไล้<b>-คึ</b> (เบาๆ)</li>
+                                        <li>Nice = ไน<b>-สึ</b> (เสียงงู)</li>
+                                        <li>Six = ซิก<b>-สึ</b></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slang & Reductions (NEW) -->
+                        <!-- Slang & Reductions (NEW) -->
+                        <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-200">
+                            <h4 class="font-bold text-indigo-800 mb-2">🗣️ Casual Reductions (ศัพท์สแลงยอดฮิต)</h4>
+                            <p class="text-sm text-slate-600 mb-4">ใช้ในภาษาพูด/เพลง/หนัง เท่านั้น! ❌ ห้ามใช้เขียนทางการ
+                                (Formal Writing)</p>
+
+                            <!-- Group 1: Verb + To -->
+                            <div class="mb-4 bg-white rounded-lg shadow-sm p-3">
+                                <h5 class="font-bold text-indigo-700 mb-2 border-b pb-1">1. กลุ่มฮิตติดหู (Verb + To)
+                                </h5>
+                                <table class="w-full text-sm">
+                                    <tr class="border-b border-indigo-50">
+                                        <td class="py-2 w-1/4 font-bold text-indigo-600">Wanna</td>
+                                        <td class="w-1/4 text-slate-500">Want to</td>
+                                        <td>
+                                            <div class="text-green-600 font-bold">"อยากจะ..."</div>
+                                            <div class="text-xs italic text-slate-500">Ex: I <b>wanna</b> go home.</div>
+                                        </td>
+                                    </tr>
+                                    <tr class="border-b border-indigo-50">
+                                        <td class="py-2 font-bold text-indigo-600">Gotta</td>
+                                        <td class="text-slate-500">Got to / Have to</td>
+                                        <td>
+                                            <div class="text-green-600 font-bold">"ต้อง..."</div>
+                                            <div class="text-xs italic text-slate-500">Ex: I <b>gotta</b> go now.</div>
+                                        </td>
+                                    </tr>
+                                    <tr class="border-b border-indigo-50">
+                                        <td class="py-2 font-bold text-indigo-600">Tryna</td>
+                                        <td class="text-slate-500">Trying to</td>
+                                        <td>
+                                            <div class="text-green-600 font-bold">"พยายามที่จะ..."</div>
+                                            <div class="text-xs italic text-slate-500">Ex: I'm <b>tryna</b> help you.
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2 font-bold text-indigo-600">Imma</td>
+                                        <td class="text-slate-500">I am going to</td>
+                                        <td>
+                                            <div class="text-green-600 font-bold">"ฉันกำลังจะ..."</div>
+                                            <div class="text-xs italic text-slate-500">Ex: <b>Imma</b> call you later.
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <!-- Group 2: Of Family -->
+                            <div class="mb-4 bg-white rounded-lg shadow-sm p-3">
+                                <h5 class="font-bold text-indigo-700 mb-2 border-b pb-1">2. ตระกูล "Of" (เสียง อัฟ/อ้า)
+                                </h5>
+                                <table class="w-full text-sm">
+                                    <tr class="border-b border-indigo-50">
+                                        <td class="py-2 w-1/4 font-bold text-indigo-600">Kinda / Sorta</td>
+                                        <td class="w-1/4 text-slate-500">Kind of / Sort of</td>
+                                        <td>
+                                            <div class="text-green-600 font-bold">"ค่อนข้างจะ / ประมาณว่า"</div>
+                                            <div class="text-xs italic text-slate-500">Ex: It's <b>kinda</b> weird.
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2 font-bold text-indigo-600">Outta</td>
+                                        <td class="text-slate-500">Out of</td>
+                                        <td>
+                                            <div class="text-green-600 font-bold">"ออกจาก / หมด"</div>
+                                            <div class="text-xs italic text-slate-500">Ex: Get <b>outta</b> here!</div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <!-- Group 3: Others -->
+                            <div class="bg-white rounded-lg shadow-sm p-3">
+                                <h5 class="font-bold text-indigo-700 mb-2 border-b pb-1">3. คำน่าใช้อื่นๆ (Other Cool
+                                    Slang)
+                                </h5>
+                                <table class="w-full text-sm">
+                                    <tr class="border-b border-indigo-50">
+                                        <td class="py-2 w-1/4 font-bold text-indigo-600">Lemme</td>
+                                        <td class="w-1/4 text-slate-500">Let me</td>
+                                        <td>
+                                            <div class="text-green-600 font-bold">"ขอฉัน.. (ทำอะไรสักอย่าง)"</div>
+                                            <div class="text-xs italic text-slate-500">Ex: <b>Lemme</b> see. (ขอดูหน่อย)
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="border-b border-indigo-50">
+                                        <td class="py-2 font-bold text-indigo-600">Gimme</td>
+                                        <td class="text-slate-500">Give me</td>
+                                        <td>
+                                            <div class="text-green-600 font-bold">"เอา...มาให้ฉัน"</div>
+                                            <div class="text-xs italic text-slate-500">Ex: <b>Gimme</b> a break.
+                                                (พักแป๊ป)
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="border-b border-indigo-50">
+                                        <td class="py-2 font-bold text-indigo-600">Givem</td>
+                                        <td class="text-slate-500">Give them</td>
+                                        <td>
+                                            <div class="text-green-600 font-bold">"ให้พวกเขา"</div>
+                                            <div class="text-xs italic text-slate-500">Ex: <b>Givem</b> to me.</div>
+                                        </td>
+                                    </tr>
+                                    <tr class="border-b border-indigo-50">
+                                        <td class="py-2 font-bold text-indigo-600">Whatcha</td>
+                                        <td class="text-slate-500">What are you</td>
+                                        <td>
+                                            <div class="text-green-600 font-bold">"คุณกำลัง..."</div>
+                                            <div class="text-xs italic text-slate-500">Ex: <b>Whatcha</b> doin?
+                                                (ทำไรอยู่)
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2 font-bold text-indigo-600">Dunno</td>
+                                        <td class="text-slate-500">Don't know</td>
+                                        <td>
+                                            <div class="text-green-600 font-bold">"ไม่รู้สิ"</div>
+                                            <div class="text-xs italic text-slate-500">Ex: I <b>dunno</b>.</div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Linking Sounds -->
+                        <div>
+                            <h4 class="font-bold text-slate-700 mb-2">11.4 Linking Sounds (การเชื่อมเสียง)</h4>
+                            <p class="text-sm text-slate-600 mb-2">กุญแจลับที่ทำให้ฝรั่งพูดเร็วแล้วเราฟังไม่ทัน คือเขา
+                                "เอาเสียงท้ายคำหน้า ไปควบกับคำหลัง"</p>
+                            <div class="overflow-x-auto">
+                                <table class="grammar-table text-sm">
+                                    <tr>
+                                        <th>คำศัพท์</th>
+                                        <th>คนไทยอ่าน</th>
+                                        <th>ฝรั่งอ่าน (เชื่อมเสียง)</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Like it</td>
+                                        <td>ไล้ - อิท</td>
+                                        <td><b class="text-blue-600">ไล-ขิท</b> (Like-it)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Turn off</td>
+                                        <td>เทิร์น - ออฟ</td>
+                                        <td><b class="text-blue-600">เทอ-นอฟ</b> (Tur-noff)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Wake up</td>
+                                        <td>เวค - อัพ</td>
+                                        <td><b class="text-blue-600">เว-คัพ</b> (Wa-kup)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Hold on</td>
+                                        <td>โฮล - ออน</td>
+                                        <td><b class="text-blue-600">โฮล-ดอน</b> (Hol-don)</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Assimilation (Sound Merging) -->
+                    <div class="bg-blue-50 p-4 rounded-xl border border-blue-200">
+                        <h4 class="font-bold text-blue-800 mb-2">🔗 Sound Merging (การรวบเสียงขั้นเทพ)</h4>
+                        <table class="w-full text-sm">
+                            <tr class="border-b border-blue-100">
+                                <td class="py-2"><b>T + Y = CH</b></td>
+                                <td>Want to -> <b>Wanna</b></td>
+                                <td><i>"I wanna go."</i></td>
+                            </tr>
+                            <tr class="border-b border-blue-100">
+                                <td class="py-2"><b>D + Y = J</b></td>
+                                <td>Did you -> <b>Did-ju</b></td>
+                                <td><i>"Did-ju eat?"</i></td>
+                            </tr>
+                            <tr>
+                                <td class="py-2"><b>Going to</b></td>
+                                <td>-> <b>Gonna</b></td>
+                                <td><i>"I'm gonna sleep."</i></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <!-- Stress -->
+                    <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-200">
+                        <h4 class="font-bold text-indigo-800 mb-2">11.5 Word Stress (การเน้นเสียง)</h4>
+                        <p class="text-sm text-slate-600 mb-2">ภาษาอังกฤษถ้าเน้นผิดพยางค์ ความหมายเปลี่ยน
+                            หรือฟังไม่รู้เรื่องเลย</p>
+                        <div class="grid grid-cols-2 gap-4 text-sm bg-white p-3 rounded">
+                            <div>
+                                <b>Re-cord</b> (นาม) = บันทึก
+                                <br><span class="text-xs text-slate-400">เน้นพยางค์หน้า (RE-cord)</span>
+                            </div>
+                            <div>
+                                <b>Re-cord</b> (กริยา) = อัดเสียง
+                                <br><span class="text-xs text-slate-400">เน้นพยางค์หลัง (re-CORD)</span>
+                            </div>
+                            <div class="col-span-2 border-t pt-2 mt-2">
+                                <b>Com-for-ta-ble</b> (สะดวกสบาย)
+                                <br>❌ คอม-ฟอ-เท-เบิ้ล
+                                <br>✅ <b>คัมฟ์</b>-ถะ-เบิ้ล (เน้นพยางค์แรก, ตรงกลางรวบเสียง)
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TH Sound -->
+                    <div class="flex items-center gap-4 bg-teal-50 p-4 rounded-xl border border-teal-200">
+                        <div class="text-4xl">👅</div>
+                        <div class="text-sm">
+                            <b class="text-teal-800 block mb-1">11.6 เทคนิคเสียง TH</b>
+                            <p>ไม่มีในภาษาไทย! ต้อง <b>"แลบลิ้นออกมานิดนึง แล้วพ่นลมผ่านลิ้น"</b></p>
+                            <p class="mt-1 text-slate-600">Ex. Thank you, Think, The, With</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Quiz Section (30 Questions) -->
+    <div id="quiz-section" class="max-w-3xl mx-auto p-6 hidden">
+        <div id="quiz-container" class="bg-white rounded-2xl shadow-xl p-6 md:p-8 border border-slate-100">
+            <div class="flex justify-between items-center mb-6">
+                <span id="progress-text"
+                    class="text-sm font-bold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">ข้อที่ 1</span>
+                <span id="score-badge" class="text-sm font-bold text-slate-600">คะแนน: 0</span>
+            </div>
+            <h2 id="question-text" class="text-xl font-bold text-slate-800 mb-6 leading-relaxed">Loading...</h2>
+            <div id="options" class="space-y-3 mb-6"></div>
+            <div id="feedback" class="hidden p-4 rounded-xl border-l-4 bg-gray-50 mb-4">
+                <p id="feedback-title" class="font-bold text-lg mb-1"></p>
+                <p id="feedback-desc" class="text-sm text-slate-700 mb-2"></p>
+                <div class="text-xs bg-white p-2 rounded border border-gray-200 inline-block text-slate-600">💡 <span
+                        id="tip-content"></span></div>
+            </div>
+            <button id="next-btn"
+                class="hidden mt-4 w-full py-4 rounded-xl font-bold text-white bg-slate-800 hover:bg-slate-700 shadow-lg transition">Next
+                Question →</button>
+        </div>
+        <div id="result-screen" class="hidden text-center bg-white p-12 rounded-2xl shadow-2xl border border-slate-100">
+            <div class="inline-block p-4 rounded-full bg-indigo-50 mb-6 text-6xl">🏆</div>
+            <h2 class="text-3xl font-black text-slate-800 mb-2">Quiz Completed!</h2>
+            <p class="text-slate-500 mb-8">คุณทำแบบทดสอบครบแล้ว</p>
+            <div class="text-7xl font-black text-indigo-600 mb-2" id="final-score">0</div>
+            <p class="text-slate-400 font-medium mb-8">OUT OF 30</p>
+            <button onclick="location.reload()"
+                class="bg-indigo-600 text-white px-10 py-4 rounded-full font-bold hover:bg-indigo-700 transition shadow-xl">Practice
+                Again</button>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tabId) {
+            const tips = document.getElementById('tips-section');
+            const quiz = document.getElementById('quiz-section');
+            const tBtn = document.getElementById('tab-tips');
+            const qBtn = document.getElementById('tab-quiz');
+            if (tabId === 'tips') {
+                tips.classList.remove('hidden'); quiz.classList.add('hidden');
+                tBtn.classList.add('active'); qBtn.classList.remove('active');
+                qBtn.classList.add('text-slate-500'); tBtn.classList.remove('text-slate-500');
+            } else {
+                tips.classList.add('hidden'); quiz.classList.remove('hidden');
+                qBtn.classList.add('active'); tBtn.classList.remove('active');
+                tBtn.classList.add('text-slate-500'); qBtn.classList.remove('text-slate-500');
+            }
+        }
+
+        function toggleAccordion(header) {
+            const content = header.nextElementSibling;
+            content.classList.toggle('open');
+            header.querySelector('.arrow').style.transform = content.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
+        }
+
+        const quizData = [
+            { q: "Translate: 'ไม่มีเงินเลย'", o: ["No money", "Not money", "None money", "Money no"], a: 0, t: "No + Noun (No money)", d: "I have no money." },
+            { q: "How much money? Answer: _______", o: ["No", "None", "Not", "Any"], a: 1, t: "None ใช้ตอบโดดๆ ไม่มีคำนามตามหลัง", d: "None." },
+            { q: "I do _______ like it.", o: ["no", "none", "not", "never"], a: 2, t: "Not เป็น Adverb วางหลัง V.ช่วย", d: "I do not like it." },
+            { q: "Which word ends with a suffix for Noun?", o: ["Quickly", "Information", "Famous", "Eat"], a: 1, t: "-tion เป็นหางของคำนาม", d: "Information (Noun)" },
+            { q: "She _______ to school yesterday.", o: ["go", "goes", "went", "gone"], a: 2, t: "Yesterday = Past Simple (V.2)", d: "She went." },
+            { q: "I _______ English right now.", o: ["study", "am studying", "studied", "have studied"], a: 1, t: "Right now = Present Continuous", d: "I am studying." },
+            { q: "I _______ seen him before.", o: ["have", "has", "did", "was"], a: 0, t: "Seen (V.3) + Before = Perfect (Have)", d: "I have seen." },
+            { q: "Translate: 'ฉันเบื่อ' (Feeling)", o: ["I am boring", "I am bored", "I bored", "Me boring"], a: 1, t: "ความรู้สึกคนใช้ -ed", d: "I am bored." },
+            { q: "I am used to _______ up early.", o: ["get", "getting", "got", "gotten"], a: 1, t: "Be used to (ชิน) ตามด้วย V.ing", d: "Getting up." },
+            { q: "This is the man _______ helped me.", o: ["which", "who", "where", "whose"], a: 1, t: "Man เป็นคน ใช้ Who", d: "The man who..." },
+            { q: "Translate: 'ลองทำใหม่อีกครั้ง'", o: ["Try new", "Try again", "Try one", "Try more"], a: 1, t: "'ลองทำซ้ำ' ใช้ Try again", d: "Try again." },
+            { q: "_______ you like pizza?", o: ["Are", "Do", "Have", "Is"], a: 1, t: "Like เป็น Action Verb ใช้ Do", d: "Do you like...?" },
+            { q: "He runs very _______.", o: ["fast", "fastly", "fastness", "faster"], a: 0, t: "Fast เป็นได้ทั้ง Adj และ Adv", d: "He runs fast." },
+            { q: "Translate: 'ฝนตก'", o: ["Rain fall", "It rains", "Raining", "Rain have"], a: 1, t: "เติมประธาน It", d: "It rains." },
+            { q: "I _______ swim when I was 5.", o: ["can", "could", "may", "must"], a: 1, t: "อดีต ใช้ Could", d: "I could swim..." },
+            { q: "Translate: 'ลืมเอากุญแจมา'", o: ["Forgot key", "I forgot to bring the key", "Forget bring key", "Forgot bring"], a: 1, t: "Forgot to + V", d: "I forgot to bring the key." },
+            { q: "I want _______ to Japan.", o: ["go", "going", "to go", "went"], a: 2, t: "Want ตามด้วย to V.1", d: "Want to go." },
+            { q: "This is the _______ movie.", o: ["good", "better", "best", "goodest"], a: 2, t: "The + ขั้นสุด (Best)", d: "The best movie." },
+            { q: "_______ she crying?", o: ["Do", "Does", "Is", "Are"], a: 2, t: "มี -ing ต้องใช้ V.to be (Is)", d: "Is she crying?" },
+            { q: "I have _______ friends.", o: ["much", "a little", "many", "little"], a: 2, t: "Friends นับได้ ใช้ Many", d: "Many friends." },
+            { q: "Translate: 'เปิดไฟให้หน่อย'", o: ["Open the light", "Turn on the light", "Open fire", "Start the light"], a: 1, t: "เครื่องใช้ไฟฟ้าใช้ Turn on", d: "Turn on the light." },
+            { q: "If it rains, I _______ stay home.", o: ["would", "will", "had", "am"], a: 1, t: "If Type 1: If + V1, Will", d: "I will stay." },
+            { q: "Translate: 'ในส่วนของราคานั้น...'", o: ["In the part of price", "The price...", "About price part", "For in price"], a: 1, t: "จับ 'The price' มาเป็นประธาน", d: "The price is..." },
+            { q: "Translate: 'ฉันไม่รู้เลย' (เลย = at all)", o: ["I don't know so", "I don't know at all", "I don't know really", "I no know"], a: 1, t: "ปฏิเสธสิ้นเชิงใช้ at all", d: "I don't know at all." },
+            { q: "Where does 'Always' go? 'I ___ eat.'", o: ["always eat", "eat always", "always to eat", "eat to always"], a: 0, t: "หน้า V.แท้", d: "I always eat." },
+            { q: "Translate: 'เช็คบิลด้วย'", o: ["Check bill", "Check please", "Bill check", "Money please"], a: 1, t: "ฝรั่งใช้ Check please", d: "Check, please." },
+            { q: "Translate: 'มีคนอยู่ในห้อง'", o: ["Have people", "There is someone", "Has people", "People have"], a: 1, t: "มีอยู่ ใช้ There is", d: "There is someone." },
+            { q: "The book _______ by him.", o: ["wrote", "was written", "writing", "writes"], a: 1, t: "Passive: Be + V.3", d: "Was written." },
+            { q: "I was born _______ 1999.", o: ["on", "at", "in", "of"], a: 2, t: "ปี ใช้ In", d: "In 1999." },
+            { q: "Translate: 'ฉันเล่นมือถือ'", o: ["I play mobile", "I use my phone", "I play phone", "I do mobile"], a: 1, t: "โทรศัพท์ใช้ Use", d: "I use my phone." }
+        ];
+
+        let currentIdx = 0, score = 0, canAnswer = true;
+
+        function loadQuestion() {
+            canAnswer = true;
+            const data = quizData[currentIdx];
+            document.getElementById('progress-text').innerText = `ข้อที่ ${currentIdx + 1} จาก ${quizData.length}`;
+            document.getElementById('question-text').innerText = data.q;
+            document.getElementById('feedback').classList.add('hidden');
+            const optionsDiv = document.getElementById('options');
+            optionsDiv.innerHTML = '';
+            data.o.forEach((opt, i) => {
+                const btn = document.createElement('button');
+                btn.className = "option-btn w-full text-left p-5 rounded-2xl font-semibold text-slate-600 bg-white mb-2 hover:border-indigo-400 hover:bg-indigo-50 transition";
+                btn.innerText = opt;
+                btn.onclick = () => checkAnswer(i, btn);
+                optionsDiv.appendChild(btn);
+            });
+            document.getElementById('next-btn').classList.add('hidden');
+        }
+
+        function checkAnswer(idx, btn) {
+            if (!canAnswer) return;
+            canAnswer = false;
+            const data = quizData[currentIdx];
+            const isCorrect = idx === data.a;
+            if (isCorrect) {
+                score++;
+                btn.classList.add('correct', 'border-green-500');
+                showFeedback(true, "Correct! 🎉", data.d, data.t);
+            } else {
+                btn.classList.add('wrong', 'border-red-500');
+                document.querySelectorAll('.option-btn')[data.a].classList.add('correct', 'border-green-500');
+                showFeedback(false, "Oops! 😅", data.d, data.t);
+            }
+            document.getElementById('score-badge').innerText = `คะแนน: ${score}`;
+            document.getElementById('next-btn').classList.remove('hidden');
+        }
+
+        function showFeedback(isCorrect, title, desc, tip) {
+            const fb = document.getElementById('feedback');
+            fb.classList.remove('hidden');
+            fb.className = isCorrect ? "p-4 rounded-xl border-l-4 border-green-500 bg-green-50 mb-4" : "p-4 rounded-xl border-l-4 border-red-500 bg-red-50 mb-4";
+            document.getElementById('feedback-title').innerText = title;
+            document.getElementById('feedback-title').className = isCorrect ? "font-bold text-lg text-green-800" : "font-bold text-lg text-red-800";
+            document.getElementById('feedback-desc').innerText = desc;
+            document.getElementById('tip-content').innerText = tip;
+        }
+
+        document.getElementById('next-btn').onclick = () => {
+            currentIdx++;
+            if (currentIdx < quizData.length) loadQuestion();
+            else {
+                document.getElementById('quiz-container').classList.add('hidden');
+                document.getElementById('result-screen').classList.remove('hidden');
+                document.getElementById('final-score').innerText = `${score} / ${quizData.length}`;
+            }
+        };
+
+        loadQuestion();
+        </script>
+        </div>
+    </div>
+</body>
+
+</html>

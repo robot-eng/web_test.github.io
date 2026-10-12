@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentence Master: เกมเรียงประโยคภาษาอังกฤษ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Sarabun', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .word-chip {
+            transition: all 0.2s;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .word-chip:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .word-chip:active {
+            transform: translateY(0);
+        }
+
+        /* Dragging Styles */
+        .word-chip.dragging {
+            opacity: 0.5;
+            transform: scale(1.05);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .tab-btn.active {
+            border-bottom: 3px solid #3b82f6;
+            color: #1d4ed8;
+            font-weight: 700;
+        }
+
+        .tab-btn {
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #111827;
+            color: #f3f4f6;
+        }
+        body.dark-mode .bg-white {
+            background-color: #1f2937;
+            border-color: #374151;
+        }
+        body.dark-mode .text-gray-800 { color: #f3f4f6; }
+        body.dark-mode .text-gray-600 { color: #d1d5db; }
+        body.dark-mode .text-gray-500 { color: #9ca3af; }
+        body.dark-mode .bg-gray-50 { background-color: #111827; }
+        body.dark-mode .border-gray-300 { border-color: #4b5563; }
+        body.dark-mode .bg-blue-50 { background-color: #1e3a8a; }
+        body.dark-mode .bg-green-50 { background-color: #064e3b; }
+        body.dark-mode .bg-yellow-50 { background-color: #713f12; }
+        
+        body.dark-mode .word-chip.bg-white {
+            background-color: #374151;
+            color: #e5e7eb;
+            border-color: #4b5563;
+        }
+
+        /* Pastel Mode Styles */
+        body.pastel-mode {
+            background-color: #fdf2f8; /* Pink 50 */
+            color: #831843; /* Pink 900 */
+        }
+        body.pastel-mode nav.bg-white {
+            background-color: #fff1f2; /* Rose 50 */
+            border-bottom: 1px solid #fecdd3;
+        }
+        body.pastel-mode .bg-white {
+            background-color: #ffffff;
+            border-color: #fbcfe8; /* Pink 200 */
+        }
+        body.pastel-mode .text-gray-800 { color: #831843; }
+        body.pastel-mode .text-gray-600 { color: #be185d; }
+        body.pastel-mode .text-gray-500 { color: #db2777; }
+        
+        body.pastel-mode .text-blue-900 { color: #701a75; /* Fuchsia 900 */ }
+        body.pastel-mode .bg-blue-50 { background-color: #fdf4ff; /* Fuchsia 50 */ }
+        body.pastel-mode .text-blue-600 { color: #c026d3; /* Fuchsia 600 */ }
+        body.pastel-mode .bg-blue-600 { background-color: #d946ef; /* Fuchsia 500 */ }
+        body.pastel-mode .bg-blue-600:hover { background-color: #c026d3; }
+        
+        body.pastel-mode .tab-btn.active {
+            border-bottom-color: #d946ef;
+            color: #a21caf;
+        }
+        
+        body.pastel-mode .word-chip {
+             background-color: #fae8ff; /* Fuchsia 100 */
+             border-color: #e879f9;
+             color: #86198f;
+        }
+        body.pastel-mode .word-chip.bg-blue-100 {
+            background-color: #f5d0fe;
+            color: #701a75;
+            border-color: #e879f9;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen text-gray-800">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-md sticky top-0 z-50 transition-colors duration-300">
+        <div class="max-w-4xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-2">
+                    <div class="flex items-center">
+                        <button class="back-btn mr-2 hover:bg-gray-100 dark:hover:bg-gray-700 p-2 rounded-full transition" onclick="history.back()" title="Go Back">🔙🏠</button>
+                    </div>
+                    <span class="font-bold text-xl text-blue-900 dark:text-blue-400">Sentence Master</span>
+                    
+                    <!-- Theme Selector -->
+                    <div class="user-actions ml-4 flex gap-1">
+                        <div class="theme-selector flex bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
+                            <button class="theme-opt p-1 hover:bg-white dark:hover:bg-gray-600 rounded shadow-sm transition" onclick="APP.setTheme('light')" id="theme-light" title="Light Mode">☀️</button>
+                            <button class="theme-opt p-1 hover:bg-white dark:hover:bg-gray-600 rounded shadow-sm transition" onclick="APP.setTheme('dark')" id="theme-dark" title="Dark Mode">🌙</button>
+                            <button class="theme-opt p-1 hover:bg-white dark:hover:bg-gray-600 rounded shadow-sm transition" onclick="APP.setTheme('pastel')" id="theme-pastel" title="Pastel Mode">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="12" cy="12" r="9" fill="url(#g2)" />
+                                    <defs>
+                                        <linearGradient id="g2" x1="0" x2="1">
+                                            <stop offset="0" stop-color="#FFD6F0" />
+                                            <stop offset="1" stop-color="#D6C6FF" />
+                                        </linearGradient>
+                                    </defs>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="hidden md:flex space-x-8">
+                    <button onclick="switchTab('learn')" id="tab-learn" class="tab-btn py-4 px-1">เรียนรู้หลักการ</button>
+                    <button onclick="switchTab('game')" id="tab-game" class="tab-btn py-4 px-1 active">แบบฝึกหัด & เกม</button>
+                    <button onclick="switchTab('insights')" id="tab-insights" class="tab-btn py-4 px-1">เกร็ดความรู้</button>
+                </div>
+            </div>
+            <!-- Mobile Menu -->
+            <div class="flex md:hidden justify-around pb-2 text-sm">
+                <button onclick="switchTab('learn')" class="px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700">เรียนรู้</button>
+                <button onclick="switchTab('game')" class="px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 font-bold text-blue-600 dark:text-blue-400">เกม</button>
+                <button onclick="switchTab('insights')" class="px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700">เกร็ดความรู้</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-4xl mx-auto p-4 pb-20">
+
+        <!-- Section: Game -->
+        <div id="content-game" class="fade-in block">
+            <div class="bg-white rounded-2xl shadow-lg p-6 mb-6 border border-gray-100 transition-colors duration-300">
+                <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800">ฝึกเรียงประโยค</h2>
+                        <p class="text-gray-500 text-sm">แตะที่คำศัพท์เพื่อเติม (สามารถ <span class="text-blue-600 font-bold dark:text-blue-400">ลากแล้ววาง</span> เพื่อสลับตำแหน่งคำได้)</p>
+                    </div>
+                    <div class="flex gap-2 w-full md:w-auto">
+                        <select id="level-select" onchange="changeLevel()"
+                            class="w-full md:w-auto bg-blue-50 dark:bg-gray-700 border border-blue-200 dark:border-gray-600 text-blue-800 dark:text-blue-300 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500 cursor-pointer font-semibold">
+                            <option value="beginner">ระดับเริ่มต้น (Beginner)</option>
+                            <option value="intermediate">ระดับกลาง (Intermediate)</option>
+                            <option value="advanced">ระดับสูง (Advanced)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 mb-6">
+                    <div id="progress-bar" class="bg-blue-600 h-2.5 rounded-full transition-all duration-300"
+                        style="width: 0%"></div>
+                </div>
+
+                <!-- Question Area -->
+                <div class="mb-8 min-h-[120px]">
+                    <div class="flex justify-between items-start mb-2">
+                        <span
+                            class="text-xs font-semibold text-blue-600 bg-blue-50 dark:bg-blue-900 dark:text-blue-200 px-2 py-1 rounded uppercase tracking-wider">โจทย์ข้อที่
+                            <span id="current-q-num">1</span></span>
+                        <span id="hint-btn" onclick="toggleTranslation()"
+                            class="text-xs text-gray-400 hover:text-blue-500 cursor-pointer transition-colors"><i
+                                class="far fa-lightbulb mr-1"></i>ดูเฉลย (คำแปล)</span>
+                    </div>
+
+                    <!-- Drop Zone (User Answer) -->
+                    <div id="answer-zone"
+                        class="min-h-[80px] border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-4 flex flex-wrap gap-2 items-center bg-gray-50 dark:bg-gray-800 transition-colors">
+                        <!-- Placeholder injected by JS -->
+                    </div>
+
+                    <!-- Feedback Message -->
+                    <div id="feedback-area" class="mt-2 hidden">
+                        <!-- Content injected by JS -->
+                    </div>
+                </div>
+
+                <!-- Word Pool -->
+                <div id="word-pool"
+                    class="flex flex-wrap gap-3 justify-center mb-8 p-4 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700">
+                    <!-- Words injected by JS -->
+                </div>
+
+                <!-- Controls -->
+                <div class="flex justify-between items-center border-t dark:border-gray-700 pt-6">
+                    <button onclick="resetCurrentQuestion()"
+                        class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                        <i class="fas fa-undo mr-2"></i>รีเซ็ต
+                    </button>
+                    <div class="flex gap-3">
+                        <button id="check-btn" onclick="checkAnswer()"
+                            class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-2.5 rounded-lg shadow-lg shadow-blue-200 dark:shadow-none transition font-semibold transform hover:scale-105 active:scale-95">
+                            ตรวจสอบ
+                        </button>
+                        <button id="next-btn" onclick="nextQuestion()"
+                            class="hidden bg-green-500 hover:bg-green-600 text-white px-6 py-2.5 rounded-lg shadow-lg transition font-semibold flex items-center">
+                            ข้อถัดไป <i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="translation-card"
+                class="hidden bg-yellow-50 dark:bg-yellow-900 border border-yellow-200 dark:border-yellow-700 rounded-xl p-4 text-center text-yellow-800 dark:text-yellow-200 text-sm animate-pulse">
+                <!-- Translation injected by JS -->
+            </div>
+        </div>
+
+        <!-- Section: Learn -->
+        <div id="content-learn" class="fade-in hidden">
+            <div class="bg-white rounded-2xl shadow-sm p-8 mb-6 border border-gray-100 transition-colors duration-300">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b dark:border-gray-700 pb-4"><i
+                        class="fas fa-book-reader text-blue-500 mr-2"></i>หลักการเรียงประโยค</h2>
+
+                <p class="text-gray-600 mb-6 leading-relaxed">
+                    การเรียงประโยคที่ถูกต้องคือรากฐานของการสื่อสารที่ชัดเจนในภาษาอังกฤษ
+                    เมื่อคุณเข้าใจหลักการจัดเรียงคำและวลีในประโยค คุณจะสามารถสื่อสารความคิดได้อย่างมีประสิทธิภาพ
+                    ทั้งในการพูดและการเขียน
+                </p>
+
+                <div class="space-y-8">
+                    <!-- Rule 1: The 5 Basic Structures (Expanded) -->
+                    <div>
+                        <h3 class="text-lg font-bold text-blue-900 dark:text-blue-300 mb-4 border-l-4 border-blue-500 pl-3">1. โครงสร้างประโยคพื้นฐาน 5 รูปแบบ</h3>
+                        <div class="space-y-4">
+                            <!-- S + V -->
+                            <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
+                                <div class="flex items-center mb-2">
+                                    <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2 py-1 rounded mr-2">Structure 1</span>
+                                    <span class="font-bold text-gray-800 dark:text-gray-200">S + V</span>
+                                </div>
+                                <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">ประธาน + กริยา (อกรรมกริยา ไม่ต้องมีกรรม)</p>
+                                <div class="text-sm bg-white dark:bg-gray-900 p-2 rounded border-l-2 border-green-500">
+                                    <span class="text-gray-500">Ex.</span> <span class="font-semibold text-gray-800 dark:text-gray-200">It is raining.</span> <span class="text-gray-400 text-xs">(ฝนกำลังตก)</span>
+                                </div>
+                            </div>
+
+                            <!-- S + V + O -->
+                            <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
+                                <div class="flex items-center mb-2">
+                                    <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2 py-1 rounded mr-2">Structure 2</span>
+                                    <span class="font-bold text-gray-800 dark:text-gray-200">S + V + O</span>
+                                </div>
+                                <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">ประธาน + กริยา + กรรม (สกรรมกริยา ต้องมีกรรม)</p>
+                                <div class="text-sm bg-white dark:bg-gray-900 p-2 rounded border-l-2 border-green-500">
+                                    <span class="text-gray-500">Ex.</span> <span class="font-semibold text-gray-800 dark:text-gray-200">I like cats.</span> <span class="text-gray-400 text-xs">(ฉันชอบแมว)</span>
+                                </div>
+                            </div>
+
+                            <!-- S + V + O + O -->
+                            <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
+                                <div class="flex items-center mb-2">
+                                    <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2 py-1 rounded mr-2">Structure 3</span>
+                                    <span class="font-bold text-gray-800 dark:text-gray-200">S + V + O₁ + O₂</span>
+                                </div>
+                                <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">ประธาน + กริยา + กรรมรอง (คน) + กรรมตรง (ของ)</p>
+                                <div class="text-sm bg-white dark:bg-gray-900 p-2 rounded border-l-2 border-green-500">
+                                    <span class="text-gray-500">Ex.</span> <span class="font-semibold text-gray-800 dark:text-gray-200">She gave me a gift.</span> <span class="text-gray-400 text-xs">(เธอให้ของขวัญแก่ฉัน)</span>
+                                </div>
+                            </div>
+
+                            <!-- S + V + C -->
+                            <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
+                                <div class="flex items-center mb-2">
+                                    <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2 py-1 rounded mr-2">Structure 4</span>
+                                    <span class="font-bold text-gray-800 dark:text-gray-200">S + V + C</span>
+                                </div>
+                                <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">ประธาน + กริยาเชื่อม (Linking Verb) + ส่วนขยาย</p>
+                                <ul class="list-disc list-inside text-xs text-gray-500 mb-2 pl-2">
+                                    <li><b>Adjective:</b> He looks tired. (เขาดูเหนื่อย)</li>
+                                    <li><b>Noun:</b> She became a teacher. (เธอกลายเป็นครู)</li>
+                                    <li><b>Amount/Time:</b> I walked for 2 miles. (ฉันเดินไป 2 ไมล์)</li>
+                                </ul>
+                            </div>
+
+                            <!-- S + V + O + C -->
+                            <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
+                                <div class="flex items-center mb-2">
+                                    <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2 py-1 rounded mr-2">Structure 5</span>
+                                    <span class="font-bold text-gray-800 dark:text-gray-200">S + V + O + C</span>
+                                </div>
+                                <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">ประธาน + กริยา + กรรม + ส่วนขยายกรรม</p>
+                                <div class="text-sm bg-white dark:bg-gray-900 p-2 rounded border-l-2 border-green-500">
+                                    <span class="text-gray-500">Ex.</span> <span class="font-semibold text-gray-800 dark:text-gray-200">She considers herself an artist.</span> <span class="text-gray-400 text-xs">(เธอคิดว่าตัวเองเป็นศิลปิน)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rule 2: Advanced Patterns (New) -->
+                    <div>
+                        <h3 class="text-lg font-bold text-purple-900 dark:text-purple-300 mb-4 border-l-4 border-purple-500 pl-3">2. โครงสร้างประโยคและสำนวนที่น่าสนใจ</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div class="p-3 bg-purple-50 dark:bg-purple-900/20 rounded border border-purple-100 dark:border-purple-800">
+                                <b class="text-purple-800 dark:text-purple-300 block mb-1">Used to + V-infinitive</b>
+                                <p class="text-xs text-gray-600 dark:text-gray-400">เคยทำในอดีต (ตอนนี้ไม่ทำแล้ว)</p>
+                                <p class="text-xs italic mt-1 text-gray-500">"I <b>used to dream</b> of studying abroad."</p>
+                            </div>
+                            <div class="p-3 bg-purple-50 dark:bg-purple-900/20 rounded border border-purple-100 dark:border-purple-800">
+                                <b class="text-purple-800 dark:text-purple-300 block mb-1">Be used to + V-ing/noun</b>
+                                <p class="text-xs text-gray-600 dark:text-gray-400">ความคุ้นเคย / ชิน</p>
+                                <p class="text-xs italic mt-1 text-gray-500">"I'm <b>getting used to living</b> here."</p>
+                            </div>
+                            <div class="p-3 bg-purple-50 dark:bg-purple-900/20 rounded border border-purple-100 dark:border-purple-800">
+                                <b class="text-purple-800 dark:text-purple-300 block mb-1">Too + adj + to do</b>
+                                <p class="text-xs text-gray-600 dark:text-gray-400">มากเกินไป... จนทำไม่ได้</p>
+                                <p class="text-xs italic mt-1 text-gray-500">"It is <b>too complicated to remember</b>."</p>
+                            </div>
+                            <div class="p-3 bg-purple-50 dark:bg-purple-900/20 rounded border border-purple-100 dark:border-purple-800">
+                                <b class="text-purple-800 dark:text-purple-300 block mb-1">Prevent + someone + from + V-ing</b>
+                                <p class="text-xs text-gray-600 dark:text-gray-400">ป้องกันใคร... จากการทำอะไร</p>
+                                <p class="text-xs italic mt-1 text-gray-500">"Policies to <b>prevent people from polluting</b>."</p>
+                            </div>
+                            <div class="p-3 bg-purple-50 dark:bg-purple-900/20 rounded border border-purple-100 dark:border-purple-800">
+                                <b class="text-purple-800 dark:text-purple-300 block mb-1">Because vs Because of</b>
+                                <ul class="text-xs text-gray-600 dark:text-gray-400 list-disc list-inside">
+                                    <li>Because + ประโยค (S+V)</li>
+                                    <li>Because of + คำนาม/V-ing</li>
+                                </ul>
+                            </div>
+                            <div class="p-3 bg-purple-50 dark:bg-purple-900/20 rounded border border-purple-100 dark:border-purple-800">
+                                <b class="text-purple-800 dark:text-purple-300 block mb-1">Prefer + V-ing + to + V-ing</b>
+                                <p class="text-xs text-gray-600 dark:text-gray-400">ชอบ... มากกว่า...</p>
+                                <p class="text-xs italic mt-1 text-gray-500">"She <b>prefers drinking</b> tea <b>to drinking</b> coffee."</p>
+                            </div>
+                             <div class="p-3 bg-purple-50 dark:bg-purple-900/20 rounded border border-purple-100 dark:border-purple-800">
+                                <b class="text-purple-800 dark:text-purple-300 block mb-1">Amazed at / Good at + Noun/V-ing</b>
+                                <p class="text-xs text-gray-600 dark:text-gray-400">รู้สึกประหลาดใจกับ / เก่งในเรื่อง</p>
+                                <p class="text-xs italic mt-1 text-gray-500">"She is very <b>good at taking</b> care of family."</p>
+                            </div>
+                             <div class="p-3 bg-purple-50 dark:bg-purple-900/20 rounded border border-purple-100 dark:border-purple-800">
+                                <b class="text-purple-800 dark:text-purple-300 block mb-1">Spend + time/money + on</b>
+                                <p class="text-xs text-gray-600 dark:text-gray-400">ใช้เวลา/เงิน ไปกับ...</p>
+                                <p class="text-xs italic mt-1 text-gray-500">"She <b>spent money on</b> manga."</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rule 3: Modifiers (Renumbered) -->
+                    <div>
+                        <h3 class="text-lg font-bold text-blue-900 dark:text-blue-300 mb-3 border-l-4 border-blue-500 pl-3">3. เทคนิคการวางส่วนขยาย</h3>
+                        <ul class="space-y-4">
+                            <li class="bg-blue-50 dark:bg-blue-900/30 p-4 rounded-lg">
+                                <div class="font-bold text-gray-800 dark:text-gray-200 mb-1">Adjective (คำคุณศัพท์)</div>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">วางไว้ <span class="text-red-500 font-bold">หน้า</span> คำนามเสมอ</p>
+                                <div class="text-sm text-gray-500 dark:text-gray-400 mt-2 bg-white dark:bg-gray-800 p-2 rounded inline-block">
+                                    Ex. a <span class="text-red-500 font-bold">beautiful</span> girl
+                                </div>
+                            </li>
+                            <li class="bg-green-50 dark:bg-green-900/30 p-4 rounded-lg">
+                                <div class="font-bold text-gray-800 dark:text-gray-200 mb-1">Adverb (กริยาวิเศษณ์)</div>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">มักวางไว้ <span class="text-red-500 font-bold">หลัง</span> กริยา</p>
+                                <div class="text-sm text-gray-500 dark:text-gray-400 mt-2 bg-white dark:bg-gray-800 p-2 rounded inline-block">
+                                    Ex. He drives <span class="text-red-500 font-bold">carefully</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Rule 4: Tenses -->
+                    <div>
+                        <h3 class="text-lg font-bold text-blue-900 dark:text-blue-300 mb-3 border-l-4 border-blue-500 pl-3">4. พื้นฐาน Tenses (กาลเวลา)</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+                            <div class="border rounded p-3 bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
+                                <strong class="text-indigo-600 dark:text-indigo-400">Present Simple</strong>
+                                <p class="text-xs text-gray-500 mt-1">S + V1 (s/es)</p>
+                                <p class="mt-2 text-gray-700 dark:text-gray-300">ใช้กับนิสัย/ความจริง</p>
+                            </div>
+                            <div class="border rounded p-3 bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
+                                <strong class="text-indigo-600 dark:text-indigo-400">Past Simple</strong>
+                                <p class="text-xs text-gray-500 mt-1">S + V2</p>
+                                <p class="mt-2 text-gray-700 dark:text-gray-300">จบไปแล้วในอดีต</p>
+                            </div>
+                            <div class="border rounded p-3 bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
+                                <strong class="text-indigo-600 dark:text-indigo-400">Future Simple</strong>
+                                <p class="text-xs text-gray-500 mt-1">S + will + V1</p>
+                                <p class="mt-2 text-gray-700 dark:text-gray-300">จะเกิดขึ้นในอนาคต</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rule 5: Conjunctions -->
+                    <div>
+                        <h3 class="text-lg font-bold text-blue-900 dark:text-blue-300 mb-3 border-l-4 border-blue-500 pl-3">5. คำเชื่อมประโยค (Conjunctions)</h3>
+                        <ul class="list-disc list-inside text-sm text-gray-700 dark:text-gray-300 space-y-2 bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                            <li><b>And (และ):</b> เชื่อมความคล้อยตามกัน</li>
+                            <li><b>But (แต่):</b> เชื่อมความขัดแย้ง</li>
+                            <li><b>So (ดังนั้น):</b> บอกผลลัพธ์</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section: Insights -->
+        <div id="content-insights" class="fade-in hidden">
+            <!-- FAQs -->
+            <div class="bg-white rounded-2xl shadow-sm p-6 border border-gray-100 mb-6 transition-colors duration-300">
+                <h3 class="text-xl font-bold text-gray-800 mb-4 border-b dark:border-gray-700 pb-2"><i
+                        class="fas fa-question-circle text-blue-500 mr-2"></i>เกร็ดความรู้ & คำถามที่พบบ่อย</h3>
+                
+                <div class="space-y-8">
+                    <!-- Advanced Adjectives -->
+                    <div>
+                        <h4 class="font-bold text-blue-900 dark:text-blue-300 text-sm md:text-base mb-2">1. สูตรการเรียง Adjective (OSASCOMP)</h4>
+                        <p class="text-gray-600 mb-2 text-xs md:text-sm">เมื่อมีคำขยายหลายคำ ต้องเรียงลำดับดังนี้:</p>
+                        <div class="text-xs md:text-sm bg-blue-50 dark:bg-blue-900/20 p-3 rounded font-mono text-blue-800 dark:text-blue-200 overflow-x-auto">
+                            Opinion > Size > Age > Shape > Color > Origin > Material > Purpose
+                        </div>
+                        <p class="text-xs text-gray-500 mt-2 italic">Ex. A <b class="text-green-600">beautiful small old</b> table. (ไม่ใช่ A small beautiful old table)</p>
+                    </div>
+
+                    <!-- Question Structure -->
+                    <div>
+                        <h4 class="font-bold text-blue-900 dark:text-blue-300 text-sm md:text-base mb-2">2. การสร้างประโยคคำถาม</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-gray-50 dark:bg-gray-800 p-3 rounded">
+                                <strong class="text-sm block mb-1">Yes/No Questions</strong>
+                                <p class="text-xs text-gray-600 dark:text-gray-400">Verb ช่วย + S + V?</p>
+                                <ul class="text-xs mt-2 space-y-1 list-disc list-inside">
+                                    <li><b>Do</b> you like pizza?</li>
+                                    <li><b>Is</b> she happy?</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-gray-800 p-3 rounded">
+                                <strong class="text-sm block mb-1">Wh- Questions</strong>
+                                <p class="text-xs text-gray-600 dark:text-gray-400">Wh- + Verb ช่วย + S + V?</p>
+                                <ul class="text-xs mt-2 space-y-1 list-disc list-inside">
+                                    <li><b>Where</b> do you live?</li>
+                                    <li><b>What</b> are you doing?</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Common Mistakes -->
+                    <div>
+                        <h4 class="font-bold text-red-600 dark:text-red-400 text-sm md:text-base mb-2">3. ข้อผิดพลาดที่พบบ่อย (Common Mistakes)</h4>
+                        <table class="w-full text-xs md:text-sm text-left border-collapse">
+                            <thead>
+                                <tr class="border-b dark:border-gray-700 text-gray-500">
+                                    <th class="py-2">❌ ผิด (แปลตรงตัว)</th>
+                                    <th class="py-2">✅ ถูกต้อง (Native)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
+                                <tr>
+                                    <td class="py-2 text-red-500">I very like apples.</td>
+                                    <td class="py-2 text-green-600 font-semibold">I like apples very much.</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 text-red-500">She go to school yesterday.</td>
+                                    <td class="py-2 text-green-600 font-semibold">She <b>went</b> to school yesterday.</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 text-red-500">Where you go?</td>
+                                    <td class="py-2 text-green-600 font-semibold">Where <b>do</b> you go?</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Sentence Types -->
+                    <div>
+                        <h4 class="font-bold text-blue-900 dark:text-blue-300 text-sm md:text-base mb-2">4. ประเภทของประโยค</h4>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs"><b>บอกเล่า:</b> S + V + O</span>
+                            <span class="px-3 py-1 bg-red-100 text-red-800 rounded-full text-xs"><b>ปฏิเสธ:</b> S + don't/doesn't + V</span>
+                            <span class="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs"><b>คำสั่ง:</b> Verb! (No Subject)</span>
+                        </div>
+                    </div>
+
+                    <!-- External Resource -->
+                    <div>
+                        <h4 class="font-bold text-blue-900 dark:text-blue-300 text-sm md:text-base mb-2">5. สามารถเรียนรู้เพิ่มเติมได้ ใน English Encyclopedia 📘</h4>
+                        <a href="infor.html" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline text-sm md:text-base">
+                            English Encyclopedia | Oxford 3000 Master
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // --- APP Configuration ---
+        const APP = {
+            setTheme: (themeName) => {
+                document.body.classList.remove('dark-mode', 'pastel-mode');
+                if (themeName === 'dark') {
+                    document.body.classList.add('dark-mode');
+                } else if (themeName === 'pastel') {
+                    document.body.classList.add('pastel-mode');
+                }
+            }
+        };
+
+        // --- Data (Fixed: All levels have 30 items) ---
+        const exercises = {
+            beginner: [
+                // Set 1 (15 items)
+                { answer: "She reads books every day.", translation: "เธออ่านหนังสือทุกวัน" },
+                { answer: "They play football in the park.", translation: "พวกเขาเล่นฟุตบอลในสวนสาธารณะ" },
+                { answer: "I eat breakfast at 7 o’clock.", translation: "ฉันกินข้าวเช้าตอน 7 โมง" },
+                { answer: "He walks to school every morning.", translation: "เขาเดินไปโรงเรียนทุกเช้า" },
+                { answer: "My sister studies English on weekends.", translation: "น้องสาวของฉันเรียนภาษาอังกฤษในวันหยุดสุดสัปดาห์" },
+                { answer: "She doesn’t like coffee.", translation: "เธอไม่ชอบกาแฟ" },
+                { answer: "We don’t watch TV at night.", translation: "เราไม่ดูทีวีตอนกลางคืน" },
+                { answer: "I don’t do homework on Sundays.", translation: "ฉันไม่ทำการบ้านในวันอาทิตย์" },
+                { answer: "He doesn’t go to the gym.", translation: "เขาไม่ไปโรงยิม" },
+                { answer: "They don’t eat vegetables.", translation: "พวกเขาไม่กินผัก" },
+                { answer: "Do you like music?", translation: "คุณชอบดนตรีไหม?" },
+                { answer: "Where does she work?", translation: "เธอทำงานที่ไหน?" },
+                { answer: "What time do they eat dinner?", translation: "พวกเขากินข้าวเย็นกี่โมง?" },
+                { answer: "Does your brother play tennis?", translation: "พี่ชายของคุณเล่นเทนนิสไหม?" },
+                { answer: "Where do you live?", translation: "คุณอยู่ที่ไหน?" },
+                // Set 2 (15 items)
+                { answer: "She is a teacher.", translation: "เธอเป็นครู" },
+                { answer: "We are students.", translation: "เราเป็นนักเรียน" },
+                { answer: "I am from Thailand.", translation: "ฉันมาจากประเทศไทย" },
+                { answer: "Are you happy?", translation: "คุณมีความสุขไหม?" },
+                { answer: "The cat is on the table.", translation: "แมวอยู่บนโต๊ะ" },
+                { answer: "I eat an apple every day.", translation: "ฉันกินแอปเปิ้ลหนึ่งลูกทุกวัน" },
+                { answer: "The book is on the desk.", translation: "หนังสือเล่มนั้นอยู่บนโต๊ะ" },
+                { answer: "She has a red car.", translation: "เธอมีรถสีแดงคันหนึ่ง" },
+                { answer: "The flowers in the garden are beautiful.", translation: "ดอกไม้ในสวนสวยงาม" },
+                { answer: "An elephant is a big animal.", translation: "ช้างเป็นสัตว์ตัวใหญ่" },
+                { answer: "She is a doctor and works in the hospital.", translation: "เธอเป็นหมอและทำงานในโรงพยาบาล" },
+                { answer: "We are friends and study together.", translation: "เราเป็นเพื่อนกันและเรียนด้วยกัน" },
+                { answer: "I am tired but do my homework.", translation: "ฉันเหนื่อยแต่ยังทำการบ้าน" },
+                { answer: "The weather is nice so we go to the beach.", translation: "อากาศดีดังนั้นเราไปชายหาด" },
+                { answer: "They are busy but help their mother.", translation: "พวกเขายุ่งแต่ยังช่วยแม่" }
+            ],
+            intermediate: [
+                // Set 1 (20 items)
+                { answer: "She visited her grandmother last summer.", translation: "เธอไปเยี่ยมคุณย่าเมื่อฤดูร้อนที่แล้ว" },
+                { answer: "They didn’t do their homework yesterday.", translation: "พวกเขาไม่ได้ทำการบ้านเมื่อวานนี้" },
+                { answer: "Where did you go last weekend?", translation: "คุณไปไหนเมื่อสุดสัปดาห์ที่แล้ว?" },
+                { answer: "We watched a good movie last night.", translation: "เราดูหนังดีๆ เมื่อคืนนี้" },
+                { answer: "He didn’t eat breakfast this morning.", translation: "เขาไม่ได้กินข้าวเช้าเมื่อเช้านี้" },
+                { answer: "She was reading when I called her.", translation: "เธอกำลังอ่านหนังสือตอนที่ฉันโทรหาเธอ" },
+                { answer: "The children were playing football at 3 PM yesterday.", translation: "เด็กๆ กำลังเล่นฟุตบอลตอน 3 โมงเย็นเมื่อวาน" },
+                { answer: "He wasn’t listening to music while studying.", translation: "เขาไม่ได้ฟังเพลงขณะเรียน" },
+                { answer: "What were you doing at 8 o’clock last night?", translation: "คุณกำลังทำอะไรตอน 8 โมงเมื่อคืน?" },
+                { answer: "It was raining when we left home.", translation: "ฝนกำลังตกตอนที่เราออกจากบ้าน" },
+                { answer: "I will graduate from university next year.", translation: "ฉันจะจบมหาวิทยาลัยปีหน้า" },
+                { answer: "They are going to travel to Japan next month.", translation: "พวกเขาจะเดินทางไปญี่ปุ่นเดือนหน้า" },
+                { answer: "She won’t come to the party tomorrow.", translation: "เธอจะไม่มางานปาร์ตี้พรุ่งนี้" },
+                { answer: "Are you going to buy a new car?", translation: "คุณจะซื้อรถใหม่ไหม?" },
+                { answer: "It will probably rain this afternoon.", translation: "บ่ายนี้น่าจะฝนตก" },
+                { answer: "He has lived in Bangkok for five years.", translation: "เขาอาศัยในกรุงเทพมาห้าปีแล้ว" },
+                { answer: "We haven’t seen that movie yet.", translation: "เรายังไม่ได้ดูหนังเรื่องนั้น" },
+                { answer: "She had already finished her work before I arrived.", translation: "เธอทำงานเสร็จแล้วก่อนที่ฉันจะมาถึง" },
+                { answer: "They will have completed the project by next Friday.", translation: "พวกเขาจะทำโปรเจคเสร็จภายในวันศุกร์หน้า" },
+                { answer: "Have you ever been to Europe?", translation: "คุณเคยไปยุโรปไหม?" },
+                // Set 2 (10 items selected)
+                { answer: "I will call you when I get home.", translation: "ฉันจะโทรหาคุณเมื่อถึงบ้าน" },
+                { answer: "She was studying while her brother was watching TV.", translation: "เธอกำลังเรียนขณะที่พี่ชายดูทีวี" },
+                { answer: "After he finished his homework, he went to bed.", translation: "หลังจากทำการบ้านเสร็จ เขาก็เข้านอน" },
+                { answer: "Before she leaves the office, she always checks her email.", translation: "ก่อนออกจากออฟฟิศ เธอจะเช็คอีเมลเสมอ" },
+                { answer: "We have been happy since we moved to this city.", translation: "เรามีความสุขตั้งแต่ย้ายมาอยู่เมืองนี้" },
+                { answer: "We will go to the beach if the weather is sunny.", translation: "เราจะไปชายหาดถ้าอากาศแจ่มใส" },
+                { answer: "I would buy that house if I had enough money.", translation: "ฉันจะซื้อบ้านนั้นถ้าฉันมีเงินพอ" },
+                { answer: "If she had studied harder, she would have passed the exam.", translation: "ถ้าเธอเรียนหนักกว่านี้ เธอจะสอบผ่าน" },
+                { answer: "You will miss the train unless you hurry.", translation: "คุณจะพลาดรถไฟถ้าไม่รีบ" },
+                { answer: "You can go provided that you finish your work first.", translation: "คุณไปได้ถ้าทำงานเสร็จก่อน" }
+            ],
+            advanced: [
+                { answer: "The bridge was built in 1990 by a famous architect.", translation: "สะพานถูกสร้างในปี 1990 โดยสถาปนิกที่มีชื่อเสียง" },
+                { answer: "The computer is being repaired right now.", translation: "คอมพิวเตอร์กำลังถูกซ่อมอยู่ตอนนี้" },
+                { answer: "We have been invited to the wedding.", translation: "เราได้รับเชิญไปงานแต่งงาน" },
+                { answer: "The report will be finished by tomorrow morning.", translation: "รายงานจะเสร็จภายในเช้าพรุ่งนี้" },
+                { answer: "The house had been cleaned before the guests arrived.", translation: "บ้านถูกทำความสะอาดแล้วก่อนแขกจะมาถึง" },
+                { answer: "She said that she was tired.", translation: "เธอบอกว่าเธอเหนื่อย" },
+                { answer: "He asked me if I had finished my homework.", translation: "เขาถามฉันว่าทำการบ้านเสร็จแล้วหรือยัง" },
+                { answer: "The teacher told us to submit our essays by Friday.", translation: "อาจารย์บอกให้เราส่งเรียงความภายในวันศุกร์" },
+                { answer: "I wondered where she had gone.", translation: "ฉันสงสัยว่าเธอไปไหน" },
+                { answer: "He promised that he would help me with the project.", translation: "เขาสัญญาว่าจะช่วยฉันทำโปรเจค" },
+                { answer: "Although it was raining, we decided to go hiking.", translation: "แม้ว่าจะฝนตก เราก็ตัดสินใจไปเดินป่า" },
+                { answer: "The book which I am reading was written by a Nobel Prize winner.", translation: "หนังสือที่ฉันกำลังอ่านเขียนโดยผู้ได้รับรางวัลโนเบล" },
+                { answer: "Not only did she finish her work early, but she also helped her colleagues.", translation: "เธอไม่เพียงทำงานเสร็จเร็ว แต่ยังช่วยเพื่อนร่วมงานด้วย" },
+                { answer: "If I had known about the meeting, I would have attended it.", translation: "ถ้าฉันรู้เรื่องการประชุม ฉันจะเข้าร่วม" },
+                { answer: "Despite being young, he has achieved great success in his career.", translation: "แม้จะยังเด็ก เขาก็ประสบความสำเร็จมากในอาชีพ" },
+                { answer: "Had I known the truth, I would have told you earlier.", translation: "หากฉันรู้ความจริง ฉันคงบอกคุณไปแล้วตั้งแต่เนิ่นๆ" },
+                { answer: "Rarely have I seen such a beautiful performance.", translation: "นานๆ ครั้งฉันถึงจะเห็นการแสดงที่สวยงามเช่นนี้" },
+                { answer: "The harder you work, the luckier you get.", translation: "ยิ่งคุณทำงานหนักเท่าไหร่ คุณก็ยิ่งโชคดีขึ้นเท่านั้น" },
+                { answer: "It is essential that he be present at the meeting.", translation: "จำเป็นอย่างยิ่งที่เขาจะต้องเข้าร่วมการประชุม" },
+                { answer: "No sooner had I arrived than the phone rang.", translation: "ทันทีที่ฉันมาถึง โทรศัพท์ก็ดังขึ้น" },
+                { answer: "Unless you study harder, you will not pass the test.", translation: "เว้นแต่ว่าคุณจะเรียนหนักขึ้น คุณจะสอบไม่ผ่าน" },
+                { answer: "By the time we get there, the movie will have started.", translation: "กว่าเราจะไปถึงที่นั่น หนังคงเริ่มฉายไปแล้ว" },
+                { answer: "Whatever happens, I will always stand by your side.", translation: "ไม่ว่าจะเกิดอะไรขึ้น ฉันจะยืนอยู่ข้างคุณเสมอ" },
+                { answer: "Not until yesterday did I realize how much I missed him.", translation: "จนกระทั่งเมื่อวานนี้เองที่ฉันตระหนักว่าฉันคิดถึงเขามากแค่ไหน" },
+                { answer: "Should you need any assistance, please do not hesitate to ask.", translation: "หากคุณต้องการความช่วยเหลือ โปรดอย่าลังเลที่จะถาม" },
+                { answer: "The woman to whom you were speaking is my boss.", translation: "ผู้หญิงคนที่คุณกำลังคุยด้วยคือหัวหน้าของฉัน" },
+                { answer: "Having finished his work, he went home immediately.", translation: "เมื่อทำงานเสร็จแล้ว เขาก็กลับบ้านทันที" },
+                { answer: "Neither the students nor the teacher was aware of the rules.", translation: "ทั้งนักเรียนและครูต่างก็ไม่ทราบกฎระเบียบ" },
+                { answer: "It was not until I met you that I knew true love.", translation: "จนกระทั่งฉันได้พบคุณ ฉันถึงได้รู้จักรักแท้" },
+                { answer: "Under no circumstances should you open this door.", translation: "ห้ามเปิดประตูนี้ไม่ว่าในกรณีใดๆ" }
+            ]
+        };
+
+        // --- Game State ---
+        let currentLevel = 'beginner';
+        let currentIndex = 0;
+        let selectedWords = []; 
+        let poolWords = [];
+        let dragSrcIndex = null;
+
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', () => {
+            loadQuestion();
+        });
+
+        // --- Tab Logic ---
+        function switchTab(tabId) {
+            ['learn', 'game', 'insights'].forEach(t => {
+                const el = document.getElementById(`content-${t}`);
+                if(el) {
+                    el.classList.add('hidden');
+                    el.classList.remove('block');
+                }
+                const btn = document.getElementById(`tab-${t}`);
+                if(btn) btn.classList.remove('active');
+            });
+            
+            const target = document.getElementById(`content-${tabId}`);
+            if(target) {
+                target.classList.remove('hidden');
+                target.classList.add('block');
+            }
+            const targetBtn = document.getElementById(`tab-${tabId}`);
+            if(targetBtn) targetBtn.classList.add('active');
+        }
+
+        // --- Game Logic ---
+        function changeLevel() {
+            const select = document.getElementById('level-select');
+            if(select) {
+                currentLevel = select.value;
+                currentIndex = 0;
+                loadQuestion();
+            }
+        }
+
+        function loadQuestion() {
+            if(!exercises[currentLevel]) return;
+            const data = exercises[currentLevel][currentIndex];
+            if(!data) return;
+            
+            // Update UI Counters
+            const qNum = document.getElementById('current-q-num');
+            if(qNum) qNum.innerText = `${currentIndex + 1} / ${exercises[currentLevel].length}`;
+            
+            const progress = document.getElementById('progress-bar');
+            if(progress) {
+                const progressPercent = ((currentIndex) / exercises[currentLevel].length) * 100;
+                progress.style.width = `${progressPercent}%`;
+            }
+
+            // Reset States
+            selectedWords = [];
+            const feedback = document.getElementById('feedback-area');
+            if(feedback) feedback.classList.add('hidden');
+            
+            const checkBtn = document.getElementById('check-btn');
+            if(checkBtn) checkBtn.classList.remove('hidden');
+            
+            const nextBtn = document.getElementById('next-btn');
+            if(nextBtn) nextBtn.classList.add('hidden');
+            
+            const transCard = document.getElementById('translation-card');
+            if(transCard) {
+                transCard.classList.add('hidden');
+                transCard.innerText = data.translation;
+            }
+            
+            const answerZone = document.getElementById('answer-zone');
+            if(answerZone) {
+                answerZone.classList.remove('bg-green-50', 'border-green-300', 'bg-red-50', 'border-red-300', 'dark:bg-green-900', 'dark:bg-red-900');
+                answerZone.classList.add('bg-gray-50', 'dark:bg-gray-800', 'border-gray-300', 'dark:border-gray-600');
+            }
+
+            // Create Word Tokens from answer
+            const rawWords = data.answer.split(' ');
+            poolWords = rawWords.map((word, index) => ({
+                text: word,
+                id: `word-${index}`
+            }));
+
+            // Shuffle Pool
+            shuffleArray(poolWords);
+
+            renderBoard();
+        }
+
+        function renderBoard() {
+            const answerZone = document.getElementById('answer-zone');
+            const wordPool = document.getElementById('word-pool');
+
+            if(!answerZone || !wordPool) return;
+
+            // Clear containers
+            answerZone.innerHTML = '';
+            wordPool.innerHTML = '';
+
+            // Render Answer Zone
+            if (selectedWords.length === 0) {
+                 const placeholder = document.createElement('span');
+                 placeholder.id = 'placeholder-text';
+                 placeholder.className = 'text-gray-400 text-sm w-full text-center pointer-events-none italic';
+                 placeholder.innerText = 'แตะที่คำศัพท์ด้านล่างเพื่อนำมาวางที่นี่...';
+                 answerZone.appendChild(placeholder);
+            } else {
+                selectedWords.forEach((item, idx) => {
+                    const chip = createChip(item.text, () => moveWordBack(idx));
+                    chip.classList.add('bg-blue-100', 'text-blue-800', 'border-blue-200', 'cursor-move');
+                    
+                    // Add Drag Attributes and Events
+                    chip.setAttribute('draggable', 'true');
+                    chip.dataset.index = idx;
+                    chip.addEventListener('dragstart', handleDragStart);
+                    chip.addEventListener('dragover', handleDragOver);
+                    chip.addEventListener('drop', handleDrop);
+                    chip.addEventListener('dragend', handleDragEnd);
+                    
+                    answerZone.appendChild(chip);
+                });
+            }
+
+            // Render Pool
+            poolWords.forEach((item, idx) => {
+                const chip = createChip(item.text, () => moveWordToAnswer(idx));
+                chip.classList.add('bg-white', 'border-gray-200', 'text-gray-700', 'shadow-sm', 'dark:bg-gray-700', 'dark:text-gray-200', 'dark:border-gray-600');
+                wordPool.appendChild(chip);
+            });
+        }
+
+        // Drag Handler Functions
+        function handleDragStart(e) {
+            this.classList.add('dragging');
+            dragSrcIndex = Number(this.dataset.index);
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', dragSrcIndex);
+        }
+
+        function handleDragOver(e) {
+            if (e.preventDefault) {
+                e.preventDefault();
+            }
+            e.dataTransfer.dropEffect = 'move';
+            return false;
+        }
+
+        function handleDrop(e) {
+            if (e.stopPropagation) {
+                e.stopPropagation();
+            }
+            
+            const dropTargetIndex = Number(this.dataset.index);
+            
+            if (dragSrcIndex !== dropTargetIndex && dragSrcIndex !== null) {
+                // Reorder array
+                const itemToMove = selectedWords[dragSrcIndex];
+                selectedWords.splice(dragSrcIndex, 1);
+                selectedWords.splice(dropTargetIndex, 0, itemToMove);
+                renderBoard();
+            }
+            return false;
+        }
+
+        function handleDragEnd(e) {
+            this.classList.remove('dragging');
+            dragSrcIndex = null;
+        }
+
+        function createChip(text, onClick) {
+            const btn = document.createElement('div');
+            btn.className = 'word-chip px-4 py-2 rounded-full border font-medium text-sm md:text-base select-none';
+            btn.innerText = text;
+            btn.onclick = onClick;
+            return btn;
+        }
+
+        function moveWordToAnswer(poolIndex) {
+            const item = poolWords[poolIndex];
+            poolWords.splice(poolIndex, 1);
+            selectedWords.push(item);
+            renderBoard();
+        }
+
+        function moveWordBack(selectedIndex) {
+            const item = selectedWords[selectedIndex];
+            selectedWords.splice(selectedIndex, 1);
+            poolWords.push(item);
+            renderBoard();
+        }
+
+        function resetCurrentQuestion() {
+            loadQuestion();
+        }
+
+        function checkAnswer() {
+            if(!exercises[currentLevel]) return;
+            const currentQuestion = exercises[currentLevel][currentIndex];
+            const userAnswerString = selectedWords.map(w => w.text).join(' ');
+            
+            const feedbackArea = document.getElementById('feedback-area');
+            const answerZone = document.getElementById('answer-zone');
+            
+            feedbackArea.classList.remove('hidden');
+
+            if (userAnswerString === currentQuestion.answer) {
+                // Correct
+                feedbackArea.innerHTML = `<div class="flex items-center text-green-700 dark:text-green-300 bg-green-100 dark:bg-green-900 p-3 rounded-lg"><i class="fas fa-check-circle text-xl mr-3"></i><div><strong>ถูกต้อง! Great job!</strong></div></div>`;
+                answerZone.classList.remove('bg-gray-50', 'dark:bg-gray-800', 'border-gray-300', 'dark:border-gray-600', 'bg-red-50', 'border-red-300');
+                answerZone.classList.add('bg-green-50', 'dark:bg-green-900', 'border-green-300', 'dark:border-green-700');
+                
+                const checkBtn = document.getElementById('check-btn');
+                if(checkBtn) checkBtn.classList.add('hidden');
+                
+                // Check if last question
+                const nextBtn = document.getElementById('next-btn');
+                if (currentIndex < exercises[currentLevel].length - 1) {
+                    if(nextBtn) nextBtn.classList.remove('hidden');
+                } else {
+                    feedbackArea.innerHTML += `<div class="mt-2 text-center text-blue-600 dark:text-blue-400 font-bold">ยินดีด้วย! คุณผ่านด่าน ${currentLevel} แล้ว</div>`;
+                }
+
+                const transCard = document.getElementById('translation-card');
+                if(transCard) transCard.classList.remove('hidden');
+
+            } else {
+                // Incorrect
+                feedbackArea.innerHTML = `<div class="flex items-center text-red-700 dark:text-red-300 bg-red-100 dark:bg-red-900 p-3 rounded-lg"><i class="fas fa-times-circle text-xl mr-3"></i><div><strong>ยังไม่ถูก ลองใหม่อีกครั้งนะ</strong></div></div>`;
+                answerZone.classList.remove('bg-gray-50', 'dark:bg-gray-800', 'border-gray-300', 'dark:border-gray-600');
+                answerZone.classList.add('bg-red-50', 'dark:bg-red-900', 'border-red-300', 'dark:border-red-700');
+                
+                setTimeout(() => {
+                    answerZone.classList.remove('bg-red-50', 'dark:bg-red-900', 'border-red-300', 'dark:border-red-700');
+                    answerZone.classList.add('bg-gray-50', 'dark:bg-gray-800', 'border-gray-300', 'dark:border-gray-600');
+                }, 1000);
+            }
+        }
+
+        function nextQuestion() {
+            if (currentIndex < exercises[currentLevel].length - 1) {
+                currentIndex++;
+                loadQuestion();
+            }
+        }
+
+        function toggleTranslation() {
+            const card = document.getElementById('translation-card');
+            if(card) {
+                if (card.classList.contains('hidden')) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            }
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+    </script>
+</body>
+</html>

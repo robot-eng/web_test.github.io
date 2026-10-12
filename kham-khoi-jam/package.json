@@ -1,0 +1,26 @@
+{
+  "name": "kham-khoi-jam",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently -k -n api,web \"node server.js\" \"vite --host 127.0.0.1\"",
+    "build": "vite build",
+    "build:pages-dictionary": "node scripts/build-pages-dictionary.js",
+    "build:pages": "npm run build:pages-dictionary && vite build --mode pages",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "^5.0.0",
+    "cmu-pronouncing-dictionary": "^3.0.0",
+    "iconv-lite": "^0.7.3",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "vite": "^7.1.7",
+    "wordnet": "^2.0.0",
+    "wordnet-db": "^3.1.14"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

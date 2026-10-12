@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Oxford 3000 Master</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="uiux.css">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Inter:wght@400;600;700&family=Sarabun:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+</head>
+
+<body>
+  <div class="app">
+
+    <!-- HEADER -->
+    <header class="header container-gap" id="mainHeader">
+      <a href="index.html" class="logo-link">
+        <div class="logo">
+          <div class="logo-icon">O</div>
+          <div class="logo-text">
+            <h1>Oxford 3000</h1>
+            <span>Master Vocabulary</span>
+          </div>
+        </div>
+      </a>
+      <!-- <button class="mobile-menu-toggle" aria-label="Open menu" onclick="APP.toggleMobileMenu()">☰</button> -->
+      <div class="user-actions">
+        <div class="theme-selector">
+          <button class="theme-opt" onclick="APP.setTheme('light')" id="theme-light" title="Light Mode">☀️</button>
+          <button class="theme-opt" onclick="APP.setTheme('dark')" id="theme-dark" title="Dark Mode">🌙</button>
+          <button class="theme-opt" onclick="APP.setTheme('pastel')" id="theme-pastel" title="Pastel Mode"
+            aria-label="Pastel">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+              <circle cx="12" cy="12" r="9" fill="url(#g)" />
+              <defs>
+                <linearGradient id="g" x1="0" x2="1">
+                  <stop offset="0" stop-color="#FFD6F0" />
+                  <stop offset="1" stop-color="#D6C6FF" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </button>
+        </div>
+        <!-- <div class="streak-pill">🔥 <span id="streakCount">12</span></div>
+        <button class="sound-btn reset-btn"
+          onclick="if(confirm('Reset all progress?')){APP.state.progress={};APP.saveProgress();APP.applyFilters();}">↺</button> -->
+      </div>
+    </header>
+
+    <!-- Mobile popup (receives .user-actions when opened) -->
+    <div id="mobilePopup" class="mobile-popup" onclick="if(event.target===this){APP.toggleMobileMenu();}"></div>
+
+    <!-- NAVIGATION TABS -->
+    <div class="nav-tab-container">
+      <button class="nav-tab-btn active" id="tabVocab" onclick="location.href='index.html'">📚 คำศัพท์</button>
+      <button class="nav-tab-btn" id="tabInfor" onclick="location.href='infor.html'">📖 คู่มือ</button>
+      <button class="nav-tab-btn" id="tabgame" onclick="location.href='game.html'">👾 เกม</button>
+    </div>
+
+    <!-- ==================== PAGE: VOCABULARY ==================== -->
+    <div id="vocab" class="page-content active">
+
+      <!-- DAILY GOAL CARD -->
+      <div class="daily-goal-card">
+        <div class="daily-content">
+          <div class="daily-title">Daily Progress</div>
+          <div class="daily-val">
+            <span id="masteredCount">0</span>
+            <span style="font-size:16px; opacity:0.7;">/ <span id="totalCount">3000</span> Words</span>
+          </div>
+          <div class="progress-container">
+            <div class="progress-fill" id="mainProgressFill" style="width: 0%"></div>
+          </div>
+          <div style="margin-top:12px; font-size:13px; font-weight:600; text-align:right; opacity:0.9;">Keep going! 🚀
+          </div>
+        </div>
+      </div>
+
+      <!-- MINI STATS GRID -->
+      <div class="stats-grid">
+        <div class="mini-stat" onclick="APP.startFlashcards()" style="cursor:pointer;">
+          <div class="mini-icon ms-orange">⚡</div>
+          <div>
+            <div style="font-size:11px; font-weight:700; text-transform:uppercase;" class="muted">To Review</div>
+            <div style="font-size:20px; font-weight:800;" id="reviewCount">0</div>
+          </div>
+          <div style="margin-left:auto; font-size:20px;" class="primary-text">›</div>
+        </div>
+        <div class="mini-stat" onclick="APP.startQuiz()" style="cursor:pointer;">
+          <div class="mini-icon ms-green">🎮</div>
+          <div>
+            <div style="font-size:11px; font-weight:700; text-transform:uppercase;" class="muted">Quiz</div>
+            <div style="font-size:20px; font-weight:800;">Play</div>
+          </div>
+          <div style="margin-left:auto; font-size:20px;" class="primary-text">›</div>
+        </div>
+      </div>
+
+      <!-- SEARCH -->
+      <div class="search-container">
+        <span class="search-icon">🔍</span>
+        <input type="text" class="search-input" id="searchInput" placeholder="Search for a word..."
+          oninput="APP.applyFilters()">
+      </div>
+
+      <!-- FILTERS -->
+      <!-- FILTERS -->
+      <div class="filters-row">
+        <button class="filter-chip chip-must-know" id="filter-core" onclick="APP.toggleLevel('CORE')">
+          ⭐ Must Know
+        </button>
+        <button class="filter-chip active" id="filter-all" onclick="APP.toggleLetter('ALL')">
+          All
+        </button>
+      </div>
+
+      <!-- CEFR LEVEL FILTER -->
+      <div class="filters-row">
+        <button class="filter-chip lvl-A1" data-level="A1" onclick="APP.toggleLevel('A1')">A1</button>
+        <button class="filter-chip lvl-A2" data-level="A2" onclick="APP.toggleLevel('A2')">A2</button>
+        <button class="filter-chip lvl-B1" data-level="B1" onclick="APP.toggleLevel('B1')">B1</button>
+        <button class="filter-chip lvl-B2" data-level="B2" onclick="APP.toggleLevel('B2')">B2</button>
+        <button class="filter-chip lvl-C1" data-level="C1" onclick="APP.toggleLevel('C1')">C1</button>
+        <button class="filter-chip lvl-C2" data-level="C2" onclick="APP.toggleLevel('C2')">C2</button>
+
+      </div>
+
+      <div class="filters-row" id="alphabetRow">
+        <!-- A-Z -->
+      </div>
+
+      <!-- LIST -->
+      <div id="vocabList" class="vocab-list"></div>
+
+      <!-- EMPTY STATE -->
+      <div id="emptyState" class="empty-state hidden">
+        <div class="empty-icon">🍃</div>
+        <p>No words found.</p>
+        <button onclick="APP.clearFilters()"
+          style="margin-top:10px; font-weight:600; background:none; border:none; cursor:pointer;"
+          class="primary-text">Clear
+          Filters</button>
+      </div>
+    </div>
+
+    <!-- ==================== PAGE: ENCYCLOPEDIA ==================== -->
+    <div id="infor" class="page-content">
+      <div style="text-align:center; padding:60px 20px;" class="muted">
+        <div style="font-size:48px; margin-bottom:12px;">📖</div>
+        <p>Loading Encyclopedia...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODALS ==================== -->
+
+  <!-- DETAIL MODAL -->
+  <div class="modal" id="detailModal" onclick="if(event.target === this) this.classList.remove('active')">
+    <div class="modal-content">
+      <button class="close-btn" onclick="document.getElementById('detailModal').classList.remove('active')">×</button>
+      <div class="modal-header">
+        <h2 class="modal-word" id="modalWord">...</h2>
+        <div class="modal-meta">
+          <span class="pos-tag" id="modalPos">N.</span>
+          <span class="lvl-badge lvl-A1" id="modalLevel">A1</span>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="def-section">
+          <div class="def-label">Meaning (Thai)</div>
+          <div class="def-text" id="modalTrans">...</div>
+        </div>
+        <div class="def-section" id="modalDefSection" style="display:none;">
+          <div class="def-label">Definitions (Eng)</div>
+          <div class="def-text" id="modalMeanings">...</div>
+        </div>
+        <div class="def-section">
+          <div class="def-label">Example</div>
+          <div class="def-text" id="modalEx" style="font-style:italic;">...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLASHCARD MODAL -->
+  <div class="modal" id="flashcardModal" onclick="if(event.target === this) this.classList.remove('active')">
+    <div class="modal-content" style="text-align:center; padding: 32px;">
+      <button class="close-btn"
+        onclick="document.getElementById('flashcardModal').classList.remove('active')">×</button>
+      <div style="font-size:12px; margin-bottom:16px; text-transform:uppercase;" class="muted">Review Mode</div>
+      <div id="fcCard" class="fc-card">
+        <h2 style="font-size:28px;">Flashcard</h2>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+        <button onclick="APP.handleFlashcard(false)" class="btn-forgot">Forgot</button>
+        <button onclick="APP.handleFlashcard(true)" class="btn-remember">Remember</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUIZ MODAL -->
+  <div class="modal" id="quizModal" onclick="if(event.target === this) this.classList.remove('active')">
+    <div class="modal-content">
+      <button class="close-btn" onclick="document.getElementById('quizModal').classList.remove('active')">×</button>
+      <div style="text-align:center; margin-bottom:20px;">
+        <span class="lvl-badge" style="background:#4F46E5; color:white;">QUIZ</span>
+      </div>
+      <div id="quizQuestion"
+        style="font-size:20px; font-weight:700; margin-bottom:20px; text-align:center; font-family:'Sarabun', sans-serif;">
+        ...</div>
+      <div id="quizOptions" style="display:grid; gap:10px;"></div>
+    </div>
+  </div>
+
+  <!-- ==================== SCRIPTS ==================== -->
+  <script src="data.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>

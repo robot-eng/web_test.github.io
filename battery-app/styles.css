@@ -1,0 +1,60 @@
+.battery-status {
+    text-align: center;
+    margin: 50px;
+}
+
+#battery-level {
+    font-size: 20px;
+}
+
+#battery-indicator {
+    width: 100%;
+    height: 30px;
+    background-color: #ddd;
+    border: 1px solid #999;
+    margin: 20px auto;
+    position: relative;
+}
+
+#battery-fill {
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: width 0.5s ease-in-out; /* Add a smooth transition for width changes */
+}
+
+#battery-level {
+    font-size: 20px;
+}
+
+#charging-status {
+    font-size: 20px;
+}
+
+@keyframes chargeAnimation {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.yes::before {
+    content: "⚡"; /* Unicode symbol for lightning bolt */
+    animation: chargeAnimation 2s infinite; /* 2s duration, infinite loop */
+    display: inline-block;
+    margin-right: 5px;
+}
+/* New styles for battery indicator colors */
+#battery-fill.green {
+    background-color: #4CAF50; /* Green color for the battery level */
+}
+
+#battery-fill.gray {
+    background-color: #ccc; /* Gray color for the missing battery */
+}

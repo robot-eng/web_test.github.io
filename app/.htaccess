@@ -1,0 +1,80 @@
+# PWA Configuration for Apache
+# Place this file in your server root
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Redirect HTTP to HTTPS (if using HTTPS)
+    # RewriteCond %{HTTPS} off
+    # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+    
+    # Route all requests to index.html for SPA
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ index.html [QSA,L]
+</IfModule>
+
+<IfModule mod_mime.c>
+    # Add MIME types for web app manifest
+    AddType application/manifest+json .webmanifest
+    AddType application/manifest+json .json
+    
+    # Add MIME type for service workers
+    AddType application/javascript .js
+    
+    # Add MIME type for SVG
+    AddType image/svg+xml .svg
+    AddEncoding gzip .svg
+</IfModule>
+
+# Enable gzip compression
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/javascript
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/json
+    AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# Cache control headers
+<IfModule mod_expires.c>
+    ExpiresActive On
+    
+    # CSS and JS - 1 month
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType text/javascript "access plus 1 month"
+    
+    # Images - 1 month
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/gif "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/svg+xml "access plus 1 month"
+    ExpiresByType image/webp "access plus 1 month"
+    
+    # Fonts - 1 year
+    ExpiresByType font/ttf "access plus 1 year"
+    ExpiresByType font/otf "access plus 1 year"
+    ExpiresByType font/woff "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+    
+    # Manifest and HTML - no cache
+    ExpiresByType application/manifest+json "access plus 0 seconds"
+    ExpiresByType text/html "access plus 0 seconds"
+</IfModule>
+
+# Service Worker and manifest must not be cached
+<FilesMatch "\.(json|js)$">
+    Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+</FilesMatch>
+
+# Set correct headers for Service Worker
+<Files ~ "sw\.js$">
+    Header set Service-Worker-Allowed "/"
+    Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+</Files>

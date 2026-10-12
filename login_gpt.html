@@ -1,0 +1,85 @@
+<!-- login.html -->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login Window</title>
+    <!-- Link to the Bootstrap CSS file -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Add custom CSS styles -->
+    <style>
+      .form-control {
+        background-color: #f1f1f1;
+        border: none;
+        border-radius: 5px;
+        box-shadow: 0px 0px 8px 0px #00000040;
+        height: 50px;
+        margin-bottom: 20px;
+        padding: 15px;
+        width: 100%;
+      }
+      #login-form {
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0px 0px 20px 0px #00000040;
+        padding: 30px;
+        width: 500px;
+        margin: auto;
+      }
+      .btn-primary {
+        background-color: #4CAF50;
+        border: none;
+        border-radius: 5px;
+        color: #fff;
+        height: 50px;
+        width: 100%;
+      }
+      .btn-primary:hover {
+        background-color: #3e8e41;
+      }
+      @media (max-width: 560px) {
+        #login-form {
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0px 0px 20px 0px #00000040;
+        padding: 30px;
+        width: 300px;
+      }
+      }
+    </style>
+  </head>
+  <body style="background-color: lightgray;">
+    <div class="container">
+      <h2 class="text-center my-4">Login</h2>
+      <form id="login-form" class="form-group">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Username" id="username" required>
+        </div>
+        <div class="form-group">
+          <input type="password" class="form-control" placeholder="Password" id="password" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" id="submit-btn">Submit</button>
+      </form>
+    </div>
+    <!-- Link to the Bootstrap JavaScript file -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+      // Add form submit event listener
+      document.getElementById("login-form").addEventListener("submit", function(e) {
+        e.preventDefault();
+        // Get the values of the username and password fields
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+       
+        // Perform some validation or authentication here
+        if (username === "admin" && password === "password") {
+          alert("Login successful!");
+        } else {
+          alert("Incorrect username or password");
+        }
+      });
+    </script>
+  </body>
+</html>

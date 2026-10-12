@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Pastel Finance - รายรับรายจ่าย</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="description" content="แอปจดบันทึกรายรับ-รายจ่ายสุดพรีเมียม โทนสีพาสเทล">
+    <meta name="theme-color" content="#A29BDA">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="PastelPay">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23A29BDA' width='192' height='192' rx='45'/><text x='50%' y='50%' font-size='80' font-weight='bold' fill='white' text-anchor='middle' dy='.3em'>₿</text></svg>">
+    <meta name="msapplication-TileColor" content="#A29BDA">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Prompt:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    
+    <!-- Icons & Manifest -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23A29BDA' width='192' height='192' rx='45'/><text x='50%' y='50%' font-size='100' font-weight='bold' fill='white' text-anchor='middle' dy='.35em'>₿</text></svg>">
+    
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Header Section -->
+        <header class="header">
+            <div class="greeting">
+                <p>สวัสดีตอนเช้า 👋</p>
+                <h1>เป๋าตังค์พาสเทล</h1>
+            </div>
+            <div class="profile-icon">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="Profile">
+            </div>
+        </header>
+
+        <!-- Main Dashboard -->
+        <main class="content">
+            <!-- HOME PAGE -->
+            <div class="page" id="page-home">
+                <!-- Balance Card -->
+                <div class="balance-card">
+                    <div class="balance-info">
+                        <span>ยอดเงินคงเหลือทั้งหมด</span>
+                        <h2 id="total-balance">฿0.00</h2>
+                    </div>
+                    <div class="balance-stats">
+                        <div class="stat-item income">
+                            <i class="fas fa-arrow-down"></i>
+                            <div>
+                                <span>รายรับ</span>
+                                <p id="total-income">฿0.00</p>
+                            </div>
+                        </div>
+                        <div class="stat-item expense">
+                            <i class="fas fa-arrow-up"></i>
+                            <div>
+                                <span>รายจ่าย</span>
+                                <p id="total-expense">฿0.00</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chart Section -->
+                <section class="section">
+                    <div class="section-header">
+                        <h3>วิเคราะห์การใช้จ่าย</h3>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="expenseChart"></canvas>
+                    </div>
+                </section>
+
+                <!-- Recent Transactions -->
+                <section class="section">
+                    <div class="section-header">
+                        <h3>รายการล่าสุด</h3>
+                    </div>
+                    <div id="transaction-list" class="transaction-list">
+                        <div class="empty-state">
+                            <i class="fas fa-inbox"></i>
+                            <p>ยังไม่มีรายการจดบันทึก</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- REPORTS PAGE -->
+            <div class="page hidden" id="page-reports">
+                <section class="section">
+                    <div class="section-header">
+                        <h3>📊 รายงานและวิเคราะห์</h3>
+                    </div>
+
+                    <!-- Chart Type Selector -->
+                    <div class="chart-type-selector">
+                        <button class="chart-type-btn active" data-chart="doughnut">
+                            <i class="fas fa-chart-pie"></i> วงกลม
+                        </button>
+                        <button class="chart-type-btn" data-chart="bar">
+                            <i class="fas fa-chart-bar"></i> แท่ง
+                        </button>
+                        <button class="chart-type-btn" data-chart="line">
+                            <i class="fas fa-chart-line"></i> เส้น
+                        </button>
+                    </div>
+
+                    <!-- Analytics Chart -->
+                    <div class="chart-container">
+                        <canvas id="analyticsChart"></canvas>
+                    </div>
+                </section>
+
+                <!-- Statistics Summary -->
+                <section class="section">
+                    <div class="section-header">
+                        <h3>สรุปการใช้จ่าย</h3>
+                    </div>
+                    <div id="stats-container" class="stats-grid">
+                        <div class="stat-card">
+                            <i class="fas fa-arrow-down"></i>
+                            <span>รายรับทั้งหมด</span>
+                            <p id="stat-total-income">฿0.00</p>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>รายจ่ายทั้งหมด</span>
+                            <p id="stat-total-expense">฿0.00</p>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-piggy-bank"></i>
+                            <span>คงเหลือ</span>
+                            <p id="stat-balance">฿0.00</p>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-list"></i>
+                            <span>รายการทั้งหมด</span>
+                            <p id="stat-count">0</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Category Breakdown -->
+                <section class="section">
+                    <div class="section-header">
+                        <h3>การใช้จ่ายตามหมวดหมู่</h3>
+                    </div>
+                    <div id="category-breakdown" class="category-breakdown">
+                    </div>
+                </section>
+            </div>
+
+            <!-- WALLET PAGE (Latest Transactions) -->
+            <div class="page hidden" id="page-wallet">
+                <section class="section">
+                    <div class="section-header">
+                        <h3>💼 รายการล่าสุด</h3>
+                    </div>
+                    <div id="full-transaction-list" class="transaction-list">
+                        <div class="empty-state">
+                            <i class="fas fa-inbox"></i>
+                            <p>ยังไม่มีรายการจดบันทึก</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- SETTINGS PAGE -->
+            <div class="page hidden" id="page-settings">
+                <section class="section">
+                    <div class="section-header">
+                        <h3>⚙️ ตั้งค่า</h3>
+                    </div>
+
+                    <div class="settings-group">
+                        <div class="setting-item">
+                            <div class="setting-label">
+                                <i class="fas fa-trash"></i>
+                                <span>ลบข้อมูลทั้งหมด</span>
+                            </div>
+                            <button id="clear-data-btn" class="btn-danger">ลบ</button>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-label">
+                                <i class="fas fa-download"></i>
+                                <span>ดาวน์โหลดข้อมูล (JSON)</span>
+                            </div>
+                            <button id="export-data-btn" class="btn-primary">ดาวน์โหลด</button>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-label">
+                                <i class="fas fa-upload"></i>
+                                <span>นำเข้าข้อมูล</span>
+                            </div>
+                            <input type="file" id="import-file" accept=".json" style="display:none;">
+                            <button id="import-data-btn" class="btn-primary">นำเข้า</button>
+                        </div>
+                    </div>
+
+                    <div class="settings-info">
+                        <div class="info-box">
+                            <i class="fas fa-info-circle"></i>
+                            <div>
+                                <strong>เกี่ยวกับแอป</strong>
+                                <p>Pastel Finance v1.0<br>ชดบันทึกรายรับรายจ่ายแบบพาสเทล</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Floating Action Button -->
+        <button class="fab" id="open-modal" title="เพิ่มรายการใหม่">
+            <i class="fas fa-plus"></i>
+        </button>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="#" class="nav-item active" data-page="page-home">
+                <i class="fas fa-home"></i>
+                <span>หน้าหลัก</span>
+            </a>
+            <a href="#" class="nav-item" data-page="page-reports">
+                <i class="fas fa-chart-pie"></i>
+                <span>รายงาน</span>
+            </a>
+            <a href="#" class="nav-item" data-page="page-wallet">
+                <i class="fas fa-wallet"></i>
+                <span>กระเป๋า</span>
+            </a>
+            <a href="#" class="nav-item" data-page="page-settings">
+                <i class="fas fa-cog"></i>
+                <span>ตั้งค่า</span>
+            </a>
+        </nav>
+
+        <!-- Add Transaction Modal (Bottom Sheet Style) -->
+        <div class="modal-overlay" id="modal-overlay">
+            <div class="modal-content bottom-sheet" id="modal-content">
+                <div class="modal-handle"></div>
+                <header class="modal-header">
+                    <h2>เพิ่มรายการใหม่</h2>
+                    <button class="close-btn" id="close-modal">&times;</button>
+                </header>
+                <form id="transaction-form">
+                    <div class="tab-group">
+                        <button type="button" class="tab-btn active" data-type="expense">รายจ่าย</button>
+                        <button type="button" class="tab-btn" data-type="income">รายรับ</button>
+                    </div>
+
+                    <div class="input-group">
+                        <label>จำนวนเงิน</label>
+                        <input type="number" id="amount" placeholder="0.00" required step="0.01">
+                    </div>
+
+                    <div class="input-group">
+                        <label>คำอธิบาย</label>
+                        <input type="text" id="description" placeholder="เช่น ค่าอาหาร, เงินเดือน" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label>หมวดหมู่</label>
+                        <select id="category">
+                            <!-- Categories will be dynamic based on type -->
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label>วันที่</label>
+                        <input type="date" id="date" required>
+                    </div>
+
+                    <button type="submit" class="submit-btn highlight">บันทึกรายการ</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('Service Worker registered'))
+                    .catch(err => console.log('Service Worker error', err));
+            });
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,44 @@
+body {
+    background-color: #f8f9fa;
+}
+
+#image-container {
+    display: grid;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin: 10px auto;
+    padding: 12px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#image-upload {
+    margin: 10px;
+
+}
+
+.editor-form {
+    flex: 1;
+}
+
+.form-label {
+    font-weight: bold;
+}
+
+.slider {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.btn-reset {
+    margin-top: 10px;
+    margin: 10px auto;
+    padding: 10px;
+}
+
+.uploaded-image {
+    align-self: center;
+    justify-self: center;
+}
