@@ -17,6 +17,14 @@ A Thai-English vocabulary notebook built with React, Vite, and Firebase Cloud Fi
 
 Thai readings are approximate transliterations generated from the CMU Pronouncing Dictionary (ARPABET), with curated overrides for common words.
 
+### TypeMemo
+
+A typing and sentence-reordering game for practicing Oxford 3000 vocabulary, with Thai meanings and translated examples.
+
+- **Web App:** [TypeMemo](https://robot-eng.github.io/web_test.github.io/typememo/site/)
+- Source project: `typememo/`
+- Build the GitHub Pages version with `cd typememo && npm install && npm run build:pages`.
+
 ### English Encyclopedia
 
 A deep-dive resource for English learners covering everything from basic grammar to advanced speaking secrets.
