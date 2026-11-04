@@ -89,7 +89,7 @@ function getExample(entry) {
 }
 
 function scrambleSentence(sentence) {
-  const words = getSentenceWords(sentence);
+  const words = sentence.trim().split(/\s+/u).filter(Boolean);
   const scrambled = shuffle(words);
   if (scrambled.length > 1 && scrambled.every((word, index) => word === words[index])) {
     [scrambled[0], scrambled[1]] = [scrambled[1], scrambled[0]];
