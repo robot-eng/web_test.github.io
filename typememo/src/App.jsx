@@ -352,6 +352,7 @@ function App() {
                 {feedback && (
                   <div className={`feedback ${feedback}`} role="status">
                     <span>{feedback === 'correct' ? 'ถูกต้อง เก่งมาก!' : <>คำตอบที่ถูกคือ <strong>{session.mode === 'recall' ? currentWord.word : example}</strong></>}</span>
+                    {session.mode === 'recall' && feedback === 'incorrect' && <button className="button button-quiet submit-button" type="button" onClick={retryQuestion}>ลองอีกครั้ง</button>}
                     {session.mode === 'recall' && <button className="button button-primary submit-button" onClick={nextQuestion}>คำถัดไป <span>↗</span></button>}
                     {session.mode === 'reorder' && feedback === 'incorrect' && <>
                       <button className="button button-quiet submit-button" onClick={retryQuestion}>ลองอีกครั้ง</button>
