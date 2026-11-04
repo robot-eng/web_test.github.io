@@ -252,8 +252,11 @@ function App() {
     return definition || `${partNames[currentWord.partOfSpeech] || 'คำศัพท์'} · Oxford ${currentWord.level}`;
   }
 
+  const normalizedGuess = normalizeAnswer(answer);
   const hint = currentWord
-    ? [...currentWord.word].map((character, index) => index < hintCount ? character : '•').join(' ')
+    ? [...currentWord.word].map((character, index) => (
+      index < hintCount || normalizedGuess[index] === character.toLocaleLowerCase() ? character : '•'
+    )).join(' ')
     : '';
 
   return (
