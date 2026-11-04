@@ -292,7 +292,7 @@ function App() {
                 <div className="exercise-label"><span className="eyebrow">{session.mode === 'typing' ? 'พิมพ์ตามข้อความ' : session.mode === 'reorder' ? 'เรียงประโยคใหม่' : 'ทวนความจำ'}</span><span className="level-pill">{currentWord.level}</span></div>
                 <div className="word-title-row">
                   <h1>{session.mode === 'recall' ? 'คำศัพท์ที่หายไป' : currentWord.word}</h1>
-                  <button className="sound-button" onClick={() => speak(currentWord.word)} aria-label="ฟังเสียงภาษาอังกฤษ">◖))</button>
+                  {(session.mode !== 'recall' || feedback) && <button className="sound-button" onClick={() => speak(currentWord.word)} aria-label="ฟังเสียงภาษาอังกฤษ">◖))</button>}
                 </div>
                 {session.mode === 'typing' ? (
                   <div className="typing-prompt" aria-label="ข้อความสำหรับพิมพ์ตาม">
@@ -361,13 +361,13 @@ function App() {
               <aside className="exercise-aside">
                 <div className="aside-top"><span className="aside-index">{String(session.index + 1).padStart(2, '0')}</span><span className="aside-rule" /></div>
                 <span className="eyebrow">WORD CARD</span>
-                <h2>{currentWord.word}</h2>
+                <h2>{session.mode === 'recall' && !feedback ? '•••' : currentWord.word}</h2>
                 <div className="aside-level">ระดับภาษา <strong>{currentWord.level}</strong></div>
                 <div className="aside-definition">
                   <span>{definition ? 'ความหมาย' : 'ชนิดคำ'}{currentWord.meaning && <> · <a href="https://belisan-volubilis.blogspot.com/" target="_blank" rel="noreferrer">Volubilis</a></>}</span>
                   <p>{definition || partNames[currentWord.partOfSpeech] || 'คำศัพท์'}</p>
                 </div>
-                <button className="listen-link" onClick={() => speak(currentWord.word)}>ฟังการออกเสียง <span>↗</span></button>
+                {(session.mode !== 'recall' || feedback) && <button className="listen-link" onClick={() => speak(currentWord.word)}>ฟังการออกเสียง <span>↗</span></button>}
               </aside>
             </section>
           )}
